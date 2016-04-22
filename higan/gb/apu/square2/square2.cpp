@@ -34,7 +34,7 @@ auto APU::Square2::clockEnvelope() -> void {
   }
 }
 
-auto APU::Square2::read(uint16 addr) -> uint8 {
+auto APU::Square2::read(buint16 addr) -> buint8 {
   if(addr == 0xff15) {  //NR20
     return 0xff;
   }
@@ -58,7 +58,7 @@ auto APU::Square2::read(uint16 addr) -> uint8 {
   return 0xff;
 }
 
-auto APU::Square2::write(uint16 addr, uint8 data) -> void {
+auto APU::Square2::write(buint16 addr, buint8 data) -> void {
   if(addr == 0xff16) {  //NR21
     duty = data.bits(7,6);
     length = 64 - data.bits(5,0);

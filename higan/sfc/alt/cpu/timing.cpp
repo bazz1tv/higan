@@ -89,10 +89,10 @@ auto CPU::run_auto_joypad_poll() -> void {
   device.controllerPort1->latch(0);
   device.controllerPort2->latch(0);
 
-  uint16 joy1 = 0, joy2 = 0, joy3 = 0, joy4 = 0;
+  buint16 joy1 = 0, joy2 = 0, joy3 = 0, joy4 = 0;
   for(uint i = 0; i < 16; i++) {
-    uint8 port0 = device.controllerPort1->data();
-    uint8 port1 = device.controllerPort2->data();
+    buint8 port0 = device.controllerPort1->data();
+    buint8 port1 = device.controllerPort2->data();
 
     joy1 |= (port0 & 1) ? (0x8000 >> i) : 0;
     joy2 |= (port1 & 1) ? (0x8000 >> i) : 0;

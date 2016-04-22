@@ -5,7 +5,7 @@
 auto V30MZ::opGroup1MemImm(Size size, bool sign) {
   modRM();
   auto mem = getMem(size);
-  uint16 imm = 0;
+  buint16 imm = 0;
   if(sign) imm = (int8)fetch();
   else if(size == Byte) imm = fetch();
   else imm = fetch(Word);
@@ -27,7 +27,7 @@ auto V30MZ::opGroup1MemImm(Size size, bool sign) {
 //d1  grp2 memw,1
 //d2  grp2 memb,cl
 //d3  grp2 memw,cl
-auto V30MZ::opGroup2MemImm(Size size, maybe<uint8> imm) {
+auto V30MZ::opGroup2MemImm(Size size, maybe<buint8> imm) {
   modRM();
   auto mem = getMem(size);
   if(!imm) {

@@ -185,7 +185,7 @@ auto pCanvas::_rasterize() -> void {
       [cocoaView setImage:surface];
     }
 
-    auto target = (uint32*)[bitmap bitmapData];
+    auto target = (buint32*)[bitmap bitmapData];
 
     if(auto icon = state().icon) {
       icon.transform();
@@ -197,7 +197,7 @@ auto pCanvas::_rasterize() -> void {
       fill.gradient(colors[0].value(), colors[1].value(), colors[2].value(), colors[3].value());
       memory::copy(target, fill.data(), fill.size());
     } else {
-      uint32 color = state().color.value();
+      buint32 color = state().color.value();
       for(auto n : range(width * height)) target[n] = color;
     }
   }

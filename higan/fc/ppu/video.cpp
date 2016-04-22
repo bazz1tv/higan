@@ -1,10 +1,10 @@
 Video video;
 
 Video::Video() {
-  output = new uint32[256 * 480];
-  paletteLiteral = new uint32[1 << 9];
-  paletteStandard = new uint32[1 << 9];
-  paletteEmulation = new uint32[1 << 9];
+  output = new buint32[256 * 480];
+  paletteLiteral = new buint32[1 << 9];
+  paletteStandard = new buint32[1 << 9];
+  paletteEmulation = new buint32[1 << 9];
 }
 
 auto Video::reset() -> void {
@@ -32,7 +32,7 @@ auto Video::refresh() -> void {
         *targetHi++ = (255 << 24) | ((color & 0xfefefe) >> 1);
       }
     }
-    interface->videoRefresh(output, 256 * sizeof(uint32), 256, 480);
+    interface->videoRefresh(output, 256 * sizeof(buint32), 256, 480);
   } else {
     for(uint y = 0; y < 240; y++) {
       auto source = ppu.buffer + y * 256;
@@ -41,14 +41,14 @@ auto Video::refresh() -> void {
         *target++ = palette[*source++];
       }
     }
-    interface->videoRefresh(output, 256 * sizeof(uint32), 256, 240);
+    interface->videoRefresh(output, 256 * sizeof(buint32), 256, 240);
   }
 }
 
 auto Video::generateColor(
   uint n, double saturation, double hue,
   double contrast, double brightness, double gamma
-) -> uint32 {
+) -> buint32 {
   int color = (n & 0x0f), level = color < 0xe ? (n >> 4) & 3 : 1;
 
   static const double black = 0.518, white = 1.962, attenuation = 0.746;

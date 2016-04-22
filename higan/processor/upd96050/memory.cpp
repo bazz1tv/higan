@@ -1,11 +1,11 @@
-auto uPD96050::readSR() -> uint8 {
+auto uPD96050::readSR() -> buint8 {
   return regs.sr >> 8;
 }
 
-auto uPD96050::writeSR(uint8 data) -> void {
+auto uPD96050::writeSR(buint8 data) -> void {
 }
 
-auto uPD96050::readDR() -> uint8 {
+auto uPD96050::readDR() -> buint8 {
   if(regs.sr.drc == 0) {
     //16-bit
     if(regs.sr.drs == 0) {
@@ -23,7 +23,7 @@ auto uPD96050::readDR() -> uint8 {
   }
 }
 
-auto uPD96050::writeDR(uint8 data) -> void {
+auto uPD96050::writeDR(buint8 data) -> void {
   if(regs.sr.drc == 0) {
     //16-bit
     if(regs.sr.drs == 0) {
@@ -41,7 +41,7 @@ auto uPD96050::writeDR(uint8 data) -> void {
   }
 }
 
-auto uPD96050::readDP(uint12 addr) -> uint8 {
+auto uPD96050::readDP(uint12 addr) -> buint8 {
   bool hi = addr & 1;
   addr = (addr >> 1) & 2047;
 
@@ -52,7 +52,7 @@ auto uPD96050::readDP(uint12 addr) -> uint8 {
   }
 }
 
-auto uPD96050::writeDP(uint12 addr, uint8 data) -> void {
+auto uPD96050::writeDP(uint12 addr, buint8 data) -> void {
   bool hi = addr & 1;
   addr = (addr >> 1) & 2047;
 

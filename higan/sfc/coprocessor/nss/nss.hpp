@@ -5,11 +5,11 @@ struct NSS {
   auto power() -> void;
   auto reset() -> void;
 
-  auto set_dip(uint16 dip) -> void;
-  auto read(uint24 addr, uint8 data) -> uint8;
-  auto write(uint24 addr, uint8 data) -> void;
+  auto set_dip(buint16 dip) -> void;
+  auto read(uint24 addr, buint8 data) -> buint8;
+  auto write(uint24 addr, buint8 data) -> void;
 
-  uint8 dip = 0x00;
+  buint8 dip = 0x00;
 };
 
 extern NSS nss;

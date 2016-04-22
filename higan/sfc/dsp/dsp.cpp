@@ -211,11 +211,11 @@ auto DSP::mute() const -> bool {
   return REG(FLG) & 0x40;
 }
 
-auto DSP::read(uint8 addr) -> uint8 {
+auto DSP::read(buint8 addr) -> buint8 {
   return REG(addr);
 }
 
-auto DSP::write(uint8 addr, uint8 data) -> void {
+auto DSP::write(buint8 addr, buint8 data) -> void {
   REG(addr) = data;
 
   if((addr & 0x0f) == ENVX) {

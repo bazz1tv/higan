@@ -110,7 +110,7 @@ auto EpsonRTC::rtc_write(uint4 addr, uint4 data) -> void {
   }
 }
 
-auto EpsonRTC::load(const uint8* data) -> void {
+auto EpsonRTC::load(const buint8* data) -> void {
   secondlo = data[0] >> 0;
   secondhi = data[0] >> 4;
   batteryfailure = data[0] >> 7;
@@ -150,19 +150,19 @@ auto EpsonRTC::load(const uint8* data) -> void {
   atime = data[7] >> 6;
   test = data[7] >> 7;
 
-  uint64 timestamp = 0;
+  buint64 timestamp = 0;
   for(auto byte : range(8)) {
     timestamp |= data[8 + byte] << (byte * 8);
   }
 
-  uint64 diff = (uint64)time(0) - timestamp;
+  buint64 diff = (buint64)time(0) - timestamp;
   while(diff >= 60 * 60 * 24) { tick_day(); diff -= 60 * 60 * 24; }
   while(diff >= 60 * 60) { tick_hour(); diff -= 60 * 60; }
   while(diff >= 60) { tick_minute(); diff -= 60; }
   while(diff--) tick_second();
 }
 
-auto EpsonRTC::save(uint8* data) -> void {
+auto EpsonRTC::save(buint8* data) -> void {
   data[0] = secondlo << 0 | secondhi << 4 | batteryfailure << 7;
   data[1] = minutelo << 0 | minutehi << 4 | resync << 7;
   data[2] = hourlo << 0 | hourhi << 4 | meridian << 6 | resync << 7;
@@ -172,7 +172,7 @@ auto EpsonRTC::save(uint8* data) -> void {
   data[6] = weekday << 0 | resync << 3 | hold << 4 | calendar << 5 | irqflag << 6 | roundseconds << 7;
   data[7] = irqmask << 0 | irqduty << 1 | irqperiod << 2 | pause << 4 | stop << 5 | atime << 6 | test << 7;
 
-  uint64 timestamp = (uint64)time(0);
+  buint64 timestamp = (buint64)time(0);
   for(auto byte : range(8)) {
     data[8 + byte] = timestamp;
     timestamp >>= 8;

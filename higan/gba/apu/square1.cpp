@@ -22,7 +22,7 @@ auto APU::Square1::clocksweep() -> void {
   }
 }
 
-auto APU::Square1::read(uint addr) const -> uint8 {
+auto APU::Square1::read(uint addr) const -> buint8 {
   switch(addr) {
   case 0: return (sweep.shift << 0) | (sweep.direction << 3) | (sweep.frequency << 4);
   case 1: return (duty << 6);
@@ -32,7 +32,7 @@ auto APU::Square1::read(uint addr) const -> uint8 {
   }
 }
 
-auto APU::Square1::write(uint addr, uint8 byte) -> void {
+auto APU::Square1::write(uint addr, buint8 byte) -> void {
   switch(addr) {
   case 0:  //NR10
     if(sweep.negate && sweep.direction && !(byte & 0x08)) enable = false;

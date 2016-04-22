@@ -55,10 +55,10 @@ auto USART::readable() -> bool {
 }
 
 //SNES -> USART
-auto USART::read() -> uint8 {
+auto USART::read() -> buint8 {
   step(1);
   while(txbuffer.size() == 0) step(1);
-  uint8 data = txbuffer[0];
+  buint8 data = txbuffer[0];
   txbuffer.remove(0);
   return data;
 }
@@ -69,7 +69,7 @@ auto USART::writable() -> bool {
 }
 
 //USART -> SNES
-auto USART::write(uint8 data) -> void {
+auto USART::write(buint8 data) -> void {
   step(1);
   rxbuffer.append(data ^ 0xff);
 }

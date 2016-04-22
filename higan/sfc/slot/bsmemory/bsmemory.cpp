@@ -9,7 +9,7 @@ auto BSMemory::init() -> void {
 
 auto BSMemory::load() -> void {
   if(memory.size() == 0) {
-    memory.map(allocate<uint8>(1024 * 1024, 0xff), 1024 * 1024);
+    memory.map(allocate<buint8>(1024 * 1024, 0xff), 1024 * 1024);
   }
 }
 
@@ -35,7 +35,7 @@ auto BSMemory::size() const -> uint {
   return memory.size();
 }
 
-auto BSMemory::read(uint24 addr, uint8 data) -> uint8 {
+auto BSMemory::read(uint24 addr, buint8 data) -> buint8 {
   if(readonly) {
     return memory.read(bus.mirror(addr, memory.size()), data);
   }
@@ -66,7 +66,7 @@ auto BSMemory::read(uint24 addr, uint8 data) -> uint8 {
   return memory.read(addr, data);
 }
 
-auto BSMemory::write(uint24 addr, uint8 data) -> void {
+auto BSMemory::write(uint24 addr, buint8 data) -> void {
   if(readonly) {
     return;
   }

@@ -13,9 +13,9 @@ auto SDD1::Decomp::IM::init(uint offset_) -> void {
   bit_count = 4;
 }
 
-auto SDD1::Decomp::IM::get_codeword(uint8 code_length) -> uint8 {
-  uint8 codeword;
-  uint8 comp_count;
+auto SDD1::Decomp::IM::get_codeword(buint8 code_length) -> buint8 {
+  buint8 codeword;
+  buint8 comp_count;
 
   codeword = sdd1.mmc_read(offset) << bit_count;
   bit_count++;
@@ -35,7 +35,7 @@ auto SDD1::Decomp::IM::get_codeword(uint8 code_length) -> uint8 {
 
 //golomb-code decoder
 
-const uint8 SDD1::Decomp::GCD::run_count[] = {
+const buint8 SDD1::Decomp::GCD::run_count[] = {
   0x00, 0x00, 0x01, 0x00, 0x03, 0x01, 0x02, 0x00,
   0x07, 0x03, 0x05, 0x01, 0x06, 0x02, 0x04, 0x00,
   0x0f, 0x07, 0x0b, 0x03, 0x0d, 0x05, 0x09, 0x01,
@@ -70,8 +70,8 @@ const uint8 SDD1::Decomp::GCD::run_count[] = {
   0x70, 0x30, 0x50, 0x10, 0x60, 0x20, 0x40, 0x00,
 };
 
-auto SDD1::Decomp::GCD::get_run_count(uint8 code_number, uint8& mps_count, bool& lps_index) -> void {
-  uint8 codeword = self.im.get_codeword(code_number);
+auto SDD1::Decomp::GCD::get_run_count(buint8 code_number, buint8& mps_count, bool& lps_index) -> void {
+  buint8 codeword = self.im.get_codeword(code_number);
 
   if(codeword & 0x80) {
     lps_index = 1;
@@ -88,10 +88,10 @@ auto SDD1::Decomp::BG::init() -> void {
   lps_index = 0;
 }
 
-auto SDD1::Decomp::BG::get_bit(bool& end_of_run) -> uint8 {
+auto SDD1::Decomp::BG::get_bit(bool& end_of_run) -> buint8 {
   if(!(mps_count || lps_index)) self.gcd.get_run_count(code_number, mps_count, lps_index);
 
-  uint8 bit;
+  buint8 bit;
   if(mps_count) {
     bit = 0;
     mps_count--;
@@ -149,13 +149,13 @@ auto SDD1::Decomp::PEM::init() -> void {
   }
 }
 
-auto SDD1::Decomp::PEM::get_bit(uint8 context) -> uint8 {
+auto SDD1::Decomp::PEM::get_bit(buint8 context) -> buint8 {
   ContextInfo& info = context_info[context];
-  uint8 current_status = info.status;
-  uint8 current_mps = info.mps;
+  buint8 current_status = info.status;
+  buint8 current_mps = info.mps;
   const State& s = SDD1::Decomp::PEM::evolution_table[current_status];
 
-  uint8 bit;
+  buint8 bit;
   bool end_of_run;
   switch(s.code_number) {
   case 0: bit = self.bg0.get_bit(end_of_run); break;
@@ -194,7 +194,7 @@ auto SDD1::Decomp::CM::init(uint offset) -> void {
   }
 }
 
-auto SDD1::Decomp::CM::get_bit() -> uint8 {
+auto SDD1::Decomp::CM::get_bit() -> buint8 {
   switch(bitplanes_info) {
   case 0x00:
     current_bitplane ^= 0x01;
@@ -212,8 +212,8 @@ auto SDD1::Decomp::CM::get_bit() -> uint8 {
     break;
   }
 
-  uint16& context_bits = previous_bitplane_bits[current_bitplane];
-  uint8 current_context = (current_bitplane & 0x01) << 4;
+  buint16& context_bits = previous_bitplane_bits[current_bitplane];
+  buint8 current_context = (current_bitplane & 0x01) << 4;
   switch(context_bits_info) {
   case 0x00: current_context |= ((context_bits & 0x01c0) >> 5) | (context_bits & 0x0001); break;
   case 0x10: current_context |= ((context_bits & 0x0180) >> 5) | (context_bits & 0x0001); break;
@@ -221,7 +221,7 @@ auto SDD1::Decomp::CM::get_bit() -> uint8 {
   case 0x30: current_context |= ((context_bits & 0x0180) >> 5) | (context_bits & 0x0003); break;
   }
 
-  uint8 bit = self.pem.get_bit(current_context);
+  buint8 bit = self.pem.get_bit(current_context);
   context_bits <<= 1;
   context_bits |= bit;
   bit_number++;
@@ -235,7 +235,7 @@ auto SDD1::Decomp::OL::init(uint offset) -> void {
   r0 = 0x01;
 }
 
-auto SDD1::Decomp::OL::decompress() -> uint8 {
+auto SDD1::Decomp::OL::decompress() -> buint8 {
   switch(bitplanes_info) {
   case 0x00: case 0x40: case 0x80:
     if(r0 == 0) {
@@ -279,6 +279,6 @@ auto SDD1::Decomp::init(uint offset) -> void {
   ol.init(offset);
 }
 
-auto SDD1::Decomp::read() -> uint8 {
+auto SDD1::Decomp::read() -> buint8 {
   return ol.decompress();
 }

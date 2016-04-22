@@ -39,11 +39,11 @@ auto DSP::mute() -> bool {
   return spc_dsp.mute();
 }
 
-auto DSP::read(uint8 addr) -> uint8 {
+auto DSP::read(buint8 addr) -> buint8 {
   return spc_dsp.read(addr);
 }
 
-auto DSP::write(uint8 addr, uint8 data) -> void {
+auto DSP::write(buint8 addr, buint8 data) -> void {
   spc_dsp.write(addr, data);
 }
 

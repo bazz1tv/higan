@@ -42,7 +42,7 @@ L io();
   if(regs.a.w--) regs.pc.w -= 3;
 }
 
-auto R65816::op_interrupt_e(uint16 vector) {
+auto R65816::op_interrupt_e(buint16 vector) {
   readpc();
   writestack(regs.pc.h);
   writestack(regs.pc.l);
@@ -55,7 +55,7 @@ L rd.h = readlong(vector + 1);
   regs.pc.w = rd.w;
 }
 
-auto R65816::op_interrupt_n(uint16 vector) {
+auto R65816::op_interrupt_n(buint16 vector) {
   readpc();
   writestack(regs.pc.b);
   writestack(regs.pc.h);

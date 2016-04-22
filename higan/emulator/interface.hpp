@@ -50,7 +50,7 @@ struct Interface {
     virtual auto loadRequest(uint, string, string, bool) -> void {}
     virtual auto loadRequest(uint, string, bool) -> void {}
     virtual auto saveRequest(uint, string) -> void {}
-    virtual auto videoRefresh(const uint32*, uint, uint, uint) -> void {}
+    virtual auto videoRefresh(const buint32*, uint, uint, uint) -> void {}
     virtual auto audioSample(int16, int16) -> void {}
     virtual auto inputPoll(uint, uint, uint) -> int16 { return 0; }
     virtual auto inputRumble(uint, uint, uint, bool) -> void {}
@@ -64,7 +64,7 @@ struct Interface {
   auto loadRequest(uint id, string name, string type, bool required) -> void { return bind->loadRequest(id, name, type, required); }
   auto loadRequest(uint id, string path, bool required) -> void { return bind->loadRequest(id, path, required); }
   auto saveRequest(uint id, string path) -> void { return bind->saveRequest(id, path); }
-  auto videoRefresh(const uint32* data, uint pitch, uint width, uint height) -> void { return bind->videoRefresh(data, pitch, width, height); }
+  auto videoRefresh(const buint32* data, uint pitch, uint width, uint height) -> void { return bind->videoRefresh(data, pitch, width, height); }
   auto audioSample(int16 lsample, int16 rsample) -> void { return bind->audioSample(lsample, rsample); }
   auto inputPoll(uint port, uint device, uint input) -> int16 { return bind->inputPoll(port, device, input); }
   auto inputRumble(uint port, uint device, uint input, bool enable) -> void { return bind->inputRumble(port, device, input, enable); }
@@ -111,7 +111,7 @@ struct Interface {
   virtual auto set(const string& name, const any& value) -> bool { return false; }
 
   //shared functions
-  auto videoColor(uint16 r, uint16 g, uint16 b) -> uint32;
+  auto videoColor(buint16 r, buint16 g, buint16 b) -> buint32;
 };
 
 }

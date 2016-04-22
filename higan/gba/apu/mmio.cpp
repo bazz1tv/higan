@@ -1,4 +1,4 @@
-auto APU::read(uint32 addr) -> uint8 {
+auto APU::read(buint32 addr) -> buint8 {
   switch(addr) {
 
   //NR10
@@ -111,7 +111,7 @@ auto APU::read(uint32 addr) -> uint8 {
   return 0;
 }
 
-auto APU::write(uint32 addr, uint8 data) -> void {
+auto APU::write(buint32 addr, buint8 data) -> void {
   switch(addr) {
 
   //NR10

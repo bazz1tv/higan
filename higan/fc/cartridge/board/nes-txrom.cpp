@@ -7,24 +7,24 @@ struct NES_TxROM : Board {
     mmc3.main();
   }
 
-  auto prg_read(uint addr) -> uint8 {
+  auto prg_read(uint addr) -> buint8 {
     if((addr & 0xe000) == 0x6000) return mmc3.ram_read(addr);
     if(addr & 0x8000) return prgrom.read(mmc3.prg_addr(addr));
     return cpu.mdr();
   }
 
-  auto prg_write(uint addr, uint8 data) -> void {
+  auto prg_write(uint addr, buint8 data) -> void {
     if((addr & 0xe000) == 0x6000) return mmc3.ram_write(addr, data);
     if(addr & 0x8000) return mmc3.reg_write(addr, data);
   }
 
-  auto chr_read(uint addr) -> uint8 {
+  auto chr_read(uint addr) -> buint8 {
     mmc3.irq_test(addr);
     if(addr & 0x2000) return ppu.ciram_read(mmc3.ciram_addr(addr));
     return Board::chr_read(mmc3.chr_addr(addr));
   }
 
-  auto chr_write(uint addr, uint8 data) -> void {
+  auto chr_write(uint addr, buint8 data) -> void {
     mmc3.irq_test(addr);
     if(addr & 0x2000) return ppu.ciram_write(mmc3.ciram_addr(addr), data);
     return Board::chr_write(mmc3.chr_addr(addr), data);

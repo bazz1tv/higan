@@ -7,7 +7,7 @@ auto CPU::dmaAddClocks(uint clocks) -> void {
 //memory access
 //=============
 
-auto CPU::dmaTransferValid(uint8 bbus, uint24 abus) -> bool {
+auto CPU::dmaTransferValid(buint8 bbus, uint24 abus) -> bool {
   //transfers from WRAM to WRAM are invalid; chip only has one address bus
   if(bbus == 0x80 && ((abus & 0xfe0000) == 0x7e0000 || (abus & 0x40e000) == 0x0000)) return false;
   return true;
@@ -22,7 +22,7 @@ auto CPU::dmaAddressValid(uint24 abus) -> bool {
   return true;
 }
 
-auto CPU::dmaRead(uint24 abus) -> uint8 {
+auto CPU::dmaRead(uint24 abus) -> buint8 {
   if(!dmaAddressValid(abus)) return 0x00;
   return bus.read(abus, regs.mdr);
 }
@@ -32,14 +32,14 @@ auto CPU::dmaRead(uint24 abus) -> uint8 {
 //cycle 1: write N+0 & read N+1 (parallel; one on A-bus, one on B-bus)
 //cycle 2: write N+1 & read N+2 (parallel)
 //cycle 3: write N+2
-auto CPU::dmaWrite(bool valid, uint addr, uint8 data) -> void {
+auto CPU::dmaWrite(bool valid, uint addr, buint8 data) -> void {
   if(pipe.valid) bus.write(pipe.addr, pipe.data);
   pipe.valid = valid;
   pipe.addr = addr;
   pipe.data = data;
 }
 
-auto CPU::dmaTransfer(bool direction, uint8 bbus, uint24 abus) -> void {
+auto CPU::dmaTransfer(bool direction, buint8 bbus, uint24 abus) -> void {
   if(direction == 0) {
     dmaAddClocks(4);
     regs.mdr = dmaRead(abus);
@@ -47,7 +47,7 @@ auto CPU::dmaTransfer(bool direction, uint8 bbus, uint24 abus) -> void {
     dmaWrite(dmaTransferValid(bbus, abus), 0x2100 | bbus, regs.mdr);
   } else {
     dmaAddClocks(4);
-    regs.mdr = dmaTransferValid(bbus, abus) ? bus.read(0x2100 | bbus, regs.mdr) : (uint8)0x00;
+    regs.mdr = dmaTransferValid(bbus, abus) ? bus.read(0x2100 | bbus, regs.mdr) : (buint8)0x00;
     dmaAddClocks(4);
     dmaWrite(dmaAddressValid(abus), abus, regs.mdr);
   }
@@ -57,7 +57,7 @@ auto CPU::dmaTransfer(bool direction, uint8 bbus, uint24 abus) -> void {
 //address calculation
 //===================
 
-auto CPU::dmaAddressB(uint n, uint index) -> uint8 {
+auto CPU::dmaAddressB(uint n, uint index) -> buint8 {
   switch(channel[n].transfer_mode) { default:
   case 0: return (channel[n].dest_addr);                       //0
   case 1: return (channel[n].dest_addr + (index & 1));         //0,1

@@ -44,7 +44,7 @@ auto CPU::pollInterrupts() -> void {
   status.irq_valid = irq_valid;
 }
 
-auto CPU::nmitimenUpdate(uint8 data) -> void {
+auto CPU::nmitimenUpdate(buint8 data) -> void {
   bool nmi_enabled  = status.nmi_enabled;
   bool virq_enabled = status.virq_enabled;
   bool hirq_enabled = status.hirq_enabled;

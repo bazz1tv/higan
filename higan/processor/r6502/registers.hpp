@@ -3,7 +3,7 @@ struct Flags {
     return (n << 7) | (v << 6) | (d << 3) | (i << 2) | (z << 1) | (c << 0);
   }
 
-  inline auto operator=(uint8 data) -> Flags& {
+  inline auto operator=(buint8 data) -> Flags& {
     n = data & 0x80; v = data & 0x40;
     d = data & 0x08; i = data & 0x04; z = data & 0x02; c = data & 0x01;
     return *this;
@@ -13,9 +13,9 @@ struct Flags {
 };
 
 struct Registers {
-  uint8  mdr;
-  uint16 pc;
-  uint8  a, x, y, s;
+  buint8  mdr;
+  buint16 pc;
+  buint8  a, x, y, s;
   Flags  p;
 } regs;
 
@@ -26,6 +26,6 @@ struct Register16 {
   };
 } abs, iabs;
 
-uint8 rd;
-uint8 zp;
-uint16 aa;
+buint8 rd;
+buint8 zp;
+buint16 aa;

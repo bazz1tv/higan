@@ -11,14 +11,14 @@ struct PPU : Thread {
   auto power() -> void;
   auto reset() -> void;
 
-  auto read(uint16 addr) -> uint8;
-  auto write(uint16 addr, uint8 data) -> void;
+  auto read(buint16 addr) -> buint8;
+  auto write(buint16 addr, buint8 data) -> void;
 
-  auto ciram_read(uint16 addr) -> uint8;
-  auto ciram_write(uint16 addr, uint8 data) -> void;
+  auto ciram_read(buint16 addr) -> buint8;
+  auto ciram_write(buint16 addr, buint8 data) -> void;
 
-  auto cgram_read(uint16 addr) -> uint8;
-  auto cgram_write(uint16 addr, uint8 data) -> void;
+  auto cgram_read(buint16 addr) -> buint8;
+  auto cgram_write(buint16 addr, buint8 data) -> void;
 
   auto raster_enable() const -> bool;
   auto nametable_addr() const -> uint;
@@ -26,7 +26,7 @@ struct PPU : Thread {
   auto scrolly() const -> uint;
   auto sprite_height() const -> uint;
 
-  auto chr_load(uint16 addr) -> uint8;
+  auto chr_load(buint16 addr) -> buint8;
 
   auto scrollx_increment() -> void;
   auto scrolly_increment() -> void;
@@ -38,19 +38,19 @@ struct PPU : Thread {
   auto serialize(serializer&) -> void;
 
   struct Status {
-    uint8 mdr;
+    buint8 mdr;
 
     bool field;
     uint lx;
     uint ly;
 
-    uint8 bus_data;
+    buint8 bus_data;
 
     bool address_latch;
 
     uint15 vaddr;
     uint15 taddr;
-    uint8 xaddr;
+    buint8 xaddr;
 
     bool nmi_hold;
     bool nmi_flag;
@@ -76,34 +76,34 @@ struct PPU : Thread {
     bool sprite_overflow;
 
     //$2003
-    uint8 oam_addr;
+    buint8 oam_addr;
   } status;
 
   struct Raster {
-    uint16 nametable;
-    uint16 attribute;
-    uint16 tiledatalo;
-    uint16 tiledatahi;
+    buint16 nametable;
+    buint16 attribute;
+    buint16 tiledatalo;
+    buint16 tiledatahi;
 
     uint oam_iterator;
     uint oam_counter;
 
     struct OAM {
-      uint8 id;
-      uint8 y;
-      uint8 tile;
-      uint8 attr;
-      uint8 x;
+      buint8 id;
+      buint8 y;
+      buint8 tile;
+      buint8 attr;
+      buint8 x;
 
-      uint8 tiledatalo;
-      uint8 tiledatahi;
+      buint8 tiledatalo;
+      buint8 tiledatahi;
     } oam[8], soam[8];
   } raster;
 
-  uint32 buffer[256 * 262];
-  uint8 ciram[2048];
-  uint8 cgram[32];
-  uint8 oam[256];
+  buint32 buffer[256 * 262];
+  buint8 ciram[2048];
+  buint8 cgram[32];
+  buint8 oam[256];
 };
 
 extern PPU ppu;

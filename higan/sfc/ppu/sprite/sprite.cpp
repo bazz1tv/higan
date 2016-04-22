@@ -120,9 +120,9 @@ auto PPU::Sprite::tilefetch() -> void {
     x &= 511;
     y &= 255;
 
-    uint16 tiledata_addr = regs.tiledata_addr;
-    uint16 chrx = (sprite.character >> 0) & 15;
-    uint16 chry = (sprite.character >> 4) & 15;
+    buint16 tiledata_addr = regs.tiledata_addr;
+    buint16 chrx = (sprite.character >> 0) & 15;
+    buint16 chry = (sprite.character >> 4) & 15;
     if(sprite.nameselect) {
       tiledata_addr += (256 * 32) + (regs.nameselect << 13);
     }
@@ -144,7 +144,7 @@ auto PPU::Sprite::tilefetch() -> void {
 
       uint mx = !sprite.hflip ? tx : (tile_width - 1) - tx;
       uint pos = tiledata_addr + ((chry + ((chrx + mx) & 15)) << 5);
-      uint16 addr = (pos & 0xffe0) + ((y & 7) * 2);
+      buint16 addr = (pos & 0xffe0) + ((y & 7) * 2);
 
       oam_tile[n].d0 = ppu.vram[addr +  0];
       oam_tile[n].d1 = ppu.vram[addr +  1];

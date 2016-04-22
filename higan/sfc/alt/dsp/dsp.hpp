@@ -11,8 +11,8 @@ struct DSP : Thread {
   alwaysinline auto synchronizeSMP() -> void;
 
   auto mute() -> bool;
-  auto read(uint8 addr) -> uint8;
-  auto write(uint8 addr, uint8 data) -> void;
+  auto read(buint8 addr) -> buint8;
+  auto write(buint8 addr, buint8 data) -> void;
 
   auto main() -> void;
   auto power() -> void;

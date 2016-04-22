@@ -5,8 +5,8 @@ namespace SuperFamicom {
 Bus bus;
 
 Bus::Bus() {
-  lookup = new uint8 [16 * 1024 * 1024];
-  target = new uint32[16 * 1024 * 1024];
+  lookup = new buint8 [16 * 1024 * 1024];
+  target = new buint32[16 * 1024 * 1024];
 }
 
 Bus::~Bus() {
@@ -15,8 +15,8 @@ Bus::~Bus() {
 }
 
 auto Bus::reset() -> void {
-  function<auto (uint24, uint8) -> uint8> reader = [](uint24, uint8 data) { return data; };
-  function<auto (uint24, uint8) -> void> writer = [](uint24, uint8) {};
+  function<auto (uint24, buint8) -> buint8> reader = [](uint24, buint8 data) { return data; };
+  function<auto (uint24, buint8) -> void> writer = [](uint24, buint8) {};
 
   idcount = 0;
   map(reader, writer, 0x00, 0xff, 0x0000, 0xffff);
@@ -42,9 +42,9 @@ auto Bus::map() -> void {
 }
 
 auto Bus::map(
-  const function<uint8 (uint24, uint8)>& reader,
-  const function<void (uint24, uint8)>& writer,
-  uint8 banklo, uint8 bankhi, uint16 addrlo, uint16 addrhi,
+  const function<buint8 (uint24, buint8)>& reader,
+  const function<void (uint24, buint8)>& writer,
+  buint8 banklo, buint8 bankhi, buint16 addrlo, buint16 addrhi,
   uint size, uint base, uint mask
 ) -> void {
   assert(banklo <= bankhi);

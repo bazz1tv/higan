@@ -20,10 +20,10 @@ auto DSP::voice1(Voice& v) -> void {
 
 auto DSP::voice2(Voice& v) -> void {
   //read sample pointer (ignored if not needed)
-  uint16 addr = state._dirAddress;
+  buint16 addr = state._dirAddress;
   if(!v.konDelay) addr += 2;
-  uint8 lo = smp.apuram[(uint16)(addr + 0)];
-  uint8 hi = smp.apuram[(uint16)(addr + 1)];
+  buint8 lo = smp.apuram[(buint16)(addr + 0)];
+  buint8 hi = smp.apuram[(buint16)(addr + 1)];
   state._brrNextAddress = ((hi << 8) + lo);
 
   state._adsr0 = VREG(ADSR0);
@@ -43,8 +43,8 @@ auto DSP::voice3a(Voice& v) -> void {
 }
 
 auto DSP::voice3b(Voice& v) -> void {
-  state._brrByte   = smp.apuram[(uint16)(v.brrAddress + v.brrOffset)];
-  state._brrHeader = smp.apuram[(uint16)(v.brrAddress)];
+  state._brrByte   = smp.apuram[(buint16)(v.brrAddress + v.brrOffset)];
+  state._brrHeader = smp.apuram[(buint16)(v.brrAddress)];
 }
 
 auto DSP::voice3c(Voice& v) -> void {
@@ -119,7 +119,7 @@ auto DSP::voice4(Voice& v) -> void {
     v.brrOffset += 2;
     if(v.brrOffset >= 9) {
       //start decoding next BRR block
-      v.brrAddress = (uint16)(v.brrAddress + 9);
+      v.brrAddress = (buint16)(v.brrAddress + 9);
       if(state._brrHeader & 1) {
         v.brrAddress = state._brrNextAddress;
         state._looped = v.vbit;
@@ -155,16 +155,16 @@ auto DSP::voice6(Voice& v) -> void {
 
 auto DSP::voice7(Voice& v) -> void {
   //update ENDX
-  REG(ENDX) = (uint8)state.endxBuffer;
+  REG(ENDX) = (buint8)state.endxBuffer;
   state.envxBuffer = v._envxOut;
 }
 
 auto DSP::voice8(Voice& v) -> void {
   //update OUTX
-  VREG(OUTX) = (uint8)state.outxBuffer;
+  VREG(OUTX) = (buint8)state.outxBuffer;
 }
 
 auto DSP::voice9(Voice& v) -> void {
   //update ENVX
-  VREG(ENVX) = (uint8)state.envxBuffer;
+  VREG(ENVX) = (buint8)state.envxBuffer;
 }

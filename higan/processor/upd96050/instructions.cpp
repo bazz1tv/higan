@@ -22,7 +22,7 @@ auto uPD96050::execOP(uint24 opcode) -> void {
   uint4 src     = opcode >>  4;  //move source
   uint4 dst     = opcode >>  0;  //move destination
 
-  uint16 idb;
+  buint16 idb;
   switch(src) {
   case  0: idb = regs.trb; break;
   case  1: idb = regs.a; break;
@@ -43,7 +43,7 @@ auto uPD96050::execOP(uint24 opcode) -> void {
   }
 
   if(alu) {
-    uint16 p, q, r;
+    buint16 p, q, r;
     Flag flag;
     bool c;
 
@@ -198,7 +198,7 @@ auto uPD96050::execJP(uint24 opcode) -> void {
 }
 
 auto uPD96050::execLD(uint24 opcode) -> void {
-  uint16 id = opcode >> 6;  //immediate data
+  buint16 id = opcode >> 6;  //immediate data
   uint4 dst = opcode >> 0;  //destination
 
   switch(dst) {

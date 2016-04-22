@@ -32,19 +32,19 @@ auto CPU::wait(uint clocks) -> void {
   step(clocks);
 }
 
-auto CPU::read(uint20 addr) -> uint8 {
+auto CPU::read(uint20 addr) -> buint8 {
   return bus.read(addr);
 }
 
-auto CPU::write(uint20 addr, uint8 data) -> void {
+auto CPU::write(uint20 addr, buint8 data) -> void {
   return bus.write(addr, data);
 }
 
-auto CPU::in(uint16 port) -> uint8 {
+auto CPU::in(buint16 port) -> buint8 {
   return bus.portRead(port);
 }
 
-auto CPU::out(uint16 port, uint8 data) -> void {
+auto CPU::out(buint16 port, buint8 data) -> void {
   return bus.portWrite(port, data);
 }
 

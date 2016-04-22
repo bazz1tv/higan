@@ -20,7 +20,7 @@ auto Player::power() -> void {
 }
 
 auto Player::frame() -> void {
-  uint32 hash = Hash::CRC32(ppu.output, 240 * 160 * sizeof(uint32)).value();
+  buint32 hash = Hash::CRC32(ppu.output, 240 * 160 * sizeof(buint32)).value();
   status.logoDetected = (hash == 0x7776eb55);
 
   if(status.logoDetected) {
@@ -75,7 +75,7 @@ auto Player::frame() -> void {
   }
 }
 
-auto Player::keyinput() -> maybe<uint16> {
+auto Player::keyinput() -> maybe<buint16> {
   if(status.logoDetected) {
     switch(status.logoCounter) {
     case 0: return {0x03ff};
@@ -86,12 +86,12 @@ auto Player::keyinput() -> maybe<uint16> {
   return nothing;
 }
 
-auto Player::read() -> maybe<uint32> {
+auto Player::read() -> maybe<buint32> {
   if(status.enable) return status.send;
   return nothing;
 }
 
-auto Player::write(uint2 addr, uint8 byte) -> void {
+auto Player::write(uint2 addr, buint8 byte) -> void {
   if(!status.enable) return;
 
   uint shift = addr << 3;

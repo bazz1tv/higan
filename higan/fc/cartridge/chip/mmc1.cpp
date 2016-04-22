@@ -36,7 +36,7 @@ struct MMC1 : Chip {
     }
   }
 
-  auto mmio_write(uint addr, uint8 data) -> void {
+  auto mmio_write(uint addr, buint8 data) -> void {
     if(writedelay) return;
     writedelay = 2;
 

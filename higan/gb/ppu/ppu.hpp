@@ -8,9 +8,9 @@ struct PPU : Thread, MMIO {
   auto hflip(uint data) const -> uint;
 
   //mmio.cpp
-  auto vram_addr(uint16 addr) const -> uint;
-  auto mmio_read(uint16 addr) -> uint8;
-  auto mmio_write(uint16 addr, uint8 data) -> void;
+  auto vram_addr(buint16 addr) const -> uint;
+  auto mmio_read(buint16 addr) -> buint8;
+  auto mmio_write(buint16 addr, buint8 data) -> void;
 
   //dmg.cpp
   auto dmg_read_tile(bool select, uint x, uint y, uint& data) -> void;
@@ -32,12 +32,12 @@ struct PPU : Thread, MMIO {
 
   auto serialize(serializer&) -> void;
 
-  uint8 vram[16384];  //GB = 8192, GBC = 16384
-  uint8 oam[160];
-  uint8 bgp[4];
-  uint8 obp[2][4];
-  uint8 bgpd[64];
-  uint8 obpd[64];
+  buint8 vram[16384];  //GB = 8192, GBC = 16384
+  buint8 oam[160];
+  buint8 bgp[4];
+  buint8 obp[2][4];
+  buint8 bgpd[64];
+  buint8 obpd[64];
 
   function<auto () -> void> scanline;
   function<auto () -> void> run;
@@ -62,27 +62,27 @@ struct PPU : Thread, MMIO {
     bool interrupt_hblank;
 
     //$ff42  SCY
-    uint8 scy;
+    buint8 scy;
 
     //$ff43  SCX
-    uint8 scx;
+    buint8 scx;
 
     //$ff44  LY
-    uint8 ly;
+    buint8 ly;
 
     //$ff45  LYC
-    uint8 lyc;
+    buint8 lyc;
 
     //$ff46  DMA
     bool dma_active;
     uint dma_clock;
-    uint8 dma_bank;
+    buint8 dma_bank;
 
     //$ff4a  WY
-    uint8 wy;
+    buint8 wy;
 
     //$ff4b  WX
-    uint8 wx;
+    buint8 wx;
 
     //$ff4f  VBK
     bool vram_bank;
@@ -93,14 +93,14 @@ struct PPU : Thread, MMIO {
 
     //$ff6a  OBPI
     bool obpi_increment;
-    uint8 obpi;
+    buint8 obpi;
   } status;
 
-  uint32 screen[160 * 144];
+  buint32 screen[160 * 144];
 
   struct Pixel {
-    uint16 color;
-    uint8 palette;
+    buint16 color;
+    buint8 palette;
     bool priority;
   };
   Pixel bg;

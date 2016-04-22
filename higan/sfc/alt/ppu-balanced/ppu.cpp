@@ -11,7 +11,7 @@ PPU ppu;
 #include "serialization.cpp"
 
 PPU::PPU() {
-  output = new uint32[512 * 512]();
+  output = new buint32[512 * 512]();
   output += 16 * 512;  //overscan offset
 
   alloc_tiledata_cache();
@@ -150,8 +150,8 @@ auto PPU::frame() -> void {
 }
 
 auto PPU::enable() -> void {
-  function<auto (uint, uint8) -> uint8> reader{&PPU::mmio_read, (PPU*)&ppu};
-  function<auto (uint, uint8) -> void> writer{&PPU::mmio_write, (PPU*)&ppu};
+  function<auto (uint, buint8) -> buint8> reader{&PPU::mmio_read, (PPU*)&ppu};
+  function<auto (uint, buint8) -> void> writer{&PPU::mmio_write, (PPU*)&ppu};
 
   bus.map(reader, writer, 0x00, 0x3f, 0x2100, 0x213f);
   bus.map(reader, writer, 0x80, 0xbf, 0x2100, 0x213f);
@@ -375,7 +375,7 @@ auto PPU::power() -> void {
 auto PPU::reset() -> void {
   create(Enter, system.cpuFrequency());
   PPUcounter::reset();
-  memory::fill(output, 512 * 480 * sizeof(uint32));
+  memory::fill(output, 512 * 480 * sizeof(buint32));
 
   frame();
 

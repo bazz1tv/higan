@@ -43,13 +43,13 @@ auto R65816::io2() -> void {
   }
 }
 
-auto R65816::io4(uint16 x, uint16 y) -> void {
+auto R65816::io4(buint16 x, buint16 y) -> void {
   if(!regs.p.x || (x & 0xff00) != (y & 0xff00)) {
     io();
   }
 }
 
-auto R65816::io6(uint16 addr) -> void {
+auto R65816::io6(buint16 addr) -> void {
   if(regs.e && (regs.pc.w & 0xff00) != (addr & 0xff00)) {
     io();
   }

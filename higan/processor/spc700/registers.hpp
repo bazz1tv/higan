@@ -4,15 +4,15 @@ struct Flag {
          | (h << 3) | (i << 2) | (z << 1) | (c << 0);
   }
 
-  inline auto operator=(uint8 data) -> uint {
+  inline auto operator=(buint8 data) -> uint {
     n = data & 0x80; v = data & 0x40; p = data & 0x20; b = data & 0x10;
     h = data & 0x08; i = data & 0x04; z = data & 0x02; c = data & 0x01;
     return data;
   }
 
-  inline auto operator|=(uint8 data) -> uint { return operator=(operator uint() | data); }
-  inline auto operator^=(uint8 data) -> uint { return operator=(operator uint() ^ data); }
-  inline auto operator&=(uint8 data) -> uint { return operator=(operator uint() & data); }
+  inline auto operator|=(buint8 data) -> uint { return operator=(operator uint() | data); }
+  inline auto operator^=(buint8 data) -> uint { return operator=(operator uint() ^ data); }
+  inline auto operator&=(buint8 data) -> uint { return operator=(operator uint() & data); }
 
   bool n, v, p, b, h, i, z, c;
 };

@@ -40,7 +40,7 @@ struct Register {
 };
 
 struct Register8 : Register {
-  uint8 data;
+  buint8 data;
   operator unsigned() const { return data; }
   unsigned operator=(unsigned x) { return data = x; }
 };
@@ -56,7 +56,7 @@ struct RegisterF : Register {
 };
 
 struct Register16 : Register {
-  uint16 data;
+  buint16 data;
   operator unsigned() const { return data; }
   unsigned operator=(unsigned x) { return data = x; }
 };

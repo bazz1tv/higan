@@ -111,7 +111,7 @@ auto uPD96050::disassemble(uint14 ip) -> string {
   if(type == 2) {  //JP
     uint9 brch = opcode >> 13;
     uint11 na  = opcode >>  2;
-    uint8 bank = opcode >>  0;
+    buint8 bank = opcode >>  0;
 
     uint14 jp = (regs.pc & 0x2000) | (bank << 11) | (na << 0);
 
@@ -163,7 +163,7 @@ auto uPD96050::disassemble(uint14 ip) -> string {
 
   if(type == 3) {  //LD
     output.append("ld      ");
-    uint16 id = opcode >> 6;
+    buint16 id = opcode >> 6;
     uint4 dst = opcode >> 0;
 
     output.append("$", hex(id, 4L), ",");

@@ -1,6 +1,6 @@
 struct Noise {
   auto clock_length() -> void;
-  auto clock() -> uint8;
+  auto clock() -> buint8;
 
   auto power() -> void;
   auto reset() -> void;

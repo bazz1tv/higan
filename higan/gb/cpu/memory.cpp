@@ -3,13 +3,13 @@ auto CPU::op_io() -> void {
   add_clocks(4);
 }
 
-auto CPU::op_read(uint16 addr) -> uint8 {
+auto CPU::op_read(buint16 addr) -> buint8 {
   cycle_edge();
   add_clocks(4);
   return bus.read(addr);
 }
 
-auto CPU::op_write(uint16 addr, uint8 data) -> void {
+auto CPU::op_write(buint16 addr, buint8 data) -> void {
   cycle_edge();
   add_clocks(4);
   bus.write(addr, data);
@@ -23,7 +23,7 @@ auto CPU::cycle_edge() -> void {
 }
 
 //VRAM DMA source can only be ROM or RAM
-auto CPU::dma_read(uint16 addr) -> uint8 {
+auto CPU::dma_read(buint16 addr) -> buint8 {
   if(addr < 0x8000) return bus.read(addr);  //0000-7fff
   if(addr < 0xa000) return 0xff;            //8000-9fff
   if(addr < 0xe000) return bus.read(addr);  //a000-dfff
@@ -31,11 +31,11 @@ auto CPU::dma_read(uint16 addr) -> uint8 {
 }
 
 //VRAM DMA target is always VRAM
-auto CPU::dma_write(uint16 addr, uint8 data) -> void {
+auto CPU::dma_write(buint16 addr, buint8 data) -> void {
   addr = 0x8000 | (addr & 0x1fff);  //8000-9fff
   return bus.write(addr, data);
 }
 
-auto CPU::debugger_read(uint16 addr) -> uint8 {
+auto CPU::debugger_read(buint16 addr) -> buint8 {
   return bus.read(addr);
 }

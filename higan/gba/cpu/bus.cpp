@@ -2,7 +2,7 @@ auto CPU::bus_idle() -> void {
   prefetch_step(1);
 }
 
-auto CPU::bus_read(unsigned mode, uint32 addr) -> uint32 {
+auto CPU::bus_read(unsigned mode, buint32 addr) -> buint32 {
   unsigned wait = bus_wait(mode, addr);
   unsigned word = pipeline.fetch.instruction;
 
@@ -35,7 +35,7 @@ auto CPU::bus_read(unsigned mode, uint32 addr) -> uint32 {
   return word;
 }
 
-auto CPU::bus_write(unsigned mode, uint32 addr, uint32 word) -> void {
+auto CPU::bus_write(unsigned mode, buint32 addr, buint32 word) -> void {
   unsigned wait = bus_wait(mode, addr);
 
   if(addr >= 0x1000'0000) {
@@ -57,7 +57,7 @@ auto CPU::bus_write(unsigned mode, uint32 addr, uint32 word) -> void {
   }
 }
 
-auto CPU::bus_wait(unsigned mode, uint32 addr) -> unsigned {
+auto CPU::bus_wait(unsigned mode, buint32 addr) -> unsigned {
   if(addr >= 0x1000'0000) return 1;  //unmapped
   if(addr <  0x0200'0000) return 1;
   if(addr <  0x0300'0000) return (16 - regs.memory.control.ewramwait) * (mode & Word ? 2 : 1);

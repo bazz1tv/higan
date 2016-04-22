@@ -7,8 +7,8 @@ struct APU : Thread, IO {
   auto power() -> void;
 
   //io.cpp
-  auto portRead(uint16 addr) -> uint8;
-  auto portWrite(uint16 addr, uint8 data) -> void;
+  auto portRead(buint16 addr) -> buint8;
+  auto portWrite(buint16 addr, buint8 data) -> void;
 
   //serialization.cpp
   auto serialize(serializer&) -> void;
@@ -19,7 +19,7 @@ struct APU : Thread, IO {
 
   struct Registers {
     //$008f  SND_WAVE_BASE
-    uint8 waveBase;
+    buint8 waveBase;
 
     //$0091  SND_OUTPUT
     uint1 speakerEnable;
@@ -57,8 +57,8 @@ struct APU : Thread, IO {
     auto run() -> void;
 
     struct Output {
-      uint8 left;
-      uint8 right;
+      buint8 left;
+      buint8 right;
     } o;
 
     struct State {
@@ -83,8 +83,8 @@ struct APU : Thread, IO {
     auto run() -> void;
 
     struct Output {
-      uint8 left;
-      uint8 right;
+      buint8 left;
+      buint8 right;
     } o;
 
     struct State {
@@ -115,8 +115,8 @@ struct APU : Thread, IO {
     auto run() -> void;
 
     struct Output {
-      uint8 left;
-      uint8 right;
+      buint8 left;
+      buint8 right;
     } o;
 
     struct State {
@@ -151,8 +151,8 @@ struct APU : Thread, IO {
     auto run() -> void;
 
     struct Output {
-      uint8 left;
-      uint8 right;
+      buint8 left;
+      buint8 right;
     } o;
 
     struct State {

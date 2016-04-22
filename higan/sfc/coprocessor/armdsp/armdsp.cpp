@@ -7,9 +7,9 @@ namespace SuperFamicom {
 ArmDSP armdsp;
 
 ArmDSP::ArmDSP() {
-  programROM = new uint8[128 * 1024];
-  dataROM = new uint8[32 * 1024];
-  programRAM = new uint8[16 * 1024];
+  programROM = new buint8[128 * 1024];
+  dataROM = new buint8[32 * 1024];
+  programRAM = new buint8[16 * 1024];
 }
 
 ArmDSP::~ArmDSP() {
@@ -58,10 +58,10 @@ auto ArmDSP::step(uint clocks) -> void {
 //3800-3807 mirrored throughout
 //a0 ignored
 
-auto ArmDSP::mmio_read(uint24 addr, uint8) -> uint8 {
+auto ArmDSP::mmio_read(uint24 addr, buint8) -> buint8 {
   cpu.synchronizeCoprocessors();
 
-  uint8 data = 0x00;
+  buint8 data = 0x00;
   addr &= 0xff06;
 
   if(addr == 0x3800) {
@@ -82,7 +82,7 @@ auto ArmDSP::mmio_read(uint24 addr, uint8) -> uint8 {
   return data;
 }
 
-auto ArmDSP::mmio_write(uint24 addr, uint8 data) -> void {
+auto ArmDSP::mmio_write(uint24 addr, buint8 data) -> void {
   cpu.synchronizeCoprocessors();
 
   addr &= 0xff06;

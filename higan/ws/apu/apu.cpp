@@ -29,7 +29,7 @@ auto APU::main() -> void {
 }
 
 auto APU::sample(uint channel, uint5 index) -> uint4 {
-  uint8 data = iram.read((r.waveBase << 6) + (--channel << 4) + (index >> 1));
+  buint8 data = iram.read((r.waveBase << 6) + (--channel << 4) + (index >> 1));
   if(index.bit(0) == 0) return data.bits(0,3);
   if(index.bit(0) == 1) return data.bits(4,7);
 }

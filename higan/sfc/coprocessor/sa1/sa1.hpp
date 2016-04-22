@@ -5,13 +5,13 @@ struct SA1 : Processor::R65816, public Coprocessor {
   #include "mmio/mmio.hpp"
 
   struct Status {
-    uint8 tick_counter;
+    buint8 tick_counter;
 
     bool interrupt_pending;
 
-    uint16 scanlines;
-    uint16 vcounter;
-    uint16 hcounter;
+    buint16 scanlines;
+    buint16 vcounter;
+    buint16 hcounter;
   } status;
 
   static auto Enter() -> void;

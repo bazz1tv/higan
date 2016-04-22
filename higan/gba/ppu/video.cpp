@@ -1,14 +1,14 @@
 Video video;
 
 Video::Video() {
-  output = new uint32[240 * 160];
-  paletteLiteral = new uint32[1 << 15];
-  paletteStandard = new uint32[1 << 15];
-  paletteEmulation = new uint32[1 << 15];
+  output = new buint32[240 * 160];
+  paletteLiteral = new buint32[1 << 15];
+  paletteStandard = new buint32[1 << 15];
+  paletteEmulation = new buint32[1 << 15];
 }
 
 auto Video::power() -> void {
-  memory::fill(output(), 240 * 160 * sizeof(uint32));
+  memory::fill(output(), 240 * 160 * sizeof(buint32));
 
   for(auto color : range(1 << 15)) {
     paletteLiteral[color] = color;
@@ -55,5 +55,5 @@ auto Video::refresh() -> void {
     }
   }
 
-  interface->videoRefresh(output, 240 * sizeof(uint32), 240, 160);
+  interface->videoRefresh(output, 240 * sizeof(buint32), 240, 160);
 }

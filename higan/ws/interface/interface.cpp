@@ -124,7 +124,7 @@ auto Interface::load(uint id, const stream& stream) -> void {
   }
 
   if(id == ID::SystemEEPROM) {
-    stream.read((uint8_t*)system.eeprom.data(), min(system.eeprom.size() * sizeof(uint16), stream.size()));
+    stream.read((uint8_t*)system.eeprom.data(), min(system.eeprom.size() * sizeof(buint16), stream.size()));
   }
 
   if(id == ID::Manifest) {
@@ -140,7 +140,7 @@ auto Interface::load(uint id, const stream& stream) -> void {
   }
 
   if(id == ID::EEPROM) {
-    stream.read((uint8_t*)cartridge.eeprom.data(), min(cartridge.eeprom.size() * sizeof(uint16), stream.size()));
+    stream.read((uint8_t*)cartridge.eeprom.data(), min(cartridge.eeprom.size() * sizeof(buint16), stream.size()));
   }
 
   if(id == ID::RTC) {
@@ -151,7 +151,7 @@ auto Interface::load(uint id, const stream& stream) -> void {
 
 auto Interface::save(uint id, const stream& stream) -> void {
   if(id == ID::SystemEEPROM) {
-    stream.write((uint8_t*)system.eeprom.data(), system.eeprom.size() * sizeof(uint16));
+    stream.write((uint8_t*)system.eeprom.data(), system.eeprom.size() * sizeof(buint16));
   }
 
   if(id == ID::RAM) {
@@ -159,7 +159,7 @@ auto Interface::save(uint id, const stream& stream) -> void {
   }
 
   if(id == ID::EEPROM) {
-    stream.write((uint8_t*)cartridge.eeprom.data(), cartridge.eeprom.size() * sizeof(uint16));
+    stream.write((uint8_t*)cartridge.eeprom.data(), cartridge.eeprom.size() * sizeof(buint16));
   }
 
   if(id == ID::RTC) {

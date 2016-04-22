@@ -1,10 +1,10 @@
-auto ARM::arm_opcode(uint32 rm) {
+auto ARM::arm_opcode(buint32 rm) {
   uint4 opcode = instruction() >> 21;
   uint1 save = instruction() >> 20;
   uint4 n = instruction() >> 16;
   uint4 d = instruction() >> 12;
 
-  uint32 rn = r(n);
+  buint32 rn = r(n);
 
   switch(opcode) {
   case  0: r(d) = bit(rn & rm);           break;  //AND
@@ -31,7 +31,7 @@ auto ARM::arm_opcode(uint32 rm) {
   }
 }
 
-auto ARM::arm_move_to_status(uint32 rm) {
+auto ARM::arm_move_to_status(buint32 rm) {
   uint1 source = instruction() >> 22;
   uint4 field = instruction() >> 16;
 
@@ -101,15 +101,15 @@ auto ARM::arm_op_multiply_long() {
   uint4 s = instruction() >> 8;
   uint4 m = instruction();
 
-  uint64 rm = r(m);
-  uint64 rs = r(s);
+  buint64 rm = r(m);
+  buint64 rs = r(s);
   if(signextend) {
     rm = (int32)rm;
     rs = (int32)rs;
   }
 
-  uint64 rd = rm * rs;
-  if(accumulate) rd += ((uint64)r(dhi) << 32) + ((uint64)r(dlo) << 0);
+  buint64 rd = rm * rs;
+  if(accumulate) rd += ((buint64)r(dhi) << 32) + ((buint64)r(dlo) << 0);
 
   r(dhi) = rd >> 32;
   r(dlo) = rd >>  0;
@@ -135,7 +135,7 @@ auto ARM::arm_op_memory_swap() {
   uint4 d = instruction() >> 12;
   uint4 m = instruction();
 
-  uint32 word = load((byte ? Byte : Word) | Nonsequential, r(n));
+  buint32 word = load((byte ? Byte : Word) | Nonsequential, r(n));
   store((byte ? Byte : Word) | Nonsequential, r(n), r(m));
   r(d) = word;
 }
@@ -160,9 +160,9 @@ auto ARM::arm_op_move_half_register() {
   uint4 d = instruction() >> 12;
   uint4 m = instruction();
 
-  uint32 rn = r(n);
-  uint32 rm = r(m);
-  uint32 rd = r(d);
+  buint32 rn = r(n);
+  buint32 rm = r(m);
+  buint32 rd = r(d);
 
   if(pre == 1) rn = up ? rn + rm : rn - rm;
   if(l == 1) rd = load(Half | Nonsequential, rn);
@@ -195,9 +195,9 @@ auto ARM::arm_op_move_half_immediate() {
   uint4 ih = instruction() >> 8;
   uint4 il = instruction();
 
-  uint32 rn = r(n);
-  uint32 rd = r(d);
-  uint8 immediate = (ih << 4) + (il << 0);
+  buint32 rn = r(n);
+  buint32 rd = r(d);
+  buint8 immediate = (ih << 4) + (il << 0);
 
   if(pre == 1) rn = up ? rn + immediate : rn - immediate;
   if(l == 1) rd = load(Half | Nonsequential, rn);
@@ -228,9 +228,9 @@ auto ARM::arm_op_load_register() {
   uint1 half = instruction() >> 5;
   uint4 m = instruction();
 
-  uint32 rn = r(n);
-  uint32 rm = r(m);
-  uint32 rd = r(d);
+  buint32 rn = r(n);
+  buint32 rm = r(m);
+  buint32 rd = r(d);
 
   if(pre == 1) rn = up ? rn + rm : rn - rm;
   rd = load((half ? Half : Byte) | Nonsequential | Signed, rn);
@@ -262,9 +262,9 @@ auto ARM::arm_op_load_immediate() {
   uint1 half = instruction() >> 5;
   uint4 il = instruction();
 
-  uint32 rn = r(n);
-  uint32 rd = r(d);
-  uint8 immediate = (ih << 4) + (il << 0);
+  buint32 rn = r(n);
+  buint32 rd = r(d);
+  buint8 immediate = (ih << 4) + (il << 0);
 
   if(pre == 1) rn = up ? rn + immediate : rn - immediate;
   rd = load((half ? Half : Byte) | Nonsequential | Signed, rn);
@@ -323,9 +323,9 @@ auto ARM::arm_op_branch_exchange_register() {
 //i = immediate
 auto ARM::arm_op_move_to_status_from_immediate() {
   uint4 rotate = instruction() >> 8;
-  uint8 immediate = instruction();
+  buint8 immediate = instruction();
 
-  uint32 rm = immediate;
+  buint32 rm = immediate;
   if(rotate) rm = ror(rm, 2 * rotate);
 
   arm_move_to_status(rm);
@@ -349,13 +349,13 @@ auto ARM::arm_op_data_immediate_shift() {
   uint2 mode = instruction() >> 5;
   uint4 m = instruction();
 
-  uint32 rs = shift;
-  uint32 rm = r(m);
+  buint32 rs = shift;
+  buint32 rm = r(m);
   carryout() = cpsr().c;
 
   if(mode == 0) rm = lsl(rm, rs);
-  if(mode == 1) rm = lsr(rm, rs ? rs : (uint32)32);
-  if(mode == 2) rm = asr(rm, rs ? rs : (uint32)32);
+  if(mode == 1) rm = lsr(rm, rs ? rs : (buint32)32);
+  if(mode == 2) rm = asr(rm, rs ? rs : (buint32)32);
   if(mode == 3) rm = rs ? ror(rm, rs) : rrx(rm);
 
   arm_opcode(rm);
@@ -379,13 +379,13 @@ auto ARM::arm_op_data_register_shift() {
   uint2 mode = instruction() >> 5;
   uint4 m = instruction();
 
-  uint8 rs = r(s) + (s == 15 ? 4 : 0);
-  uint32 rm = r(m) + (m == 15 ? 4 : 0);
+  buint8 rs = r(s) + (s == 15 ? 4 : 0);
+  buint32 rm = r(m) + (m == 15 ? 4 : 0);
   carryout() = cpsr().c;
 
-  if(mode == 0      ) rm = lsl(rm, rs < 33 ? rs : (uint8)33);
-  if(mode == 1      ) rm = lsr(rm, rs < 33 ? rs : (uint8)33);
-  if(mode == 2      ) rm = asr(rm, rs < 32 ? rs : (uint8)32);
+  if(mode == 0      ) rm = lsl(rm, rs < 33 ? rs : (buint8)33);
+  if(mode == 1      ) rm = lsr(rm, rs < 33 ? rs : (buint8)33);
+  if(mode == 2      ) rm = asr(rm, rs < 32 ? rs : (buint8)32);
   if(mode == 3 && rs) rm = ror(rm, rs & 31 == 0 ? 32 : rs & 31);
 
   arm_opcode(rm);
@@ -405,9 +405,9 @@ auto ARM::arm_op_data_register_shift() {
 auto ARM::arm_op_data_immediate() {
   uint1 save = instruction() >> 20;
   uint4 shift = instruction() >> 8;
-  uint8 immediate = instruction();
+  buint8 immediate = instruction();
 
-  uint32 rm = immediate;
+  buint32 rm = immediate;
 
   carryout() = cpsr().c;
   if(shift) rm = ror(immediate, 2 * shift);
@@ -437,8 +437,8 @@ auto ARM::arm_op_move_immediate_offset() {
   uint4 d = instruction() >> 12;
   uint12 rm = instruction();
 
-  uint32 rn = r(n);
-  uint32 rd = r(d);
+  buint32 rn = r(n);
+  buint32 rd = r(d);
 
   if(pre == 1) rn = up ? rn + rm : rn - rm;
   if(l == 1) rd = load((byte ? Byte : Word) | Nonsequential, rn);
@@ -475,15 +475,15 @@ auto ARM::arm_op_move_register_offset() {
   uint2 mode = instruction() >> 5;
   uint4 m = instruction();
 
-  uint32 rn = r(n);
-  uint32 rd = r(d);
-  uint32 rs = immediate;
-  uint32 rm = r(m);
+  buint32 rn = r(n);
+  buint32 rd = r(d);
+  buint32 rs = immediate;
+  buint32 rm = r(m);
   bool c = cpsr().c;
 
   if(mode == 0) rm = lsl(rm, rs);
-  if(mode == 1) rm = lsr(rm, rs ? rs : (uint32)32);
-  if(mode == 2) rm = asr(rm, rs ? rs : (uint32)32);
+  if(mode == 1) rm = lsr(rm, rs ? rs : (buint32)32);
+  if(mode == 2) rm = asr(rm, rs ? rs : (buint32)32);
   if(mode == 3) rm = rs ? ror(rm, rs) : rrx(rm);
 
   if(pre == 1) rn = up ? rn + rm : rn - rm;
@@ -512,9 +512,9 @@ auto ARM::arm_op_move_multiple() {
   uint1 writeback = instruction() >> 21;
   uint1 l = instruction() >> 20;
   uint4 n = instruction() >> 16;
-  uint16 list = instruction();
+  buint16 list = instruction();
 
-  uint32 rn = r(n);
+  buint32 rn = r(n);
   if(pre == 0 && up == 1) rn = rn + 0;  //IA
   if(pre == 1 && up == 1) rn = rn + 4;  //IB
   if(pre == 1 && up == 0) rn = rn - bit::count(list) * 4 + 0;  //DB

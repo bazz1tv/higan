@@ -17,7 +17,7 @@ uint vmosaic[5];
 uint hmosaic[5];
 
 struct Object {
-  uint8  y;
+  buint8  y;
   uint1  affine;
   uint1  affinesize;
   uint2  mode;

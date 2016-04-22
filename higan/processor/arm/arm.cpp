@@ -34,13 +34,13 @@ auto ARM::idle() -> void {
   return bus_idle();
 }
 
-auto ARM::read(unsigned mode, uint32 addr) -> uint32 {
+auto ARM::read(unsigned mode, buint32 addr) -> buint32 {
   return bus_read(mode, addr);
 }
 
-auto ARM::load(unsigned mode, uint32 addr) -> uint32 {
+auto ARM::load(unsigned mode, buint32 addr) -> buint32 {
   pipeline.nonsequential = true;
-  uint32 word = bus_read(Load | mode, addr);
+  buint32 word = bus_read(Load | mode, addr);
 
   if(mode & Half) {
     addr &= 1;
@@ -62,12 +62,12 @@ auto ARM::load(unsigned mode, uint32 addr) -> uint32 {
   return word;
 }
 
-auto ARM::write(unsigned mode, uint32 addr, uint32 word) -> void {
+auto ARM::write(unsigned mode, buint32 addr, buint32 word) -> void {
   pipeline.nonsequential = true;
   return bus_write(mode, addr, word);
 }
 
-auto ARM::store(unsigned mode, uint32 addr, uint32 word) -> void {
+auto ARM::store(unsigned mode, buint32 addr, buint32 word) -> void {
   pipeline.nonsequential = true;
 
   if(mode & Half) { word &= 0xffff; word |= word << 16; }
@@ -76,7 +76,7 @@ auto ARM::store(unsigned mode, uint32 addr, uint32 word) -> void {
   return bus_write(Store | mode, addr, word);
 }
 
-auto ARM::vector(uint32 addr, Processor::Mode mode) -> void {
+auto ARM::vector(buint32 addr, Processor::Mode mode) -> void {
   auto psr = cpsr();
   processor.setMode(mode);
   spsr() = psr;

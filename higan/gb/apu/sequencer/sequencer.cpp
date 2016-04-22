@@ -39,7 +39,7 @@ auto APU::Sequencer::run() -> void {
   right  >>= 1;
 }
 
-auto APU::Sequencer::read(uint16 addr) -> uint8 {
+auto APU::Sequencer::read(buint16 addr) -> buint8 {
   if(addr == 0xff24) {  //NR50
     return leftEnable << 7 | leftVolume << 4 | rightEnable << 3 | rightVolume;
   }
@@ -66,7 +66,7 @@ auto APU::Sequencer::read(uint16 addr) -> uint8 {
   return 0xff;
 }
 
-auto APU::Sequencer::write(uint16 addr, uint8 data) -> void {
+auto APU::Sequencer::write(buint16 addr, buint8 data) -> void {
   if(addr == 0xff24) {  //NR50
     leftEnable  = data.bit (7);
     leftVolume  = data.bits(6,4);

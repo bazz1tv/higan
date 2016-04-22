@@ -1,14 +1,14 @@
 Video video;
 
 Video::Video() {
-  output = new uint32[512 * 512];
-  paletteLiteral = new uint32[1 << 19];
-  paletteStandard = new uint32[1 << 19];
-  paletteEmulation = new uint32[1 << 19];
+  output = new buint32[512 * 512];
+  paletteLiteral = new buint32[1 << 19];
+  paletteStandard = new buint32[1 << 19];
+  paletteEmulation = new buint32[1 << 19];
 }
 
 auto Video::reset() -> void {
-  memory::fill(output(), 512 * 512 * sizeof(uint32));
+  memory::fill(output(), 512 * 512 * sizeof(buint32));
 
   for(auto color : range(1 << 19)) {
     uint l = (uint4)(color >> 15);
@@ -24,7 +24,7 @@ auto Video::reset() -> void {
     uint B = L * image::normalize(b, 5, 16);
     paletteStandard[color] = interface->videoColor(R, G, B);
 
-    static const uint8 gammaRamp[32] = {
+    static const buint8 gammaRamp[32] = {
       0x00, 0x01, 0x03, 0x06, 0x0a, 0x0f, 0x15, 0x1c,
       0x24, 0x2d, 0x37, 0x42, 0x4e, 0x5b, 0x69, 0x78,
       0x88, 0x90, 0x98, 0xa0, 0xa8, 0xb0, 0xb8, 0xc0,
@@ -101,11 +101,11 @@ auto Video::refresh() -> void {
   }
 
   drawCursors();
-  interface->videoRefresh(output - (ppu.overscan() ? 0 : 7 * 1024), 512 * sizeof(uint32), 512, 480);
+  interface->videoRefresh(output - (ppu.overscan() ? 0 : 7 * 1024), 512 * sizeof(buint32), 512, 480);
 }
 
-auto Video::drawCursor(uint32 color, int x, int y) -> void {
-  static const uint8 cursor[15 * 15] = {
+auto Video::drawCursor(buint32 color, int x, int y) -> void {
+  static const buint8 cursor[15 * 15] = {
     0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,
     0,0,0,0,1,1,2,2,2,1,1,0,0,0,0,
     0,0,0,1,2,2,1,2,1,2,2,1,0,0,0,
@@ -131,9 +131,9 @@ auto Video::drawCursor(uint32 color, int x, int y) -> void {
     for(int cx = 0; cx < 15; cx++) {
       int vx = x + cx - 7;
       if(vx < 0 || vx >= 256) continue;  //do not draw offscreen
-      uint8 pixel = cursor[cy * 15 + cx];
+      buint8 pixel = cursor[cy * 15 + cx];
       if(pixel == 0) continue;
-      uint32 pixelcolor = pixel == 1 ? (uint32)(255 << 24) : color;
+      buint32 pixelcolor = pixel == 1 ? (buint32)(255 << 24) : color;
 
       *(output + vy * 1024 + vx * 2 + 0) = pixelcolor;
       *(output + vy * 1024 + vx * 2 + 1) = pixelcolor;

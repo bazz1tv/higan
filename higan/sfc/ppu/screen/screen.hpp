@@ -1,5 +1,5 @@
 struct Screen {
-  uint32* line;
+  buint32* line;
 
   struct Regs {
     bool addsub_mode;
@@ -21,7 +21,7 @@ struct Screen {
 
   struct Math {
     struct Layer {
-      uint16 color;
+      buint16 color;
       bool color_enable;
     } main, sub;
     bool transparent;
@@ -35,12 +35,12 @@ struct Screen {
   alwaysinline auto run() -> void;
   auto reset() -> void;
 
-  auto get_pixel_sub(bool hires) -> uint16;
-  auto get_pixel_main() -> uint16;
-  auto addsub(uint x, uint y) -> uint16;
-  alwaysinline auto get_color(uint palette) -> uint16;
-  alwaysinline auto get_direct_color(uint palette, uint tile) -> uint16;
-  alwaysinline auto fixed_color() const -> uint16;
+  auto get_pixel_sub(bool hires) -> buint16;
+  auto get_pixel_main() -> buint16;
+  auto addsub(uint x, uint y) -> buint16;
+  alwaysinline auto get_color(uint palette) -> buint16;
+  alwaysinline auto get_direct_color(uint palette, uint tile) -> buint16;
+  alwaysinline auto fixed_color() const -> buint16;
 
   auto serialize(serializer&) -> void;
 

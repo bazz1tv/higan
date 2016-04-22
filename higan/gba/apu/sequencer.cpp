@@ -26,7 +26,7 @@ auto APU::runsequencer() -> void {
   if(noise.enable) noise.run();
 }
 
-auto APU::Sequencer::read(uint addr) const -> uint8 {
+auto APU::Sequencer::read(uint addr) const -> buint8 {
   switch(addr) {
   case 0: return (rvolume << 0) | (lvolume << 4);
   case 1: return (
@@ -49,7 +49,7 @@ auto APU::Sequencer::read(uint addr) const -> uint8 {
   }
 }
 
-auto APU::Sequencer::write(uint addr, uint8 byte) -> void {
+auto APU::Sequencer::write(uint addr, buint8 byte) -> void {
   switch(addr) {
   case 0:  //NR50
     rvolume = byte >> 0;

@@ -5,10 +5,10 @@ auto ArmDSP::bus_idle() -> void {
   step(1);
 }
 
-auto ArmDSP::bus_read(unsigned mode, uint32 addr) -> uint32 {
+auto ArmDSP::bus_read(unsigned mode, buint32 addr) -> buint32 {
   step(1);
 
-  static auto memory = [&](const uint8* memory, uint mode, uint32 addr) -> uint32 {
+  static auto memory = [&](const buint8* memory, uint mode, buint32 addr) -> buint32 {
     if(mode & Word) {
       memory += addr & ~3;
       return memory[0] << 0 | memory[1] << 8 | memory[2] << 16 | memory[3] << 24;
@@ -46,10 +46,10 @@ auto ArmDSP::bus_read(unsigned mode, uint32 addr) -> uint32 {
   return 0;
 }
 
-auto ArmDSP::bus_write(uint mode, uint32 addr, uint32 word) -> void {
+auto ArmDSP::bus_write(uint mode, buint32 addr, buint32 word) -> void {
   step(1);
 
-  static auto memory = [](uint8* memory, uint mode, uint32 addr, uint32 word) {
+  static auto memory = [](buint8* memory, uint mode, buint32 addr, buint32 word) {
     if(mode & Word) {
       memory += addr & ~3;
       *memory++ = word >>  0;

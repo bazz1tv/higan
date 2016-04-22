@@ -2,7 +2,7 @@ class Sprite {
   Sprite(PPU& self);
 
   auto frame() -> void;
-  auto update_list(uint addr, uint8 data) -> void;
+  auto update_list(uint addr, buint8 data) -> void;
   auto address_reset() -> void;
   auto set_first() -> void;
   alwaysinline auto on_scanline(uint sprite) -> bool;
@@ -52,7 +52,7 @@ class Sprite {
   } list[128];
   bool list_valid;
 
-  uint8 itemlist[32];
+  buint8 itemlist[32];
   struct TileList {
     uint x;
     uint y;
@@ -63,8 +63,8 @@ class Sprite {
   } tilelist[34];
 
   struct Output {
-    uint8 palette[256];
-    uint8 priority[256];
+    buint8 palette[256];
+    buint8 priority[256];
   } output;
 
   LayerWindow window;

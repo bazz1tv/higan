@@ -54,10 +54,10 @@ auto Cartridge::load(System::Revision revision) -> void {
   auto ram = document["board/ram"];
 
   romsize = max(32768u, rom["size"].natural());
-  romdata = allocate<uint8>(romsize, 0xff);
+  romdata = allocate<buint8>(romsize, 0xff);
 
   ramsize = ram["size"].natural();
-  ramdata = allocate<uint8>(ramsize, 0xff);
+  ramdata = allocate<buint8>(ramsize, 0xff);
 
   if(auto name = rom["name"].text()) interface->loadRequest(ID::ROM, name, !system.sgb());
   if(auto name = ram["name"].text()) interface->loadRequest(ID::RAM, name, false);
@@ -86,33 +86,33 @@ auto Cartridge::unload() -> void {
   if(ramdata) { delete[] ramdata; ramdata = nullptr; ramsize = 0; }
 }
 
-auto Cartridge::rom_read(uint addr) -> uint8 {
+auto Cartridge::rom_read(uint addr) -> buint8 {
   if(addr >= romsize) addr %= romsize;
   return romdata[addr];
 }
 
-auto Cartridge::rom_write(uint addr, uint8 data) -> void {
+auto Cartridge::rom_write(uint addr, buint8 data) -> void {
   if(addr >= romsize) addr %= romsize;
   romdata[addr] = data;
 }
 
-auto Cartridge::ram_read(uint addr) -> uint8 {
+auto Cartridge::ram_read(uint addr) -> buint8 {
   if(ramsize == 0) return 0xff;
   if(addr >= ramsize) addr %= ramsize;
   return ramdata[addr];
 }
 
-auto Cartridge::ram_write(uint addr, uint8 data) -> void {
+auto Cartridge::ram_write(uint addr, buint8 data) -> void {
   if(ramsize == 0) return;
   if(addr >= ramsize) addr %= ramsize;
   ramdata[addr] = data;
 }
 
-auto Cartridge::mmio_read(uint16 addr) -> uint8 {
+auto Cartridge::mmio_read(buint16 addr) -> buint8 {
   if(addr == 0xff50) return 0xff;
 
   if(bootrom_enable) {
-    const uint8* data = nullptr;
+    const buint8* data = nullptr;
     switch(system.revision()) { default:
     case System::Revision::GameBoy: data = system.bootROM.dmg; break;
     case System::Revision::SuperGameBoy: data = system.bootROM.sgb; break;
@@ -125,7 +125,7 @@ auto Cartridge::mmio_read(uint16 addr) -> uint8 {
   return mapper->mmio_read(addr);
 }
 
-auto Cartridge::mmio_write(uint16 addr, uint8 data) -> void {
+auto Cartridge::mmio_write(buint16 addr, buint8 data) -> void {
   if(bootrom_enable && addr == 0xff50) {
     bootrom_enable = false;
     return;

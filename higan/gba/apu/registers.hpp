@@ -53,14 +53,14 @@ struct Square1 : Square {
 
   auto runsweep(bool update) -> void;
   auto clocksweep() -> void;
-  auto read(uint addr) const -> uint8;
-  auto write(uint addr, uint8 byte) -> void;
+  auto read(uint addr) const -> buint8;
+  auto write(uint addr, buint8 byte) -> void;
   auto power() -> void;
 } square1;
 
 struct Square2 : Square {
-  auto read(uint addr) const -> uint8;
-  auto write(uint addr, uint8 byte) -> void;
+  auto read(uint addr) const -> buint8;
+  auto write(uint addr, buint8 byte) -> void;
   auto power() -> void;
 } square2;
 
@@ -68,7 +68,7 @@ struct Wave {
   uint1 mode;
   uint1 bank;
   uint1 dacenable;
-  uint8 length;
+  buint8 length;
   uint3 volume;
   uint11 frequency;
   uint1 counter;
@@ -84,10 +84,10 @@ struct Wave {
 
   auto run() -> void;
   auto clocklength() -> void;
-  auto read(uint addr) const -> uint8;
-  auto write(uint addr, uint8 byte) -> void;
-  auto readram(uint addr) const -> uint8;
-  auto writeram(uint addr, uint8 byte) -> void;
+  auto read(uint addr) const -> buint8;
+  auto write(uint addr, buint8 byte) -> void;
+  auto readram(uint addr) const -> buint8;
+  auto writeram(uint addr, buint8 byte) -> void;
   auto power() -> void;
 } wave;
 
@@ -110,8 +110,8 @@ struct Noise {
   auto run() -> void;
   auto clocklength() -> void;
   auto clockenvelope() -> void;
-  auto read(uint addr) const -> uint8;
-  auto write(uint addr, uint8 byte) -> void;
+  auto read(uint addr) const -> buint8;
+  auto write(uint addr, buint8 byte) -> void;
   auto power() -> void;
 } noise;
 
@@ -128,8 +128,8 @@ struct Sequencer {
   int16 lsample;
   int16 rsample;
 
-  auto read(uint addr) const -> uint8;
-  auto write(uint addr, uint8 byte) -> void;
+  auto read(uint addr) const -> buint8;
+  auto write(uint addr, buint8 byte) -> void;
   auto power() -> void;
 } sequencer;
 

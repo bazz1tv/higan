@@ -10,10 +10,10 @@ namespace GameBoyAdvance {
 Cartridge cartridge;
 
 Cartridge::Cartridge() {
-  mrom.data = new uint8[mrom.size = 32 * 1024 * 1024];
-  sram.data = new uint8[sram.size = 32 * 1024];
-  eeprom.data = new uint8[eeprom.size = 8 * 1024];
-  flash.data = new uint8[flash.size = 128 * 1024];
+  mrom.data = new buint8[mrom.size = 32 * 1024 * 1024];
+  sram.data = new buint8[sram.size = 32 * 1024];
+  eeprom.data = new buint8[eeprom.size = 8 * 1024];
+  flash.data = new buint8[flash.size = 128 * 1024];
 }
 
 Cartridge::~Cartridge() {
@@ -105,7 +105,7 @@ auto Cartridge::power() -> void {
 
 #define RAM_ANALYZE
 
-auto Cartridge::read(uint mode, uint32 addr) -> uint32 {
+auto Cartridge::read(uint mode, buint32 addr) -> buint32 {
   if(addr < 0x0e00'0000) {
     if(hasEEPROM && (addr & eeprom.mask) == eeprom.test) return eeprom.read();
     return mrom.read(mode, addr);
@@ -116,7 +116,7 @@ auto Cartridge::read(uint mode, uint32 addr) -> uint32 {
   }
 }
 
-auto Cartridge::write(uint mode, uint32 addr, uint32 word) -> void {
+auto Cartridge::write(uint mode, buint32 addr, buint32 word) -> void {
   if(addr < 0x0e00'0000) {
     if(hasEEPROM && (addr & eeprom.mask) == eeprom.test) return eeprom.write(word & 1);
     return mrom.write(mode, addr, word);

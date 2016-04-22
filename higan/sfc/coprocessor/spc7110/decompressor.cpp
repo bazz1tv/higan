@@ -7,13 +7,13 @@ struct Decompressor {
 
   Decompressor(SPC7110& spc7110) : spc7110(spc7110) {}
 
-  auto read() -> uint8 {
+  auto read() -> buint8 {
     return spc7110.datarom_read(offset++);
   }
 
   //inverse morton code transform: unpack big-endian packed pixels
   //returns odd bits in lower half; even bits in upper half
-  auto deinterleave(uint64 data, uint bits) -> uint32 {
+  auto deinterleave(buint64 data, uint bits) -> buint32 {
     data = data & (1ull << bits) - 1;
     data = 0x5555555555555555ull & (data << bits | data >> 1);
     data = 0x3333333333333333ull & (data | data >> 1);
@@ -24,8 +24,8 @@ struct Decompressor {
   }
 
   //extract a nibble and move it to the low four bits
-  auto moveToFront(uint64 list, uint nibble) -> uint64 {
-    for(uint64 n = 0, mask = ~15; n < 64; n += 4, mask <<= 4) {
+  auto moveToFront(buint64 list, uint nibble) -> buint64 {
+    for(buint64 n = 0, mask = ~15; n < 64; n += 4, mask <<= 4) {
       if((list >> n & 15) != nibble) continue;
       return list = (list & mask) + (list << 4 & ~mask) + nibble;
     }
@@ -47,7 +47,7 @@ struct Decompressor {
 
   auto decode() -> void {
     for(uint pixel = 0; pixel < 8; pixel++) {
-      uint64 map = colormap;
+      buint64 map = colormap;
       uint diff = 0;
 
       if(bpp > 1) {
@@ -81,7 +81,7 @@ struct Decompressor {
 
         auto& ctx = context[set][bit + history - 1];
         auto& model = evolution[ctx.prediction];
-        uint8 lps_offset = range - model.probability;
+        buint8 lps_offset = range - model.probability;
         bool symbol = input >= (lps_offset << 8);  //test only the MSB
 
         output = output << 1 | (symbol ^ ctx.swap);
@@ -142,25 +142,25 @@ struct Decompressor {
   enum : uint { One = 0xaa, Half = 0x55, Max = 0xff };
 
   struct ModelState {
-    uint8 probability;  //of the more probable symbol (MPS)
-    uint8 next[2];      //next state after output {MPS, LPS}
+    buint8 probability;  //of the more probable symbol (MPS)
+    buint8 next[2];      //next state after output {MPS, LPS}
   };
   static ModelState evolution[53];
 
   struct Context {
-    uint8 prediction;   //current model state
-    uint8 swap;         //if 1, exchange the role of MPS and LPS
+    buint8 prediction;   //current model state
+    buint8 swap;         //if 1, exchange the role of MPS and LPS
   } context[5][15];     //not all 75 contexts exists; this simplifies the code
 
   uint bpp;             //bits per pixel (1bpp = 1; 2bpp = 2; 4bpp = 4)
   uint offset;          //SPC7110 data ROM read offset
   uint bits;            //bits remaining in input
-  uint16 range;         //arithmetic range: technically 8-bits, but Max+1 = 256
-  uint16 input;         //input data from SPC7110 data ROM
-  uint8 output;
-  uint64 pixels;
-  uint64 colormap;      //most recently used list
-  uint32 result;        //decompressed word after calling decode()
+  buint16 range;         //arithmetic range: technically 8-bits, but Max+1 = 256
+  buint16 input;         //input data from SPC7110 data ROM
+  buint8 output;
+  buint64 pixels;
+  buint64 colormap;      //most recently used list
+  buint32 result;        //decompressed word after calling decode()
 };
 
 Decompressor::ModelState Decompressor::evolution[53] = {

@@ -16,7 +16,7 @@ struct MMC5 : Chip {
   //if(y != vcounter && y <= 240) print(y, " vs ", vcounter, "\n");
   }
 
-  auto prg_access(bool write, uint addr, uint8 data = 0x00) -> uint8 {
+  auto prg_access(bool write, uint addr, buint8 data = 0x00) -> buint8 {
     uint bank;
 
     if((addr & 0xe000) == 0x6000) {
@@ -64,7 +64,7 @@ struct MMC5 : Chip {
     }
   }
 
-  auto prg_read(uint addr) -> uint8 {
+  auto prg_read(uint addr) -> buint8 {
     if((addr & 0xfc00) == 0x5c00) {
       if(exram_mode >= 2) return exram[addr & 0x03ff];
       return cpu.mdr();
@@ -76,7 +76,7 @@ struct MMC5 : Chip {
 
     switch(addr) {
     case 0x5204: {
-      uint8 result = (irq_pending << 7) | (in_frame << 6);
+      buint8 result = (irq_pending << 7) | (in_frame << 6);
       irq_pending = false;
       return result;
     }
@@ -85,10 +85,10 @@ struct MMC5 : Chip {
     }
   }
 
-  auto prg_write(uint addr, uint8 data) -> void {
+  auto prg_write(uint addr, buint8 data) -> void {
     if((addr & 0xfc00) == 0x5c00) {
       //writes 0x00 *during* Vblank (not during screen rendering ...)
-      if(exram_mode == 0 || exram_mode == 1) exram[addr & 0x03ff] = in_frame ? data : (uint8)0x00;
+      if(exram_mode == 0 || exram_mode == 1) exram[addr & 0x03ff] = in_frame ? data : (buint8)0x00;
       if(exram_mode == 2) exram[addr & 0x03ff] = data;
       return;
     }
@@ -264,19 +264,19 @@ struct MMC5 : Chip {
     cpu_cycle_counter = 0;
   }
 
-  auto ciram_read(uint addr) -> uint8 {
+  auto ciram_read(uint addr) -> buint8 {
     if(vs_fetch && (hcounter & 2) == 0) return exram[vs_vpos / 8 * 32 + vs_hpos / 8];
     if(vs_fetch && (hcounter & 2) != 0) return exram[vs_vpos / 32 * 8 + vs_hpos / 32 + 0x03c0];
 
     switch(nametable_mode[(addr >> 10) & 3]) {
     case 0: return ppu.ciram_read(0x0000 | (addr & 0x03ff));
     case 1: return ppu.ciram_read(0x0400 | (addr & 0x03ff));
-    case 2: return exram_mode < 2 ? exram[addr & 0x03ff] : (uint8)0x00;
+    case 2: return exram_mode < 2 ? exram[addr & 0x03ff] : (buint8)0x00;
     case 3: return (hcounter & 2) == 0 ? fillmode_tile : fillmode_color;
     }
   }
 
-  auto chr_read(uint addr) -> uint8 {
+  auto chr_read(uint addr) -> buint8 {
     chr_access[0] = chr_access[1];
     chr_access[1] = chr_access[2];
     chr_access[2] = chr_access[3];
@@ -295,7 +295,7 @@ struct MMC5 : Chip {
     }
 
     bool bg_fetch = (hcounter < 256 || hcounter >= 320);
-    uint8 result = 0x00;
+    buint8 result = 0x00;
 
     if((hcounter & 7) == 0) {
       vs_hpos  = hcounter >= 320 ? hcounter - 320 : hcounter + 16;
@@ -324,7 +324,7 @@ struct MMC5 : Chip {
     return result;
   }
 
-  auto chr_write(uint addr, uint8 data) -> void {
+  auto chr_write(uint addr, buint8 data) -> void {
     if(addr & 0x2000) {
       switch(nametable_mode[(addr >> 10) & 3]) {
       case 0: return ppu.ciram_write(0x0000 | (addr & 0x03ff), data);
@@ -434,7 +434,7 @@ struct MMC5 : Chip {
     MMC5B,
   } revision;
 
-  uint8 exram[1024];
+  buint8 exram[1024];
 
   //programmable registers
 
@@ -445,12 +445,12 @@ struct MMC5 : Chip {
 
   uint2 exram_mode;         //$5104
   uint2 nametable_mode[4];  //$5105
-  uint8 fillmode_tile;      //$5106
-  uint8 fillmode_color;     //$5107
+  buint8 fillmode_tile;      //$5106
+  buint8 fillmode_color;     //$5107
 
   bool ram_select;            //$5113
   uint2 ram_bank;             //$5113
-  uint8 prg_bank[4];          //$5114-5117
+  buint8 prg_bank[4];          //$5114-5117
   uint10 chr_sprite_bank[8];  //$5120-5127
   uint10 chr_bg_bank[4];      //$5128-512b
   uint2 chr_bank_hi;          //$5130
@@ -458,14 +458,14 @@ struct MMC5 : Chip {
   bool vs_enable;      //$5200
   bool vs_side;        //$5200
   uint5 vs_tile;       //$5200
-  uint8 vs_scroll;     //$5201
-  uint8 vs_bank;       //$5202
+  buint8 vs_scroll;     //$5201
+  buint8 vs_bank;       //$5202
 
-  uint8 irq_line;      //$5203
+  buint8 irq_line;      //$5203
   bool irq_enable;     //$5204
 
-  uint8 multiplicand;  //$5205
-  uint8 multiplier;    //$5206
+  buint8 multiplicand;  //$5205
+  buint8 multiplier;    //$5206
 
   //status registers
 
@@ -476,14 +476,14 @@ struct MMC5 : Chip {
 
   uint vcounter;
   uint hcounter;
-  uint16 chr_access[4];
+  buint16 chr_access[4];
   bool chr_active;
   bool sprite_8x16;
 
-  uint8 exbank;
-  uint8 exattr;
+  buint8 exbank;
+  buint8 exattr;
 
   bool vs_fetch;
-  uint8 vs_vpos;
-  uint8 vs_hpos;
+  buint8 vs_vpos;
+  buint8 vs_hpos;
 };

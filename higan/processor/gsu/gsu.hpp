@@ -8,20 +8,20 @@ struct GSU {
   virtual auto step(unsigned clocks) -> void = 0;
 
   virtual auto stop() -> void = 0;
-  virtual auto color(uint8 source) -> uint8 = 0;
-  virtual auto plot(uint8 x, uint8 y) -> void = 0;
-  virtual auto rpix(uint8 x, uint8 y) -> uint8 = 0;
+  virtual auto color(buint8 source) -> buint8 = 0;
+  virtual auto plot(buint8 x, buint8 y) -> void = 0;
+  virtual auto rpix(buint8 x, buint8 y) -> buint8 = 0;
 
-  virtual auto pipe() -> uint8 = 0;
+  virtual auto pipe() -> buint8 = 0;
   virtual auto rombuffer_sync() -> void = 0;
-  virtual auto rombuffer_read() -> uint8 = 0;
+  virtual auto rombuffer_read() -> buint8 = 0;
   virtual auto rambuffer_sync() -> void = 0;
-  virtual auto rambuffer_read(uint16 addr) -> uint8 = 0;
-  virtual auto rambuffer_write(uint16 addr, uint8 data) -> void = 0;
+  virtual auto rambuffer_read(buint16 addr) -> buint8 = 0;
+  virtual auto rambuffer_write(buint16 addr, buint8 data) -> void = 0;
   virtual auto cache_flush() -> void = 0;
 
-  virtual auto bus_read(uint24 addr, uint8 data = 0x00) -> uint8 = 0;
-  virtual auto bus_write(uint24 addr, uint8 data) -> void = 0;
+  virtual auto bus_read(uint24 addr, buint8 data = 0x00) -> buint8 = 0;
+  virtual auto bus_write(uint24 addr, buint8 data) -> void = 0;
 
   //gsu.cpp
   auto power() -> void;

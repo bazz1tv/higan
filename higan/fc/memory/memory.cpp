@@ -11,8 +11,8 @@ Bus bus;
 //$4000-4017 = APU + I/O
 //$4018-ffff = Cartridge
 
-auto Bus::read(uint16 addr) -> uint8 {
-  uint8 data = cartridge.prg_read(addr);
+auto Bus::read(buint16 addr) -> buint8 {
+  buint8 data = cartridge.prg_read(addr);
        if(addr <= 0x1fff) data = cpu.ram_read(addr);
   else if(addr <= 0x3fff) data = ppu.read(addr);
   else if(addr <= 0x4017) data = cpu.read(addr);
@@ -24,7 +24,7 @@ auto Bus::read(uint16 addr) -> uint8 {
   return data;
 }
 
-auto Bus::write(uint16 addr, uint8 data) -> void {
+auto Bus::write(buint16 addr, buint8 data) -> void {
   cartridge.prg_write(addr, data);
   if(addr <= 0x1fff) return cpu.ram_write(addr, data);
   if(addr <= 0x3fff) return ppu.write(addr, data);

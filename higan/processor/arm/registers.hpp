@@ -53,8 +53,8 @@ struct Pipeline {
   bool nonsequential = false;
 
   struct Instruction {
-    uint32 address = 0;
-    uint32 instruction = 0;
+    buint32 address = 0;
+    buint32 instruction = 0;
   };
 
   Instruction execute;
@@ -124,7 +124,7 @@ alwaysinline auto r(uint n) -> GPR& { return *processor.r[n]; }
 alwaysinline auto cpsr() -> PSR& { return processor.cpsr; }
 alwaysinline auto spsr() -> PSR& { return *processor.spsr; }
 alwaysinline auto carryout() -> bool& { return processor.carryout; }
-alwaysinline auto instruction() -> uint32 { return pipeline.execute.instruction; }
+alwaysinline auto instruction() -> buint32 { return pipeline.execute.instruction; }
 alwaysinline auto mode() -> Processor::Mode { return (Processor::Mode)processor.cpsr.m; }
 alwaysinline auto privilegedMode() const -> bool { return (Processor::Mode)processor.cpsr.m != Processor::Mode::USR; }
 alwaysinline auto exceptionMode() const -> bool { return privilegedMode() && (Processor::Mode)processor.cpsr.m != Processor::Mode::SYS; }

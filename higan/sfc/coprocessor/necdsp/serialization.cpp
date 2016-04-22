@@ -1,5 +1,5 @@
-auto NECDSP::firmware() const -> vector<uint8> {
-  vector<uint8> buffer;
+auto NECDSP::firmware() const -> vector<buint8> {
+  vector<buint8> buffer;
   if(!cartridge.hasNECDSP()) return buffer;
   uint plength = 2048, dlength = 1024;
   if(revision == Revision::uPD96050) plength = 16384, dlength = 2048;

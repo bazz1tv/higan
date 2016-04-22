@@ -60,7 +60,7 @@ struct MMC6 : Chip {
     if(mirror == 1) return ((addr & 0x0800) >> 1) | (addr & 0x03ff);
   }
 
-  auto ram_read(uint addr) -> uint8 {
+  auto ram_read(uint addr) -> buint8 {
     if(ram_enable == false) return cpu.mdr();
     if(ram_readable[0] == false && ram_readable[1] == false) return cpu.mdr();
     bool region = addr & 0x0200;
@@ -68,14 +68,14 @@ struct MMC6 : Chip {
     return board.prgram.read((region * 0x0200) + (addr & 0x01ff));
   }
 
-  auto ram_write(uint addr, uint8 data) -> void {
+  auto ram_write(uint addr, buint8 data) -> void {
     if(ram_enable == false) return;
     bool region = addr & 0x0200;
     if(ram_writable[region] == false) return;
     return board.prgram.write((region * 0x0200) + (addr & 0x01ff), data);
   }
 
-  auto reg_write(uint addr, uint8 data) -> void {
+  auto reg_write(uint addr, buint8 data) -> void {
     switch(addr & 0xe001) {
     case 0x8000:
       chr_mode = data & 0x80;
@@ -177,16 +177,16 @@ struct MMC6 : Chip {
   bool prg_mode;
   bool ram_enable;
   uint3 bank_select;
-  uint8 prg_bank[2];
-  uint8 chr_bank[6];
+  buint8 prg_bank[2];
+  buint8 chr_bank[6];
   bool mirror;
   bool ram_readable[2];
   bool ram_writable[2];
-  uint8 irq_latch;
-  uint8 irq_counter;
+  buint8 irq_latch;
+  buint8 irq_counter;
   bool irq_enable;
   uint irq_delay;
   bool irq_line;
 
-  uint16 chr_abus;
+  buint16 chr_abus;
 };

@@ -29,7 +29,7 @@ auto PPU::Screen::run() -> void {
   *line++ = (self.regs.display_brightness << 15) | (mscolor);
 }
 
-auto PPU::Screen::get_pixel_sub(bool hires) -> uint16 {
+auto PPU::Screen::get_pixel_sub(bool hires) -> buint16 {
   if(self.regs.display_disable || (!self.regs.overscan && self.vcounter() >= 225)) return 0;
 
   uint priority = 0;
@@ -60,15 +60,15 @@ auto PPU::Screen::get_pixel_sub(bool hires) -> uint16 {
   if(math.transparent = (priority == 0)) math.sub.color = get_color(0);
 
   if(!hires) return 0;
-  if(!math.sub.color_enable) return math.main.color_enable ? math.sub.color : (uint16)0;
+  if(!math.sub.color_enable) return math.main.color_enable ? math.sub.color : (buint16)0;
 
   return addsub(
-    math.main.color_enable ? math.sub.color : (uint16)0,
+    math.main.color_enable ? math.sub.color : (buint16)0,
     math.addsub_mode ? math.main.color : fixed_color()
   );
 }
 
-auto PPU::Screen::get_pixel_main() -> uint16 {
+auto PPU::Screen::get_pixel_main() -> buint16 {
   if(self.regs.display_disable || (!self.regs.overscan && self.vcounter() >= 225)) return 0;
 
   uint priority = 0;
@@ -108,7 +108,7 @@ auto PPU::Screen::get_pixel_main() -> uint16 {
 
   if(!self.window.output.sub.color_enable) math.sub.color_enable = false;
   math.main.color_enable = self.window.output.main.color_enable;
-  if(!math.sub.color_enable) return math.main.color_enable ? math.main.color : (uint16)0;
+  if(!math.sub.color_enable) return math.main.color_enable ? math.main.color : (buint16)0;
 
   if(regs.addsub_mode && math.transparent) {
     math.addsub_mode = false;
@@ -119,12 +119,12 @@ auto PPU::Screen::get_pixel_main() -> uint16 {
   }
 
   return addsub(
-    math.main.color_enable ? math.main.color : (uint16)0,
+    math.main.color_enable ? math.main.color : (buint16)0,
     math.addsub_mode ? math.sub.color : fixed_color()
   );
 }
 
-auto PPU::Screen::addsub(uint x, uint y) -> uint16 {
+auto PPU::Screen::addsub(uint x, uint y) -> buint16 {
   if(!regs.color_mode) {
     if(!math.color_halve) {
       uint sum = x + y;
@@ -144,13 +144,13 @@ auto PPU::Screen::addsub(uint x, uint y) -> uint16 {
   }
 }
 
-auto PPU::Screen::get_color(uint palette) -> uint16 {
+auto PPU::Screen::get_color(uint palette) -> buint16 {
   palette <<= 1;
   self.regs.cgram_iaddr = palette;
   return ppu.cgram[palette + 0] + (ppu.cgram[palette + 1] << 8);
 }
 
-auto PPU::Screen::get_direct_color(uint palette, uint tile) -> uint16 {
+auto PPU::Screen::get_direct_color(uint palette, uint tile) -> buint16 {
   //palette = -------- BBGGGRRR
   //tile    = ---bgr-- --------
   //output  = 0BBb00GG Gg0RRRr0
@@ -159,7 +159,7 @@ auto PPU::Screen::get_direct_color(uint palette, uint tile) -> uint16 {
        + ((palette << 2) & 0x001c) + ((tile >> 9) & 0x0002);
 }
 
-auto PPU::Screen::fixed_color() const -> uint16 {
+auto PPU::Screen::fixed_color() const -> buint16 {
   return (regs.color_b << 10) | (regs.color_g << 5) | (regs.color_r << 0);
 }
 

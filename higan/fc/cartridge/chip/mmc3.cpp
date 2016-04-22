@@ -60,16 +60,16 @@ struct MMC3 : Chip {
     if(mirror == 1) return ((addr & 0x0800) >> 1) | (addr & 0x03ff);
   }
 
-  auto ram_read(uint addr) -> uint8 {
+  auto ram_read(uint addr) -> buint8 {
     if(ram_enable) return board.prgram.data[addr & 0x1fff];
     return 0x00;
   }
 
-  auto ram_write(uint addr, uint8 data) -> void {
+  auto ram_write(uint addr, buint8 data) -> void {
     if(ram_enable && !ram_write_protect) board.prgram.data[addr & 0x1fff] = data;
   }
 
-  auto reg_write(uint addr, uint8 data) -> void {
+  auto reg_write(uint addr, buint8 data) -> void {
     switch(addr & 0xe001) {
     case 0x8000:
       chr_mode = data & 0x80;
@@ -166,16 +166,16 @@ struct MMC3 : Chip {
   bool chr_mode;
   bool prg_mode;
   uint3 bank_select;
-  uint8 prg_bank[2];
-  uint8 chr_bank[6];
+  buint8 prg_bank[2];
+  buint8 chr_bank[6];
   bool mirror;
   bool ram_enable;
   bool ram_write_protect;
-  uint8 irq_latch;
-  uint8 irq_counter;
+  buint8 irq_latch;
+  buint8 irq_counter;
   bool irq_enable;
   uint irq_delay;
   bool irq_line;
 
-  uint16 chr_abus;
+  buint16 chr_abus;
 };

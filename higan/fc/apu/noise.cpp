@@ -4,10 +4,10 @@ auto APU::Noise::clock_length() -> void {
   }
 }
 
-auto APU::Noise::clock() -> uint8 {
+auto APU::Noise::clock() -> buint8 {
   if(length_counter == 0) return 0;
 
-  uint8 result = (lfsr & 1) ? envelope.volume() : 0;
+  buint8 result = (lfsr & 1) ? envelope.volume() : 0;
 
   if(--period_counter == 0) {
     uint feedback;

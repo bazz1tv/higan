@@ -1,5 +1,5 @@
-auto HitachiDSP::firmware() const -> vector<uint8> {
-  vector<uint8> buffer;
+auto HitachiDSP::firmware() const -> vector<buint8> {
+  vector<buint8> buffer;
   if(!cartridge.hasHitachiDSP()) return buffer;
   buffer.reserve(1024 * 3);
   for(auto n : range(1024)) {

@@ -1,27 +1,27 @@
 struct MROM {
-  uint8* data;
+  buint8* data;
   uint size;
   uint mask;
 
-  auto read(uint mode, uint32 addr) -> uint32;
-  auto write(uint mode, uint32 addr, uint32 word) -> void;
+  auto read(uint mode, buint32 addr) -> buint32;
+  auto write(uint mode, buint32 addr, buint32 word) -> void;
 
   auto serialize(serializer&) -> void;
 } mrom;
 
 struct SRAM {
-  uint8* data;
+  buint8* data;
   uint size;
   uint mask;
 
-  auto read(uint mode, uint32 addr) -> uint32;
-  auto write(uint mode, uint32 addr, uint32 word) -> void;
+  auto read(uint mode, buint32 addr) -> buint32;
+  auto write(uint mode, buint32 addr, buint32 word) -> void;
 
   auto serialize(serializer&) -> void;
 } sram;
 
 struct EEPROM {
-  uint8* data;
+  buint8* data;
   uint size;
   uint mask;
   uint test;
@@ -44,9 +44,9 @@ struct EEPROM {
 } eeprom;
 
 struct FLASH {
-  uint8* data;
+  buint8* data;
   uint size;
-  uint16 id;
+  buint16 id;
 
   bool unlockhi;
   bool unlocklo;
@@ -56,8 +56,8 @@ struct FLASH {
   bool writeselect;
   bool bank;
 
-  auto read(uint16 addr) -> uint8;
-  auto write(uint16 addr, uint8 byte) -> void;
+  auto read(buint16 addr) -> buint8;
+  auto write(buint16 addr, buint8 byte) -> void;
 
   auto power() -> void;
   auto serialize(serializer&) -> void;

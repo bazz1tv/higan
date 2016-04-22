@@ -3,7 +3,7 @@ Cartridge::Mapping::Mapping(SuperFamicom::Memory& memory) {
   this->writer = {&SuperFamicom::Memory::write, &memory};
 }
 
-Cartridge::Mapping::Mapping(const function<uint8 (uint24, uint8)>& reader, const function<void (uint24, uint8)>& writer) {
+Cartridge::Mapping::Mapping(const function<buint8 (uint24, buint8)>& reader, const function<void (uint24, buint8)>& writer) {
   this->reader = reader;
   this->writer = writer;
 }
@@ -51,8 +51,8 @@ auto Cartridge::parseMarkupMap(Markup::Node map, SuperFamicom::Memory& memory) -
 
 auto Cartridge::parseMarkupMap(
   Markup::Node map,
-  const function<uint8 (uint24, uint8)>& reader,
-  const function<void (uint24, uint8)>& writer
+  const function<buint8 (uint24, buint8)>& reader,
+  const function<void (uint24, buint8)>& writer
 ) -> void {
   Mapping m{reader, writer};
   m.addr = map["address"].text();
@@ -66,7 +66,7 @@ auto Cartridge::parseMarkupMemory(MappedRAM& ram, Markup::Node node, uint id, bo
   string name = node["name"].text();
   uint size = node["size"].natural();
   bool save = !(bool)node["volatile"];
-  ram.map(allocate<uint8>(size, 0xff), size);
+  ram.map(allocate<buint8>(size, 0xff), size);
   if(name) {
     interface->loadRequest(id, name, !writable);  //treat ROM as required; RAM as optional
     if(writable && save) memory.append({id, name});

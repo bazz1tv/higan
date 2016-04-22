@@ -1,4 +1,4 @@
-auto SuperFX::mmio_read(uint24 addr, uint8) -> uint8 {
+auto SuperFX::mmio_read(uint24 addr, buint8) -> buint8 {
   cpu.synchronizeCoprocessors();
   addr &= 0xffff;
 
@@ -16,7 +16,7 @@ auto SuperFX::mmio_read(uint24 addr, uint8) -> uint8 {
   }
 
   case 0x3031: {
-    uint8 r = regs.sfr >> 8;
+    buint8 r = regs.sfr >> 8;
     regs.sfr.irq = 0;
     cpu.regs.irq = 0;
     return r;
@@ -50,7 +50,7 @@ auto SuperFX::mmio_read(uint24 addr, uint8) -> uint8 {
   return 0x00;
 }
 
-auto SuperFX::mmio_write(uint24 addr, uint8 data) -> void {
+auto SuperFX::mmio_write(uint24 addr, buint8 data) -> void {
   cpu.synchronizeCoprocessors();
   addr &= 0xffff;
 

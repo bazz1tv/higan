@@ -21,15 +21,15 @@ auto PPU::update_bg_info() -> void {
 }
 
 template<uint bg>
-auto PPU::bg_get_tile(uint16 x, uint16 y) -> uint16 {
+auto PPU::bg_get_tile(buint16 x, buint16 y) -> buint16 {
   x = (x & bg_info[bg].mx) >> bg_info[bg].tw;
   y = (y & bg_info[bg].my) >> bg_info[bg].th;
 
-  uint16 pos = ((y & 0x1f) << 5) + (x & 0x1f);
+  buint16 pos = ((y & 0x1f) << 5) + (x & 0x1f);
   if(y & 0x20) pos += bg_info[bg].scy;
   if(x & 0x20) pos += bg_info[bg].scx;
 
-  const uint16 addr = regs.bg_scaddr[bg] + (pos << 1);
+  const buint16 addr = regs.bg_scaddr[bg] + (pos << 1);
   return vram[addr] + (vram[addr + 1] << 8);
 }
 
@@ -50,7 +50,7 @@ auto PPU::bg_get_tile(uint16 x, uint16 y) -> uint16 {
   }
 
 template<uint mode, uint bg, uint color_depth>
-auto PPU::render_line_bg(uint8 pri0_pos, uint8 pri1_pos) -> void {
+auto PPU::render_line_bg(buint8 pri0_pos, buint8 pri1_pos) -> void {
   if(layer_enabled[bg][0] == false) pri0_pos = 0;
   if(layer_enabled[bg][1] == false) pri1_pos = 0;
   if(pri0_pos + pri1_pos == 0) return;
@@ -60,26 +60,26 @@ auto PPU::render_line_bg(uint8 pri0_pos, uint8 pri1_pos) -> void {
   const bool bg_enabled    = regs.bg_enabled[bg];
   const bool bgsub_enabled = regs.bgsub_enabled[bg];
 
-  const uint16 opt_valid_bit = (bg == BG1) ? 0x2000 : (bg == BG2) ? 0x4000 : 0x0000;
-  const uint8  bgpal_index   = (mode == 0 ? (bg << 5) : 0);
+  const buint16 opt_valid_bit = (bg == BG1) ? 0x2000 : (bg == BG2) ? 0x4000 : 0x0000;
+  const buint8  bgpal_index   = (mode == 0 ? (bg << 5) : 0);
 
-  const uint8  pal_size  = 2 << color_depth;       //<<2 (*4), <<4 (*16), <<8 (*256)
-  const uint16 tile_mask = 0x0fff >> color_depth;  //0x0fff, 0x07ff, 0x03ff
+  const buint8  pal_size  = 2 << color_depth;       //<<2 (*4), <<4 (*16), <<8 (*256)
+  const buint16 tile_mask = 0x0fff >> color_depth;  //0x0fff, 0x07ff, 0x03ff
   //4 + color_depth = >>(4-6) -- / {16, 32, 64 } bytes/tile
   //index is a tile number count to add to base tile number
   const unsigned tiledata_index = regs.bg_tdaddr[bg] >> (4 + color_depth);
 
-  const uint8 *bg_td       = bg_tiledata[color_depth];
-  const uint8 *bg_td_state = bg_tiledata_state[color_depth];
+  const buint8 *bg_td       = bg_tiledata[color_depth];
+  const buint8 *bg_td_state = bg_tiledata_state[color_depth];
 
-  const uint8  tile_width  = bg_info[bg].tw;
-  const uint8  tile_height = bg_info[bg].th;
-  const uint16 mask_x      = bg_info[bg].mx;  //screen width  mask
-  const uint16 mask_y      = bg_info[bg].my;  //screen height mask
+  const buint8  tile_width  = bg_info[bg].tw;
+  const buint8  tile_height = bg_info[bg].th;
+  const buint16 mask_x      = bg_info[bg].mx;  //screen width  mask
+  const buint16 mask_y      = bg_info[bg].my;  //screen height mask
 
-  uint16 y       = regs.bg_y[bg];
-  uint16 hscroll = regs.bg_hofs[bg];
-  uint16 vscroll = regs.bg_vofs[bg];
+  buint16 y       = regs.bg_y[bg];
+  buint16 hscroll = regs.bg_hofs[bg];
+  buint16 vscroll = regs.bg_vofs[bg];
 
   const unsigned hires = (mode == 5 || mode == 6);
   const unsigned width = (!hires ? 256 : 512);
@@ -89,23 +89,23 @@ auto PPU::render_line_bg(uint8 pri0_pos, uint8 pri1_pos) -> void {
     if(regs.interlace) y = (y << 1) + field();
   }
 
-  uint16 hval, vval;
-  uint16 tile_pri, tile_num;
-  uint8  pal_index, pal_num;
-  uint16 hoffset, voffset, opt_x, col;
+  buint16 hval, vval;
+  buint16 tile_pri, tile_num;
+  buint8  pal_index, pal_num;
+  buint16 hoffset, voffset, opt_x, col;
   bool   mirror_x, mirror_y;
 
-  const uint8*  tile_ptr;
-  const uint16* mtable = mosaic_table[regs.mosaic_enabled[bg] ? (uint)regs.mosaic_size : 0];
+  const buint8*  tile_ptr;
+  const buint16* mtable = mosaic_table[regs.mosaic_enabled[bg] ? (uint)regs.mosaic_size : 0];
   const bool    is_opt_mode = (mode == 2 || mode == 4 || mode == 6);
   const bool    is_direct_color_mode = (regs.direct_color == true && bg == BG1 && (mode == 3 || mode == 4));
 
   build_window_tables(bg);
-  const uint8* wt_main = window[bg].main;
-  const uint8* wt_sub  = window[bg].sub;
+  const buint8* wt_main = window[bg].main;
+  const buint8* wt_sub  = window[bg].sub;
 
-  uint16 prev_x = 0xffff, prev_y = 0xffff, prev_optx = 0xffff;
-  for(uint16 x = 0; x < width; x++) {
+  buint16 prev_x = 0xffff, prev_y = 0xffff, prev_optx = 0xffff;
+  for(buint16 x = 0; x < width; x++) {
     hoffset = mtable[x] + hscroll;
     voffset = y + vscroll;
 

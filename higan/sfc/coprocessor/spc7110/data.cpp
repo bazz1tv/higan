@@ -1,4 +1,4 @@
-auto SPC7110::datarom_read(uint addr) -> uint8 {
+auto SPC7110::datarom_read(uint addr) -> buint8 {
   uint size = 1 << (r4834 & 3);  //size in MB
   uint mask = 0x100000 * size - 1;
   uint offset = addr & mask;

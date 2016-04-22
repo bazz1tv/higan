@@ -9,7 +9,7 @@ struct Program : Emulator::Interface::Bind {
   auto loadRequest(uint id, string name, string type, bool required) -> void override;
   auto loadRequest(uint id, string path, bool required) -> void override;
   auto saveRequest(uint id, string path) -> void override;
-  auto videoRefresh(const uint32* data, uint pitch, uint width, uint height) -> void override;
+  auto videoRefresh(const buint32* data, uint pitch, uint width, uint height) -> void override;
   auto audioSample(int16 lsample, int16 rsample) -> void override;
   auto inputPoll(uint port, uint device, uint input) -> int16 override;
   auto inputRumble(uint port, uint device, uint input, bool enable) -> void override;

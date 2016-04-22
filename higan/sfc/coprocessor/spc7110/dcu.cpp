@@ -25,7 +25,7 @@ auto SPC7110::dcu_begin_transfer() -> void {
   dcu_offset = 0;
 }
 
-auto SPC7110::dcu_read() -> uint8 {
+auto SPC7110::dcu_read() -> buint8 {
   if((r480c & 0x80) == 0) return 0x00;
 
   if(dcu_offset == 0) {
@@ -46,12 +46,12 @@ auto SPC7110::dcu_read() -> uint8 {
         break;
       }
 
-      uint seek = r480b & 1 ? r4807 : (uint8)1;
+      uint seek = r480b & 1 ? r4807 : (buint8)1;
       while(seek--) decompressor->decode();
     }
   }
 
-  uint8 data = dcu_tile[dcu_offset++];
+  buint8 data = dcu_tile[dcu_offset++];
   dcu_offset &= 8 * decompressor->bpp - 1;
   return data;
 }

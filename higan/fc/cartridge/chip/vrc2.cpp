@@ -28,7 +28,7 @@ struct VRC2 : Chip {
     throw;
   }
 
-  auto ram_read(uint addr) -> uint8 {
+  auto ram_read(uint addr) -> buint8 {
     if(board.prgram.size == 0) {
       if((addr & 0xf000) == 0x6000) return cpu.mdr() | latch;
       return cpu.mdr();
@@ -36,7 +36,7 @@ struct VRC2 : Chip {
     return board.prgram.read(addr & 0x1fff);
   }
 
-  auto ram_write(uint addr, uint8 data) -> void {
+  auto ram_write(uint addr, buint8 data) -> void {
     if(board.prgram.size == 0) {
       if((addr & 0xf000) == 0x6000) latch = data & 0x01;
       return;
@@ -44,7 +44,7 @@ struct VRC2 : Chip {
     return board.prgram.write(addr & 0x1fff, data);
   }
 
-  auto reg_write(uint addr, uint8 data) -> void {
+  auto reg_write(uint addr, buint8 data) -> void {
     switch(addr) {
     case 0x8000: case 0x8001: case 0x8002: case 0x8003:
       prg_bank[0] = data & 0x1f;
@@ -102,7 +102,7 @@ struct VRC2 : Chip {
   }
 
   uint5 prg_bank[2];
-  uint8 chr_bank[8];
+  buint8 chr_bank[8];
   uint2 mirror;
   bool latch;
 };

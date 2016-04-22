@@ -2,7 +2,7 @@
 //4-bit microcontroller
 //CD-player interface
 
-auto SuperDisc::necPollIRQ() -> uint8 {
+auto SuperDisc::necPollIRQ() -> buint8 {
   auto match = [&](const string& compare) -> bool {
     if(nec.command.size() != compare.size()) return false;
     for(auto n : range(nec.command)) {
@@ -192,7 +192,7 @@ auto SuperDisc::necPollIRQ() -> uint8 {
   return 0x00;
 }
 
-auto SuperDisc::necReadData() -> uint8 {
+auto SuperDisc::necReadData() -> buint8 {
   return nec.data;
 }
 

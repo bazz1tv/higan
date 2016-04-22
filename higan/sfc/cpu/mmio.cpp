@@ -1,9 +1,9 @@
-auto CPU::apuPortRead(uint24 addr, uint8 data) -> uint8 {
+auto CPU::apuPortRead(uint24 addr, buint8 data) -> buint8 {
   synchronizeSMP();
   return smp.portRead(addr.bits(0,1));
 }
 
-auto CPU::cpuPortRead(uint24 addr, uint8 data) -> uint8 {
+auto CPU::cpuPortRead(uint24 addr, buint8 data) -> buint8 {
   addr &= 0xffff;
 
   //WMDATA
@@ -15,7 +15,7 @@ auto CPU::cpuPortRead(uint24 addr, uint8 data) -> uint8 {
   //7-2 = MDR
   //1-0 = Joypad serial data
   if(addr == 0x4016) {
-    uint8 r = regs.mdr & 0xfc;
+    buint8 r = regs.mdr & 0xfc;
     r |= device.controllerPort1->data();
     return r;
   }
@@ -25,7 +25,7 @@ auto CPU::cpuPortRead(uint24 addr, uint8 data) -> uint8 {
     //7-5 = MDR
     //4-2 = Always 1 (pins are connected to GND)
     //1-0 = Joypad serial data
-    uint8 r = (regs.mdr & 0xe0) | 0x1c;
+    buint8 r = (regs.mdr & 0xe0) | 0x1c;
     r |= device.controllerPort2->data();
     return r;
   }
@@ -35,8 +35,8 @@ auto CPU::cpuPortRead(uint24 addr, uint8 data) -> uint8 {
     //7   = NMI acknowledge
     //6-4 = MDR
     //3-0 = CPU (5a22) version
-    uint8 r = (regs.mdr & 0x70);
-    r |= (uint8)(rdnmi()) << 7;
+    buint8 r = (regs.mdr & 0x70);
+    r |= (buint8)(rdnmi()) << 7;
     r |= (cpu_version & 0x0f);
     return r;
   }
@@ -45,8 +45,8 @@ auto CPU::cpuPortRead(uint24 addr, uint8 data) -> uint8 {
   if(addr == 0x4211) {
     //7   = IRQ acknowledge
     //6-0 = MDR
-    uint8 r = (regs.mdr & 0x7f);
-    r |= (uint8)(timeup()) << 7;
+    buint8 r = (regs.mdr & 0x7f);
+    r |= (buint8)(timeup()) << 7;
     return r;
   }
 
@@ -56,7 +56,7 @@ auto CPU::cpuPortRead(uint24 addr, uint8 data) -> uint8 {
     //6   = HBLANK acknowledge
     //5-1 = MDR
     //0   = JOYPAD acknowledge
-    uint8 r = (regs.mdr & 0x3e);
+    buint8 r = (regs.mdr & 0x3e);
     if(status.auto_joypad_active) r |= 0x01;
     if(hcounter() <= 2 || hcounter() >= 1096) r |= 0x40;  //hblank
     if(vcounter() >= (ppu.overscan() == false ? 225 : 240)) r |= 0x80;  //vblank
@@ -100,7 +100,7 @@ auto CPU::cpuPortRead(uint24 addr, uint8 data) -> uint8 {
   return data;
 }
 
-auto CPU::dmaPortRead(uint24 addr, uint8 data) -> uint8 {
+auto CPU::dmaPortRead(uint24 addr, buint8 data) -> buint8 {
   auto& channel = this->channel[addr.bits(4,6)];
   addr &= 0xff0f;
 
@@ -126,10 +126,10 @@ auto CPU::dmaPortRead(uint24 addr, uint8 data) -> uint8 {
   //A1Bx
   if(addr == 0x4304) return channel.source_bank;
 
-  //DASxL -- union { uint16 transfer_size; uint16 indirect_addr; };
+  //DASxL -- union { buint16 transfer_size; buint16 indirect_addr; };
   if(addr == 0x4305) return channel.transfer_size >> 0;
 
-  //DASxH -- union { uint16 transfer_size; uint16 indirect_addr; };
+  //DASxH -- union { buint16 transfer_size; buint16 indirect_addr; };
   if(addr == 0x4306) return channel.transfer_size >> 8;
 
   //DASBx
@@ -150,12 +150,12 @@ auto CPU::dmaPortRead(uint24 addr, uint8 data) -> uint8 {
   return data;
 }
 
-auto CPU::apuPortWrite(uint24 addr, uint8 data) -> void {
+auto CPU::apuPortWrite(uint24 addr, buint8 data) -> void {
   synchronizeSMP();
   return portWrite(addr.bits(0,1), data);
 }
 
-auto CPU::cpuPortWrite(uint24 addr, uint8 data) -> void {
+auto CPU::cpuPortWrite(uint24 addr, buint8 data) -> void {
   addr &= 0xffff;
 
   //WMDATA
@@ -274,7 +274,7 @@ auto CPU::cpuPortWrite(uint24 addr, uint8 data) -> void {
   }
 }
 
-auto CPU::dmaPortWrite(uint24 addr, uint8 data) -> void {
+auto CPU::dmaPortWrite(uint24 addr, buint8 data) -> void {
   auto& channel = this->channel[addr.bits(4,6)];
   addr &= 0xff0f;
 
@@ -308,12 +308,12 @@ auto CPU::dmaPortWrite(uint24 addr, uint8 data) -> void {
     channel.source_bank = data;
   }
 
-  //DASxL -- union { uint16 transfer_size; uint16 indirect_addr; };
+  //DASxL -- union { buint16 transfer_size; buint16 indirect_addr; };
   if(addr == 0x4305) {
     channel.transfer_size = (channel.transfer_size & 0xff00) | (data << 0);
   }
 
-  //DASxH -- union { uint16 transfer_size; uint16 indirect_addr; };
+  //DASxH -- union { buint16 transfer_size; buint16 indirect_addr; };
   if(addr == 0x4306) {
     channel.transfer_size = (channel.transfer_size & 0x00ff) | (data << 8);
   }

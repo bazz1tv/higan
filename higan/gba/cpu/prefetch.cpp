@@ -1,4 +1,4 @@
-auto CPU::prefetch_sync(uint32 addr) -> void {
+auto CPU::prefetch_sync(buint32 addr) -> void {
   if(addr == prefetch.addr) return;
 
   prefetch.addr = addr;
@@ -25,13 +25,13 @@ auto CPU::prefetch_wait() -> void {
   prefetch.wait = bus_wait(Half | Nonsequential, prefetch.load);
 }
 
-auto CPU::prefetch_read() -> uint16 {
+auto CPU::prefetch_read() -> buint16 {
   if(prefetch.empty()) prefetch_step(prefetch.wait);
   else prefetch_step(1);
 
   if(prefetch.full()) prefetch.wait = bus_wait(Half | Sequential, prefetch.load);
 
-  uint16 half = prefetch.slot[prefetch.addr >> 1 & 7];
+  buint16 half = prefetch.slot[prefetch.addr >> 1 & 7];
   prefetch.addr += 2;
   return half;
 }

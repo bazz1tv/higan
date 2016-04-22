@@ -7,8 +7,8 @@ auto PPU::latch_counters() -> void {
 auto PPU::interlace() const -> bool { return display.interlace; }
 auto PPU::overscan() const -> bool { return display.overscan; }
 
-auto PPU::get_vram_addr() -> uint16 {
-  uint16 addr = regs.vram_addr;
+auto PPU::get_vram_addr() -> buint16 {
+  buint16 addr = regs.vram_addr;
   switch(regs.vram_mapping) {
   case 0: break;
   case 1: addr = (addr & 0xff00) | ((addr & 0x001f) << 3) | ((addr >> 5) & 7); break;
@@ -18,13 +18,13 @@ auto PPU::get_vram_addr() -> uint16 {
   return (addr << 1);
 }
 
-auto PPU::vram_read(uint addr) -> uint8 {
+auto PPU::vram_read(uint addr) -> buint8 {
   if(regs.display_disable) return vram[addr];
   if(cpu.vcounter() >= display.height) return vram[addr];
   return 0x00;
 }
 
-auto PPU::vram_write(uint addr, uint8 data) -> void {
+auto PPU::vram_write(uint addr, buint8 data) -> void {
   if(regs.display_disable || cpu.vcounter() >= display.height) {
     vram[addr] = data;
     cache.tilevalid[0][addr >> 4] = false;
@@ -34,25 +34,25 @@ auto PPU::vram_write(uint addr, uint8 data) -> void {
   }
 }
 
-auto PPU::oam_read(uint addr) -> uint8 {
+auto PPU::oam_read(uint addr) -> buint8 {
   if(addr & 0x0200) addr &= 0x021f;
   if(regs.display_disable) return oam[addr];
   if(cpu.vcounter() >= display.height) return oam[addr];
   return oam[0x0218];
 }
 
-auto PPU::oam_write(uint addr, uint8 data) -> void {
+auto PPU::oam_write(uint addr, buint8 data) -> void {
   if(addr & 0x0200) addr &= 0x021f;
   if(!regs.display_disable && cpu.vcounter() < display.height) addr = 0x0218;
   oam[addr] = data;
   sprite.update_list(addr, data);
 }
 
-auto PPU::cgram_read(uint addr) -> uint8 {
+auto PPU::cgram_read(uint addr) -> buint8 {
   return cgram[addr];
 }
 
-auto PPU::cgram_write(uint addr, uint8 data) -> void {
+auto PPU::cgram_write(uint addr, buint8 data) -> void {
   cgram[addr] = data;
 }
 
@@ -154,7 +154,7 @@ auto PPU::mmio_update_video_mode() -> void {
   }
 }
 
-auto PPU::mmio_read(uint addr, uint8 data) -> uint8 {
+auto PPU::mmio_read(uint addr, buint8 data) -> buint8 {
   cpu.synchronizePPU();
 
   switch(addr & 0xffff) {
@@ -197,7 +197,7 @@ auto PPU::mmio_read(uint addr, uint8 data) -> uint8 {
   case 0x2139: {  //VMDATALREAD
     regs.ppu1_mdr = regs.vram_readbuffer >> 0;
     if(regs.vram_incmode == 0) {
-      uint16 addr = get_vram_addr();
+      buint16 addr = get_vram_addr();
       regs.vram_readbuffer  = vram_read(addr + 0) << 0;
       regs.vram_readbuffer |= vram_read(addr + 1) << 8;
       regs.vram_addr += regs.vram_incsize;
@@ -208,7 +208,7 @@ auto PPU::mmio_read(uint addr, uint8 data) -> uint8 {
   case 0x213a: {  //VMDATAHREAD
     regs.ppu1_mdr = regs.vram_readbuffer >> 8;
     if(regs.vram_incmode == 1) {
-      uint16 addr = get_vram_addr();
+      buint16 addr = get_vram_addr();
       regs.vram_readbuffer  = vram_read(addr + 0) << 0;
       regs.vram_readbuffer |= vram_read(addr + 1) << 8;
       regs.vram_addr += regs.vram_incsize;
@@ -275,7 +275,7 @@ auto PPU::mmio_read(uint addr, uint8 data) -> uint8 {
   return data;
 }
 
-auto PPU::mmio_write(uint addr, uint8 data) -> void {
+auto PPU::mmio_write(uint addr, buint8 data) -> void {
   cpu.synchronizePPU();
 
   switch(addr & 0xffff) {
@@ -444,7 +444,7 @@ auto PPU::mmio_write(uint addr, uint8 data) -> void {
 
   case 0x2116: {  //VMADDL
     regs.vram_addr = (regs.vram_addr & 0xff00) | (data << 0);
-    uint16 addr = get_vram_addr();
+    buint16 addr = get_vram_addr();
     regs.vram_readbuffer  = vram_read(addr + 0) << 0;
     regs.vram_readbuffer |= vram_read(addr + 1) << 8;
     return;
@@ -452,7 +452,7 @@ auto PPU::mmio_write(uint addr, uint8 data) -> void {
 
   case 0x2117: {  //VMADDH
     regs.vram_addr = (data << 8) | (regs.vram_addr & 0x00ff);
-    uint16 addr = get_vram_addr();
+    buint16 addr = get_vram_addr();
     regs.vram_readbuffer  = vram_read(addr + 0) << 0;
     regs.vram_readbuffer |= vram_read(addr + 1) << 8;
     return;

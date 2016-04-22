@@ -14,7 +14,7 @@ auto SMP::op_io() -> void {
   #endif
 }
 
-auto SMP::op_read(uint16 addr) -> uint8 {
+auto SMP::op_read(buint16 addr) -> buint8 {
   #if defined(CYCLE_ACCURATE)
   tick();
   #endif
@@ -23,7 +23,7 @@ auto SMP::op_read(uint16 addr) -> uint8 {
   return apuram[addr];
 }
 
-auto SMP::op_write(uint16 addr, uint8 data) -> void {
+auto SMP::op_write(buint16 addr, buint8 data) -> void {
   #if defined(CYCLE_ACCURATE)
   tick();
   #endif

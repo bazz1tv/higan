@@ -1,5 +1,5 @@
 //20000-fffff
-auto Cartridge::romRead(uint20 addr) -> uint8 {
+auto Cartridge::romRead(uint20 addr) -> buint8 {
   if(!rom.data) return 0x00;
   uint28 offset;
   switch(addr.byte(2)) {
@@ -10,17 +10,17 @@ auto Cartridge::romRead(uint20 addr) -> uint8 {
   return rom.data[offset & rom.mask];
 }
 
-auto Cartridge::romWrite(uint20 addr, uint8 data) -> void {
+auto Cartridge::romWrite(uint20 addr, buint8 data) -> void {
 }
 
 //10000-1ffff
-auto Cartridge::ramRead(uint20 addr) -> uint8 {
+auto Cartridge::ramRead(uint20 addr) -> buint8 {
   if(!ram.data) return 0x00;
   uint24 offset = r.sramBank << 16 | addr.bits(0,15);
   return ram.data[offset & ram.mask];
 }
 
-auto Cartridge::ramWrite(uint20 addr, uint8 data) -> void {
+auto Cartridge::ramWrite(uint20 addr, buint8 data) -> void {
   if(!ram.data) return;
   uint24 offset = r.sramBank << 16 | addr.bits(0,15);
   ram.data[offset & ram.mask] = data;

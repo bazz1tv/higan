@@ -14,19 +14,19 @@ struct R65816 {
   using fp = auto (R65816::*)() -> void;
 
   virtual auto io() -> void = 0;
-  virtual auto read(uint24 addr) -> uint8 = 0;
-  virtual auto write(uint24 addr, uint8 data) -> void = 0;
+  virtual auto read(uint24 addr) -> buint8 = 0;
+  virtual auto write(uint24 addr, buint8 data) -> void = 0;
   virtual auto lastCycle() -> void = 0;
   virtual auto interruptPending() const -> bool = 0;
   virtual auto interrupt() -> void;
 
-  virtual auto disassemblerRead(uint24 addr) -> uint8 { return 0u; }
+  virtual auto disassemblerRead(uint24 addr) -> buint8 { return 0u; }
 
   //r65816.cpp
   alwaysinline auto ioIRQ() -> void;
   alwaysinline auto io2() -> void;
-  alwaysinline auto io4(uint16 x, uint16 y) -> void;
-  alwaysinline auto io6(uint16 addr) -> void;
+  alwaysinline auto io4(buint16 x, buint16 y) -> void;
+  alwaysinline auto io6(buint16 addr) -> void;
 
   //algorithms.cpp
   auto op_adc_b();
@@ -177,8 +177,8 @@ struct R65816 {
   auto op_xba();
   auto op_move_b(signed adjust);
   auto op_move_w(signed adjust);
-  auto op_interrupt_e(uint16);
-  auto op_interrupt_n(uint16);
+  auto op_interrupt_e(buint16);
+  auto op_interrupt_n(buint16);
   auto op_stp();
   auto op_wai();
   auto op_xce();
@@ -222,7 +222,7 @@ struct R65816 {
 
   regs_t regs;
   reg24_t aa, rd;
-  uint8 sp, dp;
+  buint8 sp, dp;
 };
 
 }

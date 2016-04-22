@@ -6,15 +6,15 @@ namespace Processor {
 
 struct HG51B {
   auto exec(uint24 addr) -> void;
-  virtual auto bus_read(uint24 addr) -> uint8 = 0;
-  virtual auto bus_write(uint24 addr, uint8 data) -> void = 0;
+  virtual auto bus_read(uint24 addr) -> buint8 = 0;
+  virtual auto bus_write(uint24 addr, buint8 data) -> void = 0;
 
   auto power() -> void;
   auto serialize(serializer&) -> void;
 
-//uint16 programROM[2][256];
+//buint16 programROM[2][256];
   uint24 dataROM[1024];
-  uint8  dataRAM[3072];
+  buint8  dataRAM[3072];
 
 protected:
   auto push() -> void;
@@ -25,14 +25,14 @@ protected:
   auto instruction() -> void;
 
   //registers.cpp
-  auto reg_read(uint8 addr) const -> uint24;
-  auto reg_write(uint8 addr, uint24 data) -> void;
+  auto reg_read(buint8 addr) const -> uint24;
+  auto reg_write(buint8 addr, uint24 data) -> void;
 
   struct Registers {
     bool halt;
 
     uint24 pc;
-    uint16 p;
+    buint16 p;
     bool n;
     bool z;
     bool c;
@@ -49,7 +49,7 @@ protected:
   } regs;
 
   uint24 stack[8];
-  uint16 opcode;
+  buint16 opcode;
 };
 
 }

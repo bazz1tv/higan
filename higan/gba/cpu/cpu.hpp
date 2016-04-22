@@ -40,19 +40,19 @@ struct CPU : Processor::ARM, Thread, MMIO {
 
   //bus.cpp
   auto bus_idle() -> void override;
-  auto bus_read(uint mode, uint32 addr) -> uint32 override;
-  auto bus_write(uint mode, uint32 addr, uint32 word) -> void override;
-  auto bus_wait(uint mode, uint32 addr) -> uint;
+  auto bus_read(uint mode, buint32 addr) -> buint32 override;
+  auto bus_write(uint mode, buint32 addr, buint32 word) -> void override;
+  auto bus_wait(uint mode, buint32 addr) -> uint;
 
   //mmio.cpp
-  auto read(uint32 addr) -> uint8;
-  auto write(uint32 addr, uint8 byte) -> void;
+  auto read(buint32 addr) -> buint8;
+  auto write(buint32 addr, buint8 byte) -> void;
 
-  auto iwram_read(uint mode, uint32 addr) -> uint32;
-  auto iwram_write(uint mode, uint32 addr, uint32 word) -> void;
+  auto iwram_read(uint mode, buint32 addr) -> buint32;
+  auto iwram_write(uint mode, buint32 addr, buint32 word) -> void;
 
-  auto ewram_read(uint mode, uint32 addr) -> uint32;
-  auto ewram_write(uint mode, uint32 addr, uint32 word) -> void;
+  auto ewram_read(uint mode, buint32 addr) -> buint32;
+  auto ewram_write(uint mode, buint32 addr, buint32 word) -> void;
 
   //dma.cpp
   auto dma_run() -> void;
@@ -69,8 +69,8 @@ struct CPU : Processor::ARM, Thread, MMIO {
   //serialization.cpp
   auto serialize(serializer&) -> void;
 
-  uint8* iwram = nullptr;
-  uint8* ewram = nullptr;
+  buint8* iwram = nullptr;
+  buint8* ewram = nullptr;
 };
 
 extern CPU cpu;

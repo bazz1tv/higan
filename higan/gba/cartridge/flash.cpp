@@ -7,7 +7,7 @@
 //0x1362  128KB   32x4096  Sanyo
 //0x09c2  128KB   32x4096  Macronix
 
-auto Cartridge::FLASH::read(uint16 addr) -> uint8 {
+auto Cartridge::FLASH::read(buint16 addr) -> buint8 {
   if(idmode) {
     if(addr == 0x0000) return id >> 0;
     if(addr == 0x0001) return id >> 8;
@@ -17,7 +17,7 @@ auto Cartridge::FLASH::read(uint16 addr) -> uint8 {
   return data[bank << 16 | addr];
 }
 
-auto Cartridge::FLASH::write(uint16 addr, uint8 byte) -> void {
+auto Cartridge::FLASH::write(buint16 addr, buint8 byte) -> void {
   if(bankselect) {
     bankselect = false;
     //bank select is only applicable on 128KB chips

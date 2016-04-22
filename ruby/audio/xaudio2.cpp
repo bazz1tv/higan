@@ -14,7 +14,7 @@ struct AudioXAudio2 : Audio, public IXAudio2VoiceCallback {
   STDMETHODIMP_(void) OnStreamEnd() {}
   STDMETHODIMP_(void) OnVoiceError(void* pBufferContext, HRESULT Error) {}
   STDMETHODIMP_(void) OnVoiceProcessingPassEnd() {}
-  STDMETHODIMP_(void) OnVoiceProcessingPassStart(UINT32 BytesRequired) {}
+  STDMETHODIMP_(void) OnVoiceProcessingPassStart(bUINT32 BytesRequired) {}
 
   struct {
     unsigned buffers = 0;

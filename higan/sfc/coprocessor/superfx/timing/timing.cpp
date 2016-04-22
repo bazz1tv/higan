@@ -27,7 +27,7 @@ auto SuperFX::rombuffer_update() -> void {
   regs.romcl = regs.clsr ? 5 : 6;
 }
 
-auto SuperFX::rombuffer_read() -> uint8 {
+auto SuperFX::rombuffer_read() -> buint8 {
   rombuffer_sync();
   return regs.romdr;
 }
@@ -36,24 +36,24 @@ auto SuperFX::rambuffer_sync() -> void {
   if(regs.ramcl) step(regs.ramcl);
 }
 
-auto SuperFX::rambuffer_read(uint16 addr) -> uint8 {
+auto SuperFX::rambuffer_read(buint16 addr) -> buint8 {
   rambuffer_sync();
   return bus_read(0x700000 + (regs.rambr << 16) + addr);
 }
 
-auto SuperFX::rambuffer_write(uint16 addr, uint8 data) -> void {
+auto SuperFX::rambuffer_write(buint16 addr, buint8 data) -> void {
   rambuffer_sync();
   regs.ramcl = regs.clsr ? 5 : 6;
   regs.ramar = addr;
   regs.ramdr = data;
 }
 
-auto SuperFX::r14_modify(uint16 data) -> void {
+auto SuperFX::r14_modify(buint16 data) -> void {
   regs.r[14].data = data;
   rombuffer_update();
 }
 
-auto SuperFX::r15_modify(uint16 data) -> void {
+auto SuperFX::r15_modify(buint16 data) -> void {
   regs.r[15].data = data;
   r15_modified = true;
 }

@@ -7,5 +7,5 @@ struct DMA {
 
 auto dma_normal() -> void;
 auto dma_cc1() -> void;
-auto dma_cc1_read(uint addr) -> uint8;
+auto dma_cc1_read(uint addr) -> buint8;
 auto dma_cc2() -> void;

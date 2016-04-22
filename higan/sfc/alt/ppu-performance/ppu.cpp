@@ -21,7 +21,7 @@ bg3(*this, Background::ID::BG3),
 bg4(*this, Background::ID::BG4),
 sprite(*this),
 screen(*this) {
-  output = new uint32[512 * 512]();
+  output = new buint32[512 * 512]();
   output += 16 * 512;  //overscan offset
   display.width = 256;
   display.height = 224;
@@ -103,8 +103,8 @@ auto PPU::frame() -> void {
 }
 
 auto PPU::enable() -> void {
-  function<auto (uint, uint8) -> uint8> reader{&PPU::mmio_read, (PPU*)&ppu};
-  function<auto (uint, uint8) -> void> writer{&PPU::mmio_write, (PPU*)&ppu};
+  function<auto (uint, buint8) -> buint8> reader{&PPU::mmio_read, (PPU*)&ppu};
+  function<auto (uint, buint8) -> void> writer{&PPU::mmio_write, (PPU*)&ppu};
 
   bus.map(reader, writer, 0x00, 0x3f, 0x2100, 0x213f);
   bus.map(reader, writer, 0x80, 0xbf, 0x2100, 0x213f);
@@ -120,7 +120,7 @@ auto PPU::power() -> void {
 auto PPU::reset() -> void {
   create(Enter, system.cpuFrequency());
   PPUcounter::reset();
-  memset(output, 0, 512 * 480 * sizeof(uint32));
+  memset(output, 0, 512 * 480 * sizeof(buint32));
   mmio_reset();
   display.interlace = false;
   display.overscan = false;

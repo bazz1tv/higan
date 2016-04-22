@@ -1,5 +1,5 @@
 auto stop() -> void;
-auto color(uint8 source) -> uint8;
-auto plot(uint8 x, uint8 y) -> void;
-auto rpix(uint8 x, uint8 y) -> uint8;
+auto color(buint8 source) -> buint8;
+auto plot(buint8 x, buint8 y) -> void;
+auto rpix(buint8 x, buint8 y) -> buint8;
 auto pixelcache_flush(pixelcache_t& cache) -> void;

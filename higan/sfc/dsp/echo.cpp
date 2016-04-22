@@ -11,8 +11,8 @@ auto DSP::echoOutput(bool channel) -> int {
 
 auto DSP::echoRead(bool channel) -> void {
   uint addr = state._echoPointer + channel * 2;
-  uint8 lo = smp.apuram[(uint16)(addr + 0)];
-  uint8 hi = smp.apuram[(uint16)(addr + 1)];
+  buint8 lo = smp.apuram[(buint16)(addr + 0)];
+  buint8 hi = smp.apuram[(buint16)(addr + 1)];
   int s = (int16)((hi << 8) + lo);
   state.echoHistory[channel].write(state.echoHistoryOffset, s >> 1);
 }
@@ -21,8 +21,8 @@ auto DSP::echoWrite(bool channel) -> void {
   if(!(state._echoDisabled & 0x20)) {
     uint addr = state._echoPointer + channel * 2;
     int s = state._echoOut[channel];
-    smp.apuram[(uint16)(addr + 0)] = s;
-    smp.apuram[(uint16)(addr + 1)] = s >> 8;
+    smp.apuram[(buint16)(addr + 0)] = s;
+    smp.apuram[(buint16)(addr + 1)] = s >> 8;
   }
 
   state._echoOut[channel] = 0;
@@ -33,7 +33,7 @@ auto DSP::echo22() -> void {
   state.echoHistoryOffset++;
   if(state.echoHistoryOffset >= EchoHistorySize) state.echoHistoryOffset = 0;
 
-  state._echoPointer = (uint16)((state._esa << 8) + state.echoOffset);
+  state._echoPointer = (buint16)((state._esa << 8) + state.echoOffset);
   echoRead(0);
 
   //FIR

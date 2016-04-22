@@ -10,8 +10,8 @@ struct APU : Thread {
   auto power() -> void;
   auto reset() -> void;
 
-  auto read(uint16 addr) -> uint8;
-  auto write(uint16 addr, uint8 data) -> void;
+  auto read(buint16 addr) -> buint8;
+  auto write(buint16 addr, buint8 data) -> void;
 
   auto serialize(serializer&) -> void;
 
@@ -54,17 +54,17 @@ struct APU : Thread {
   Filter filter;
   FrameCounter frame;
 
-  uint8 enabled_channels;
+  buint8 enabled_channels;
   int16 cartridge_sample;
 
   int16 pulse_dac[32];
   int16 dmc_triangle_noise_dac[128][16][16];
 
-  static const uint8 length_counter_table[32];
-  static const uint16 ntsc_dmc_period_table[16];
-  static const uint16 pal_dmc_period_table[16];
-  static const uint16 ntsc_noise_period_table[16];
-  static const uint16 pal_noise_period_table[16];
+  static const buint8 length_counter_table[32];
+  static const buint16 ntsc_dmc_period_table[16];
+  static const buint16 pal_dmc_period_table[16];
+  static const buint16 ntsc_noise_period_table[16];
+  static const buint16 pal_noise_period_table[16];
 };
 
 extern APU apu;

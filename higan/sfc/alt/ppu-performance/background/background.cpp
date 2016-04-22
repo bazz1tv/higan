@@ -6,9 +6,9 @@ PPU::Background::Background(PPU& self, uint id) : self(self), id(id) {
 
   opt_valid_bit = (id == ID::BG1 ? 0x2000 : id == ID::BG2 ? 0x4000 : 0x0000);
 
-  mosaic_table = new uint16*[16];
+  mosaic_table = new buint16*[16];
   for(uint m = 0; m < 16; m++) {
-    mosaic_table[m] = new uint16[4096];
+    mosaic_table[m] = new buint16[4096];
     for(uint x = 0; x < 4096; x++) {
       mosaic_table[m][x] = (x / (m + 1)) * (m + 1);
     }
@@ -28,7 +28,7 @@ auto PPU::Background::get_tile(uint hoffset, uint voffset) -> uint {
   if(tile_y & 0x20) tile_pos += scy;
   if(tile_x & 0x20) tile_pos += scx;
 
-  const uint16 tiledata_addr = regs.screen_addr + (tile_pos << 1);
+  const buint16 tiledata_addr = regs.screen_addr + (tile_pos << 1);
   return (ppu.vram[tiledata_addr + 0] << 0) + (ppu.vram[tiledata_addr + 1] << 8);
 }
 
@@ -147,7 +147,7 @@ auto PPU::Background::render() -> void {
     if(mirror_y) voffset ^= 7;
     uint mirror_xmask = !mirror_x ? 0 : 7;
 
-    uint8* tiledata = self.cache.tile(regs.mode, tile_num);
+    buint8* tiledata = self.cache.tile(regs.mode, tile_num);
     tiledata += ((voffset & 7) * 8);
 
     for(uint n = 0; n < 8; n++, x++) {

@@ -1,4 +1,4 @@
-auto Cartridge::MBC2::mmio_read(uint16 addr) -> uint8 {
+auto Cartridge::MBC2::mmio_read(buint16 addr) -> buint8 {
   if((addr & 0xc000) == 0x0000) {  //$0000-3fff
     return cartridge.rom_read(addr);
   }
@@ -15,7 +15,7 @@ auto Cartridge::MBC2::mmio_read(uint16 addr) -> uint8 {
   return 0xff;
 }
 
-auto Cartridge::MBC2::mmio_write(uint16 addr, uint8 data) -> void {
+auto Cartridge::MBC2::mmio_write(buint16 addr, buint8 data) -> void {
   if((addr & 0xe000) == 0x0000) {  //$0000-1fff
     if(!(addr & 0x0100)) ram_enable = (data & 0x0f) == 0x0a;
     return;

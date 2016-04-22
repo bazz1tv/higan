@@ -30,10 +30,10 @@ struct Window {
     bool col_two_enable;
     bool col_two_invert;
 
-    uint8 one_left;
-    uint8 one_right;
-    uint8 two_left;
-    uint8 two_right;
+    buint8 one_left;
+    buint8 one_right;
+    buint8 two_left;
+    buint8 two_right;
 
     uint2 bg1_mask;
     uint2 bg2_mask;
@@ -79,7 +79,7 @@ struct Window {
     bool& main, bool& sub,
     bool one_enable, bool one_invert,
     bool two_enable, bool two_invert,
-    uint8 mask, bool main_enable, bool sub_enable
+    buint8 mask, bool main_enable, bool sub_enable
   ) -> void;
 
   auto serialize(serializer&) -> void;

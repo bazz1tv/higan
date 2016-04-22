@@ -53,11 +53,11 @@ Board::Board(Markup::Node& document) {
   chrram.writable = true;
 }
 
-auto Board::Memory::read(uint addr) const -> uint8 {
+auto Board::Memory::read(uint addr) const -> buint8 {
   return data[mirror(addr, size)];
 }
 
-auto Board::Memory::write(uint addr, uint8 byte) -> void {
+auto Board::Memory::write(uint addr, buint8 byte) -> void {
   if(writable) data[mirror(addr, size)] = byte;
 }
 
@@ -89,13 +89,13 @@ auto Board::tick() -> void {
   if(cartridge.clock >= 0 && !scheduler.synchronizing()) co_switch(cpu.thread);
 }
 
-auto Board::chr_read(uint addr) -> uint8 {
+auto Board::chr_read(uint addr) -> buint8 {
   if(chrram.size) return chrram.data[mirror(addr, chrram.size)];
   if(chrrom.size) return chrrom.data[mirror(addr, chrrom.size)];
   return 0u;
 }
 
-auto Board::chr_write(uint addr, uint8 data) -> void {
+auto Board::chr_write(uint addr, buint8 data) -> void {
   if(chrram.size) chrram.data[mirror(addr, chrram.size)] = data;
 }
 

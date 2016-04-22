@@ -6,16 +6,16 @@ namespace GameBoyAdvance {
 Bus bus;
 
 struct UnmappedMemory : Memory {
-  auto read(uint mode, uint32 addr) -> uint32 override { return 0; }
-  auto write(uint mode, uint32 addr, uint32 word) -> void override {}
+  auto read(uint mode, buint32 addr) -> buint32 override { return 0; }
+  auto write(uint mode, buint32 addr, buint32 word) -> void override {}
 };
 
 static UnmappedMemory unmappedMemory;
 
-auto Bus::mirror(uint32 addr, uint32 size) -> uint32 {
-  uint32 base = 0;
+auto Bus::mirror(buint32 addr, buint32 size) -> buint32 {
+  buint32 base = 0;
   if(size) {
-    uint32 mask = 1 << 27;  //28-bit bus
+    buint32 mask = 1 << 27;  //28-bit bus
     while(addr >= size) {
       while(!(addr & mask)) mask >>= 1;
       addr -= mask;

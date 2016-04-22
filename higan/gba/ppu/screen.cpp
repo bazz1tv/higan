@@ -1,10 +1,10 @@
 auto PPU::render_forceblank() -> void {
-  uint32* line = output + regs.vcounter * 240;
+  buint32* line = output + regs.vcounter * 240;
   for(auto x : range(240)) line[x] = 0x7fff;
 }
 
 auto PPU::render_screen() -> void {
-  uint32* line = output + regs.vcounter * 240;
+  buint32* line = output + regs.vcounter * 240;
 
   if(regs.bg[0].control.mosaic) render_mosaic_background(BG0);
   if(regs.bg[1].control.mosaic) render_mosaic_background(BG1);

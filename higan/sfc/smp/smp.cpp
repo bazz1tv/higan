@@ -9,7 +9,7 @@ SMP smp;
 #include "serialization.cpp"
 
 auto SMP::step(uint clocks) -> void {
-  clock += clocks * (uint64)cpu.frequency;
+  clock += clocks * (buint64)cpu.frequency;
   dsp.clock -= clocks;
 }
 

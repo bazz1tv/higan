@@ -1,4 +1,4 @@
-auto ARM::disassemble_arm_instruction(uint32 pc) -> string {
+auto ARM::disassemble_arm_instruction(buint32 pc) -> string {
   static string conditions[] = {
     "eq", "ne", "cs", "cc",
     "mi", "pl", "vs", "vc",
@@ -30,7 +30,7 @@ auto ARM::disassemble_arm_instruction(uint32 pc) -> string {
 
   string output{hex(pc, 8L), "  "};
 
-  uint32 instruction = read(Word | Nonsequential, pc & ~3);
+  buint32 instruction = read(Word | Nonsequential, pc & ~3);
   output.append(hex(instruction, 8L), "  ");
 
   //multiply()
@@ -123,7 +123,7 @@ auto ARM::disassemble_arm_instruction(uint32 pc) -> string {
     uint4 ih = instruction >> 8;
     uint4 il = instruction >> 0;
 
-    uint8 immediate = (ih << 4) + (il << 0);
+    buint8 immediate = (ih << 4) + (il << 0);
 
     output.append(load ? "ldr" : "str", conditions[condition], "h ");
     output.append(registers[rd], ",[", registers[rn]);
@@ -173,7 +173,7 @@ auto ARM::disassemble_arm_instruction(uint32 pc) -> string {
     uint1 half = instruction >> 5;
     uint4 il = instruction;
 
-    uint8 immediate = (ih << 4) + (il << 0);
+    buint8 immediate = (ih << 4) + (il << 0);
 
     output.append("ldr", conditions[condition], half ? "sh " : "sb ");
     output.append(registers[rd], ",[", registers[rn]);
@@ -240,9 +240,9 @@ auto ARM::disassemble_arm_instruction(uint32 pc) -> string {
     uint1 psr = instruction >> 22;
     uint4 field = instruction >> 16;
     uint4 rotate = instruction >> 8;
-    uint8 immediate = instruction;
+    buint8 immediate = instruction;
 
-    uint32 rm = (immediate >> (rotate * 2)) | (immediate << (32 - (rotate * 2)));
+    buint32 rm = (immediate >> (rotate * 2)) | (immediate << (32 - (rotate * 2)));
 
     output.append("msr", conditions[condition], " ");
     output.append(psr ? "spsr:" : "cpsr:");
@@ -324,9 +324,9 @@ auto ARM::disassemble_arm_instruction(uint32 pc) -> string {
     uint4 rn = instruction >> 16;
     uint4 rd = instruction >> 12;
     uint4 rotate = instruction >> 8;
-    uint8 immediate = instruction;
+    buint8 immediate = instruction;
 
-    uint32 rm = (immediate >> (rotate << 1)) | (immediate << (32 - (rotate << 1)));
+    buint32 rm = (immediate >> (rotate << 1)) | (immediate << (32 - (rotate << 1)));
     output.append(opcodes[opcode], conditions[condition]);
     if(is_move(opcode)) output.append(save ? "s " : " ", registers[rd]);
     if(is_comp(opcode)) output.append(" ", registers[rn]);
@@ -401,7 +401,7 @@ auto ARM::disassemble_arm_instruction(uint32 pc) -> string {
     uint1 writeback = instruction >> 21;
     uint1 load = instruction >> 20;
     uint4 rn = instruction >> 16;
-    uint16 list = instruction;
+    buint16 list = instruction;
 
     output.append(load ? "ldm" : "stm", conditions[condition], indices[index], " ");
     output.append(registers[rn], writeback ? "!" : "", ",{");
@@ -438,7 +438,7 @@ auto ARM::disassemble_arm_instruction(uint32 pc) -> string {
   return output;
 }
 
-auto ARM::disassemble_thumb_instruction(uint32 pc) -> string {
+auto ARM::disassemble_thumb_instruction(buint32 pc) -> string {
   static string conditions[] = {
     "eq", "ne", "cs", "cc",
     "mi", "pl", "vs", "vc",
@@ -455,7 +455,7 @@ auto ARM::disassemble_thumb_instruction(uint32 pc) -> string {
 
   string output{hex(pc, 8L), "  "};
 
-  uint16 instruction = read(Half | Nonsequential, pc & ~1);
+  buint16 instruction = read(Half | Nonsequential, pc & ~1);
   output.append(hex(instruction, 4L), "  ");
 
   //adjust_register()
@@ -506,7 +506,7 @@ auto ARM::disassemble_thumb_instruction(uint32 pc) -> string {
 
     uint2 opcode = instruction >> 11;
     uint3 rd = instruction >> 8;
-    uint8 immediate = instruction;
+    buint8 immediate = instruction;
 
     output.append(opcodes[opcode], " ", registers[rd], ",#0x", hex(immediate, 2L));
 
@@ -565,7 +565,7 @@ auto ARM::disassemble_thumb_instruction(uint32 pc) -> string {
   //ldr rd,[pc,#+/-offset]
   if((instruction & 0xf800) == 0x4800) {
     uint3 rd = instruction >> 8;
-    uint8 displacement = instruction;
+    buint8 displacement = instruction;
 
     unsigned rm = ((pc + 4) & ~3) + displacement * 4;
     output.append("ldr ", registers[rd], ",[pc,#0x", hex(rm, 3L), "]");
@@ -648,7 +648,7 @@ auto ARM::disassemble_thumb_instruction(uint32 pc) -> string {
   if((instruction & 0xf000) == 0xa000) {
     uint1 sp = instruction >> 11;
     uint3 rd = instruction >> 8;
-    uint8 immediate = instruction;
+    buint8 immediate = instruction;
 
     output.append("add ", registers[rd], ",", sp ? "sp" : "pc", ",#0x", hex(immediate, 2L));
 
@@ -672,7 +672,7 @@ auto ARM::disassemble_thumb_instruction(uint32 pc) -> string {
   if((instruction & 0xf600) == 0xb400) {
     uint1 load = instruction >> 11;
     uint1 branch = instruction >> 8;
-    uint8 list = instruction;
+    buint8 list = instruction;
 
     output.append(load == 0 ? "push" : "pop", " {");
     for(unsigned l = 0; l < 8; l++) {
@@ -690,7 +690,7 @@ auto ARM::disassemble_thumb_instruction(uint32 pc) -> string {
   if((instruction & 0xf000) == 0xc000) {
     uint1 load = instruction >> 11;
     uint3 rn = instruction >> 8;
-    uint8 list = instruction;
+    buint8 list = instruction;
 
     output.append(load ? "ldmia " : "stmia ", registers[rn], "!,{");
     for(unsigned l = 0; l < 8; l++) {
@@ -705,7 +705,7 @@ auto ARM::disassemble_thumb_instruction(uint32 pc) -> string {
   //software_interrupt()
   //swi #immediate
   if((instruction & 0xff00) == 0xdf00) {
-    uint8 immediate = instruction;
+    buint8 immediate = instruction;
 
     output.append("swi #0x", hex(immediate, 2L));
 
@@ -718,7 +718,7 @@ auto ARM::disassemble_thumb_instruction(uint32 pc) -> string {
     uint4 condition = instruction >> 8;
     int8 displacement = instruction;
 
-    uint32 offset = pc + 4 + displacement * 2;
+    buint32 offset = pc + 4 + displacement * 2;
     output.append("b", conditions[condition], " 0x", hex(offset, 8L));
 
     return output;

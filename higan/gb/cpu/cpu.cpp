@@ -73,7 +73,7 @@ auto CPU::interrupt_test() -> void {
   }
 }
 
-auto CPU::interrupt_exec(uint16 pc) -> void {
+auto CPU::interrupt_exec(buint16 pc) -> void {
   op_io();
   op_io();
   op_io();

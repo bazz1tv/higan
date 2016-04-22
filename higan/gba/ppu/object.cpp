@@ -8,7 +8,7 @@ auto PPU::render_objects() -> void {
 //pa,pb,pc,pd = affine pixel adjustments
 //x,y = adjusted coordinates within sprite (linear = vflip/hflip, affine = rotation/zoom)
 auto PPU::render_object(Object& obj) -> void {
-  uint8 py = regs.vcounter - obj.y;
+  buint8 py = regs.vcounter - obj.y;
   if(obj.affine == 0 && obj.affinesize == 1) return;  //hidden
   if(py >= obj.height << obj.affinesize) return;  //offscreen
 
@@ -55,7 +55,7 @@ auto PPU::render_object(Object& obj) -> void {
       uint offset = (y / 8) * rowsize + (x / 8);
       offset = offset * 64 + (y & 7) * 8 + (x & 7);
 
-      uint8 color = object_vram_read(baseaddr + (offset >> !obj.colors));
+      buint8 color = object_vram_read(baseaddr + (offset >> !obj.colors));
       if(obj.colors == 0) color = (x & 1) ? color >> 4 : color & 15;
       if(color) {
         if(obj.mode & 2) {
@@ -72,7 +72,7 @@ auto PPU::render_object(Object& obj) -> void {
   }
 }
 
-auto PPU::object_vram_read(uint addr) const -> uint8 {
+auto PPU::object_vram_read(uint addr) const -> buint8 {
   if(regs.control.bgmode == 3 || regs.control.bgmode == 4 || regs.control.bgmode == 5) {
     if(addr <= 0x3fff) return 0u;
   }

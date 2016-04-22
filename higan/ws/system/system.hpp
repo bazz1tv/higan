@@ -17,8 +17,8 @@ struct System : IO {
   auto pollKeypad() -> void;
 
   //io.cpp
-  auto portRead(uint16 addr) -> uint8 override;
-  auto portWrite(uint16 addr, uint8 data) -> void override;
+  auto portRead(buint16 addr) -> buint8 override;
+  auto portWrite(buint16 addr, buint8 data) -> void override;
 
   //serialization.cpp
   auto serializeInit() -> void;

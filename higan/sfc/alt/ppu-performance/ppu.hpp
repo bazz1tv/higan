@@ -25,12 +25,12 @@ struct PPU : Thread, public PPUcounter {
 
   auto serialize(serializer&) -> void;
 
-  uint8 vram[64 * 1024];
-  uint8 oam[544];
-  uint8 cgram[512];
+  buint8 vram[64 * 1024];
+  buint8 oam[544];
+  buint8 cgram[512];
 
 private:
-  uint32* output;
+  buint32* output;
 
   #include "mmio/mmio.hpp"
   #include "window/window.hpp"

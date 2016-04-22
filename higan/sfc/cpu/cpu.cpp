@@ -12,7 +12,7 @@ CPU cpu;
 #include "serialization.cpp"
 
 auto CPU::interruptPending() const -> bool { return status.interrupt_pending; }
-auto CPU::pio() const -> uint8 { return status.pio; }
+auto CPU::pio() const -> buint8 { return status.pio; }
 auto CPU::joylatch() const -> bool { return status.joypad_strobe_latch; }
 
 CPU::CPU() {
@@ -20,13 +20,13 @@ CPU::CPU() {
 }
 
 auto CPU::step(uint clocks) -> void {
-  smp.clock -= clocks * (uint64)smp.frequency;
+  smp.clock -= clocks * (buint64)smp.frequency;
   ppu.clock -= clocks;
   for(auto chip : coprocessors) {
-    chip->clock -= clocks * (uint64)chip->frequency;
+    chip->clock -= clocks * (buint64)chip->frequency;
   }
-  device.controllerPort1->clock -= clocks * (uint64)device.controllerPort1->frequency;
-  device.controllerPort2->clock -= clocks * (uint64)device.controllerPort2->frequency;
+  device.controllerPort1->clock -= clocks * (buint64)device.controllerPort1->frequency;
+  device.controllerPort2->clock -= clocks * (buint64)device.controllerPort2->frequency;
   synchronizeDevices();
 }
 
@@ -92,8 +92,8 @@ auto CPU::main() -> void {
 }
 
 auto CPU::enable() -> void {
-  function<auto (uint24, uint8) -> uint8> reader;
-  function<auto (uint24, uint8) -> void> writer;
+  function<auto (uint24, buint8) -> buint8> reader;
+  function<auto (uint24, buint8) -> void> writer;
 
   reader = {&CPU::apuPortRead, this};
   writer = {&CPU::apuPortWrite, this};
@@ -116,8 +116,8 @@ auto CPU::enable() -> void {
   bus.map(reader, writer, 0x00, 0x3f, 0x4300, 0x437f);
   bus.map(reader, writer, 0x80, 0xbf, 0x4300, 0x437f);
 
-  reader = [](uint24 addr, uint8) -> uint8 { return cpu.wram[addr]; };
-  writer = [](uint24 addr, uint8 data) -> void { cpu.wram[addr] = data; };
+  reader = [](uint24 addr, buint8) -> buint8 { return cpu.wram[addr]; };
+  writer = [](uint24 addr, buint8 data) -> void { cpu.wram[addr] = data; };
   bus.map(reader, writer, 0x00, 0x3f, 0x0000, 0x1fff, 0x002000);
   bus.map(reader, writer, 0x80, 0xbf, 0x0000, 0x1fff, 0x002000);
   bus.map(reader, writer, 0x7e, 0x7f, 0x0000, 0xffff, 0x020000);

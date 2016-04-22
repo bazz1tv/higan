@@ -15,7 +15,7 @@ auto LR35902::power() -> void {
 }
 
 auto LR35902::exec() -> void {
-  uint8 opcode = op_read(r[PC]++);
+  buint8 opcode = op_read(r[PC]++);
   switch(opcode) {
   case 0x00: return op_nop();
   case 0x01: return op_ld_rr_nn<BC>();
@@ -277,7 +277,7 @@ auto LR35902::exec() -> void {
 }
 
 auto LR35902::execCB() -> void {
-  uint8 opcode = op_read(r[PC]++);
+  buint8 opcode = op_read(r[PC]++);
   switch(opcode) {
   case 0x00: return op_rlc_r<B>();
   case 0x01: return op_rlc_r<C>();

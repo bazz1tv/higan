@@ -15,7 +15,7 @@ struct EEPROM {
   };
 
   auto name() const -> string;
-  auto data() -> uint16*;
+  auto data() -> buint16*;
   auto size() const -> uint;
 
   auto setName(string name) -> void;
@@ -23,10 +23,10 @@ struct EEPROM {
 
   auto erase() -> void;
   auto power() -> void;
-  auto read(uint) -> uint8;
-  auto write(uint, uint8) -> void;
+  auto read(uint) -> buint8;
+  auto write(uint, buint8) -> void;
 
-  auto operator[](uint10 addr) -> uint16&;
+  auto operator[](uint10 addr) -> buint16&;
 
   //serialization.cpp
   auto serialize(serializer&) -> void;
@@ -35,12 +35,12 @@ private:
   auto execute() -> void;
 
   string _name;
-  uint16 _data[1024];
+  buint16 _data[1024];
   uint _size = 0;  //in words
 
   struct Registers {
-    uint16 latch;
-    uint16 address;
+    buint16 latch;
+    buint16 address;
 
     bool unknown;
     bool writeRequested;

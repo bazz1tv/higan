@@ -72,7 +72,7 @@ auto APU::power() -> void {
   for(auto& n : wave.pattern) n = r();
 }
 
-auto APU::mmio_read(uint16 addr) -> uint8 {
+auto APU::mmio_read(buint16 addr) -> buint8 {
   if(addr >= 0xff10 && addr <= 0xff14) return square1.read(addr);
   if(addr >= 0xff15 && addr <= 0xff19) return square2.read(addr);
   if(addr >= 0xff1a && addr <= 0xff1e) return wave.read(addr);
@@ -82,7 +82,7 @@ auto APU::mmio_read(uint16 addr) -> uint8 {
   return 0xff;
 }
 
-auto APU::mmio_write(uint16 addr, uint8 data) -> void {
+auto APU::mmio_write(buint16 addr, buint8 data) -> void {
   if(!sequencer.enable) {
     bool valid = addr == 0xff26;  //NR52
     if(!system.cgb()) {

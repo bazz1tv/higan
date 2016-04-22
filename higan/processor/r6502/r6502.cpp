@@ -12,7 +12,7 @@ namespace Processor {
 #include "disassembler.cpp"
 #include "serialization.cpp"
 
-auto R6502::mdr() const -> uint8 {
+auto R6502::mdr() const -> buint8 {
   return regs.mdr;
 }
 
@@ -36,7 +36,7 @@ auto R6502::interrupt() -> void {
   op_writesp(regs.pc >> 8);
   op_writesp(regs.pc >> 0);
   op_writesp(regs.p | 0x20);
-  uint16 vector = 0xfffe;  //IRQ
+  buint16 vector = 0xfffe;  //IRQ
   nmi(vector);
   abs.l = op_read(vector++);
   regs.p.i = 1;
@@ -46,7 +46,7 @@ L abs.h = op_read(vector++);
 }
 
 auto R6502::exec() -> void {
-  uint8 opcode = op_readpci();
+  buint8 opcode = op_readpci();
   switch(opcode) {
   case 0x00: return op_brk();
   case 0x01: return opi_read_indirect_zero_page_x<&R6502::opf_ora>();

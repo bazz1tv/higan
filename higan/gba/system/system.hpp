@@ -6,12 +6,12 @@ struct BIOS : Memory {
   BIOS();
   ~BIOS();
 
-  auto read(uint mode, uint32 addr) -> uint32 override;
-  auto write(uint mode, uint32 addr, uint32 word) -> void override;
+  auto read(uint mode, buint32 addr) -> buint32 override;
+  auto write(uint mode, buint32 addr, buint32 word) -> void override;
 
-  uint8* data = nullptr;
+  buint8* data = nullptr;
   uint size = 0;
-  uint32 mdr = 0;
+  buint32 mdr = 0;
 };
 
 struct System {

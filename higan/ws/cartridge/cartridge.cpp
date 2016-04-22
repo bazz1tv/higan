@@ -54,7 +54,7 @@ auto Cartridge::load() -> void {
     rom.size = node["size"].natural();
     rom.mask = bit::round(rom.size) - 1;
     if(rom.size) {
-      rom.data = new uint8[rom.mask + 1];
+      rom.data = new buint8[rom.mask + 1];
       memory::fill(rom.data, rom.mask + 1, 0xff);
       if(rom.name) interface->loadRequest(ID::ROM, rom.name, true);
     }
@@ -66,7 +66,7 @@ auto Cartridge::load() -> void {
       ram.size = node["size"].natural();
       ram.mask = bit::round(ram.size) - 1;
       if(ram.size) {
-        ram.data = new uint8[ram.mask + 1];
+        ram.data = new buint8[ram.mask + 1];
         memory::fill(ram.data, ram.mask + 1, 0xff);
         if(ram.name) interface->loadRequest(ID::RAM, ram.name, false);
       }
@@ -74,7 +74,7 @@ auto Cartridge::load() -> void {
 
     if(node["type"].text() == "eeprom") {
       eeprom.setName(node["name"].text());
-      eeprom.setSize(node["size"].natural() / sizeof(uint16));
+      eeprom.setSize(node["size"].natural() / sizeof(buint16));
       if(eeprom.size()) {
         eeprom.erase();
         if(eeprom.name()) interface->loadRequest(ID::EEPROM, eeprom.name(), false);
@@ -87,7 +87,7 @@ auto Cartridge::load() -> void {
     rtc.size = node["size"].natural();
     rtc.mask = bit::round(rtc.size) - 1;
     if(rtc.size) {
-      rtc.data = new uint8[rtc.mask + 1];
+      rtc.data = new buint8[rtc.mask + 1];
       memory::fill(rtc.data, rtc.mask + 1, 0x00);
       if(rtc.name) interface->loadRequest(ID::RTC, rtc.name, false);
     }

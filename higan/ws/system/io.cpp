@@ -1,4 +1,4 @@
-auto System::portRead(uint16 addr) -> uint8 {
+auto System::portRead(buint16 addr) -> buint8 {
   //DISP_MODE
   if(addr == 0x0060) return (
     r.unknown << 0
@@ -19,7 +19,7 @@ auto System::portRead(uint16 addr) -> uint8 {
   if(addr == 0x00be) return eeprom.read(EEPROM::Status);
 }
 
-auto System::portWrite(uint16 addr, uint8 data) -> void {
+auto System::portWrite(buint16 addr, buint8 data) -> void {
   //DISP_MODE
   if(addr == 0x0060) {
     r.unknown = data.bits(0,4) & 0b01011;

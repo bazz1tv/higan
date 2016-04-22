@@ -36,7 +36,7 @@ auto APU::Noise::clockEnvelope() -> void {
   }
 }
 
-auto APU::Noise::read(uint16 addr) -> uint8 {
+auto APU::Noise::read(buint16 addr) -> buint8 {
   if(addr == 0xff1f) {  //NR40
     return 0xff;
   }
@@ -60,7 +60,7 @@ auto APU::Noise::read(uint16 addr) -> uint8 {
   return 0xff;
 }
 
-auto APU::Noise::write(uint16 addr, uint8 data) -> void {
+auto APU::Noise::write(buint16 addr, buint8 data) -> void {
   if(addr == 0xff20) {  //NR41
     length = 64 - (data & 0x3f);
   }

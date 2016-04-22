@@ -95,8 +95,8 @@ auto PPU::reset() -> void {
   for(auto& n : oam   ) n = 0;
 }
 
-auto PPU::read(uint16 addr) -> uint8 {
-  uint8 result = 0x00;
+auto PPU::read(buint16 addr) -> buint8 {
+  buint8 result = 0x00;
 
   switch(addr & 7) {
   case 2:  //PPUSTATUS
@@ -132,7 +132,7 @@ auto PPU::read(uint16 addr) -> uint8 {
   return result;
 }
 
-auto PPU::write(uint16 addr, uint8 data) -> void {
+auto PPU::write(buint16 addr, buint8 data) -> void {
   status.mdr = data;
 
   switch(addr & 7) {
@@ -197,22 +197,22 @@ auto PPU::write(uint16 addr, uint8 data) -> void {
   }
 }
 
-auto PPU::ciram_read(uint16 addr) -> uint8 {
+auto PPU::ciram_read(buint16 addr) -> buint8 {
   return ciram[addr & 0x07ff];
 }
 
-auto PPU::ciram_write(uint16 addr, uint8 data) -> void {
+auto PPU::ciram_write(buint16 addr, buint8 data) -> void {
   ciram[addr & 0x07ff] = data;
 }
 
-auto PPU::cgram_read(uint16 addr) -> uint8 {
+auto PPU::cgram_read(buint16 addr) -> buint8 {
   if((addr & 0x13) == 0x10) addr &= ~0x10;
-  uint8 data = cgram[addr & 0x1f];
+  buint8 data = cgram[addr & 0x1f];
   if(status.grayscale) data &= 0x30;
   return data;
 }
 
-auto PPU::cgram_write(uint16 addr, uint8 data) -> void {
+auto PPU::cgram_write(buint16 addr, buint8 data) -> void {
   if((addr & 0x13) == 0x10) addr &= ~0x10;
   cgram[addr & 0x1f] = data;
 }
@@ -248,7 +248,7 @@ auto PPU::sprite_height() const -> uint {
 
 //
 
-auto PPU::chr_load(uint16 addr) -> uint8 {
+auto PPU::chr_load(buint16 addr) -> buint8 {
   if(raster_enable() == false) return 0x00;
   return cartridge.chr_read(addr);
 }
@@ -278,7 +278,7 @@ auto PPU::scrolly_increment() -> void {
 //
 
 auto PPU::raster_pixel() -> void {
-  uint32* output = buffer + status.ly * 256;
+  buint32* output = buffer + status.ly * 256;
 
   uint mask = 0x8000 >> (status.xaddr + (status.lx & 7));
   uint palette = 0, object_palette = 0;

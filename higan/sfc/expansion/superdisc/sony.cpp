@@ -1,12 +1,12 @@
 //Sony CXD1800Q
 //CD-ROM decoder
 
-auto SuperDisc::sonyPollIRQ() -> uint8 {
+auto SuperDisc::sonyPollIRQ() -> buint8 {
   return 0x00;
 }
 
-auto SuperDisc::sonyReadData() -> uint8 {
-  uint8 command = sony.command++;
+auto SuperDisc::sonyReadData() -> buint8 {
+  buint8 command = sony.command++;
 
   auto match = [&](const string& compare) -> bool {
     char hi = compare[0];
@@ -85,12 +85,12 @@ auto SuperDisc::sonyReadData() -> uint8 {
   return 0x00;
 }
 
-auto SuperDisc::sonyWriteCommand(uint8 data) -> void {
+auto SuperDisc::sonyWriteCommand(buint8 data) -> void {
   sony.command = data;
 }
 
-auto SuperDisc::sonyWriteData(uint8 data) -> void {
-  uint8 command = sony.command++;
+auto SuperDisc::sonyWriteData(buint8 data) -> void {
+  buint8 command = sony.command++;
 
   auto match = [&](const string& compare) -> bool {
     char hi = compare[0];

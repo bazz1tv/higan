@@ -1,4 +1,4 @@
-auto CPU::wram_addr(uint16 addr) const -> uint {
+auto CPU::wram_addr(buint16 addr) const -> uint {
   addr &= 0x1fff;
   if(addr < 0x1000) return addr;
   auto bank = status.wram_bank + (status.wram_bank == 0);
@@ -32,7 +32,7 @@ auto CPU::mmio_joyp_poll() -> void {
   if(status.joyp != 0x0f) interrupt_raise(Interrupt::Joypad);
 }
 
-auto CPU::mmio_read(uint16 addr) -> uint8 {
+auto CPU::mmio_read(buint16 addr) -> buint8 {
   if(addr >= 0xc000 && addr <= 0xfdff) return wram[wram_addr(addr)];
   if(addr >= 0xff80 && addr <= 0xfffe) return hram[addr & 0x7f];
 
@@ -138,7 +138,7 @@ auto CPU::mmio_read(uint16 addr) -> uint8 {
   return 0xff;
 }
 
-auto CPU::mmio_write(uint16 addr, uint8 data) -> void {
+auto CPU::mmio_write(buint16 addr, buint8 data) -> void {
   if(addr >= 0xc000 && addr <= 0xfdff) { wram[wram_addr(addr)] = data; return; }
   if(addr >= 0xff80 && addr <= 0xfffe) { hram[addr & 0x7f] = data; return; }
 

@@ -105,7 +105,7 @@ auto MSU1::audioOpen() -> void {
   }
   if(audioFile.open({interface->path(ID::SuperFamicom), name}, file::mode::read)) {
     if(audioFile.size() >= 8) {
-      uint32 header = audioFile.readm(4);
+      buint32 header = audioFile.readm(4);
       if(header == 0x4d535531) {  //"MSU1"
         mmio.audioLoopOffset = 8 + audioFile.readl(4) * 4;
         if(mmio.audioLoopOffset > audioFile.size()) mmio.audioLoopOffset = 8;
@@ -119,7 +119,7 @@ auto MSU1::audioOpen() -> void {
   mmio.audioError = true;
 }
 
-auto MSU1::mmioRead(uint24 addr, uint8) -> uint8 {
+auto MSU1::mmioRead(uint24 addr, buint8) -> buint8 {
   cpu.synchronizeCoprocessors();
   addr = 0x2000 | (addr & 7);
 
@@ -147,7 +147,7 @@ auto MSU1::mmioRead(uint24 addr, uint8) -> uint8 {
   }
 }
 
-auto MSU1::mmioWrite(uint24 addr, uint8 data) -> void {
+auto MSU1::mmioWrite(uint24 addr, buint8 data) -> void {
   cpu.synchronizeCoprocessors();
   addr = 0x2000 | (addr & 7);
 

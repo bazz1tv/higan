@@ -16,14 +16,14 @@ struct detour {
   static auto remove(const string& moduleName, const string& functionName, void*& source) -> bool;
 
 protected:
-  static auto length(const uint8* function) -> uint;
-  static auto mirror(uint8* target, const uint8* source) -> uint;
+  static auto length(const buint8* function) -> uint;
+  static auto mirror(buint8* target, const buint8* source) -> uint;
 
   struct opcode {
-    uint16 prefix;
+    buint16 prefix;
     uint length;
     uint mode;
-    uint16 modify;
+    buint16 modify;
   };
   static opcode opcodes[];
 };
@@ -65,7 +65,7 @@ auto detour::insert(const string& moduleName, const string& functionName, void*&
   HMODULE module = GetModuleHandleW(utf16_t(moduleName));
   if(!module) return false;
 
-  uint8* sourceData = (uint8_t*)GetProcAddress(module, functionName);
+  buint8* sourceData = (uint8_t*)GetProcAddress(module, functionName);
   if(!sourceData) return false;
 
   uint sourceLength = detour::length(sourceData);
@@ -80,7 +80,7 @@ auto detour::insert(const string& moduleName, const string& functionName, void*&
     return false;
   }
 
-  auto mirrorData = new uint8[512]();
+  auto mirrorData = new buint8[512]();
   detour::mirror(mirrorData, sourceData);
 
   DWORD privileges;
@@ -102,10 +102,10 @@ auto detour::remove(const string& moduleName, const string& functionName, void*&
   HMODULE module = GetModuleHandleW(utf16_t(moduleName));
   if(!module) return false;
 
-  auto sourceData = (uint8*)GetProcAddress(module, functionName);
+  auto sourceData = (buint8*)GetProcAddress(module, functionName);
   if(!sourceData) return false;
 
-  auto mirrorData = (uint8*)source;
+  auto mirrorData = (buint8*)source;
   if(mirrorData == sourceData) return false;  //hook was never installed
 
   uint length = detour::length(256 + mirrorData);
@@ -121,7 +121,7 @@ auto detour::remove(const string& moduleName, const string& functionName, void*&
   return true;
 }
 
-auto detour::length(const uint8* function) -> uint {
+auto detour::length(const buint8* function) -> uint {
   uint length = 0;
   while(length < 5) {
     detour::opcode *opcode = 0;
@@ -137,8 +137,8 @@ auto detour::length(const uint8* function) -> uint {
   return length;
 }
 
-auto detour::mirror(uint8* target, const uint8* source) -> uint {
-  const uint8* entryPoint = source;
+auto detour::mirror(buint8* target, const buint8* source) -> uint {
+  const buint8* entryPoint = source;
   for(uint n = 0; n < 256; n++) target[256 + n] = source[n];
 
   uint size = detour::length(source);

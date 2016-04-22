@@ -25,7 +25,7 @@ auto Controller::main() -> void {
 }
 
 auto Controller::step(uint clocks) -> void {
-  clock += clocks * (uint64)cpu.frequency;
+  clock += clocks * (buint64)cpu.frequency;
   synchronizeCPU();
 }
 

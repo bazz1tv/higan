@@ -52,7 +52,7 @@ auto SuperDisc::reset() -> void {
   sony.data = 0x00;
 }
 
-auto SuperDisc::read(uint24 addr, uint8 data) -> uint8 {
+auto SuperDisc::read(uint24 addr, buint8 data) -> buint8 {
   addr = 0x21e0 | (addr & 7);
 
   if(addr == 0x21e0) {
@@ -84,7 +84,7 @@ auto SuperDisc::read(uint24 addr, uint8 data) -> uint8 {
   return data;
 }
 
-auto SuperDisc::write(uint24 addr, uint8 data) -> void {
+auto SuperDisc::write(uint24 addr, buint8 data) -> void {
   addr = 0x21e0 | (addr & 7);
 
   if(addr == 0x21e0) {

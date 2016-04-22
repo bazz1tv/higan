@@ -13,8 +13,8 @@ auto SPC7110::alu_multiply() -> void {
     r482b = result >> 24;
   } else {
     //unsigned 16-bit x 16-bit multiplication
-    uint16 r0 = (uint16)(r4824 | r4825 << 8);
-    uint16 r1 = (uint16)(r4820 | r4821 << 8);
+    buint16 r0 = (buint16)(r4824 | r4825 << 8);
+    buint16 r1 = (buint16)(r4820 | r4821 << 8);
 
     uint result = r0 * r1;
     r4828 = result;
@@ -55,15 +55,15 @@ auto SPC7110::alu_divide() -> void {
     r482d = remainder >> 8;
   } else {
     //unsigned 32-bit x 16-bit division
-    uint32 dividend = (uint32)(r4820 | r4821 << 8 | r4822 << 16 | r4823 << 24);
-    uint16 divisor  = (uint16)(r4826 | r4827 << 8);
+    buint32 dividend = (buint32)(r4820 | r4821 << 8 | r4822 << 16 | r4823 << 24);
+    buint16 divisor  = (buint16)(r4826 | r4827 << 8);
 
-    uint32 quotient;
-    uint16 remainder;
+    buint32 quotient;
+    buint16 remainder;
 
     if(divisor) {
-      quotient  = (uint32)(dividend / divisor);
-      remainder = (uint16)(dividend % divisor);
+      quotient  = (buint32)(dividend / divisor);
+      remainder = (buint16)(dividend % divisor);
     } else {
       //illegal division by zero
       quotient  = 0;

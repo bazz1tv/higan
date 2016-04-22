@@ -39,16 +39,16 @@ struct PPU : Thread, public PPUcounter {
   enum : uint { BG1 = 0, BG2 = 1, BG3 = 2, BG4 = 3, OAM = 4, BACK = 5, COL = 5 };
   enum : uint { SC_32x32 = 0, SC_64x32 = 1, SC_32x64 = 2, SC_64x64 = 3 };
 
-  uint8 vram[128 * 1024];
-  uint8 oam[544];
-  uint8 cgram[512];
+  buint8 vram[128 * 1024];
+  buint8 oam[544];
+  buint8 cgram[512];
 
-  uint32* output;
+  buint32* output;
 
   uint ppu1_version = 1;
   uint ppu2_version = 3;
 
-  uint8 region;
+  buint8 region;
   uint line;
 
   struct {
@@ -58,18 +58,18 @@ struct PPU : Thread, public PPUcounter {
 
   struct {
     //$2101
-    uint8  oam_basesize;
-    uint8  oam_nameselect;
-    uint16 oam_tdaddr;
+    buint8  oam_basesize;
+    buint8  oam_nameselect;
+    buint16 oam_tdaddr;
 
     //$210d-$210e
-    uint16 m7_hofs, m7_vofs;
+    buint16 m7_hofs, m7_vofs;
 
     //$211b-$2120
-    uint16 m7a, m7b, m7c, m7d, m7x, m7y;
+    buint16 m7a, m7b, m7c, m7d, m7x, m7y;
   } cache;
 
-  uint16 mosaic_table[16][4096];
+  buint16 mosaic_table[16][4096];
   bool layer_enabled[5][4];
   uint frameskip;
   uint framecounter;

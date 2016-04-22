@@ -22,10 +22,10 @@ struct Registers {
     uint1 irqvblank;
     uint1 irqhblank;
     uint1 irqvcoincidence;
-    uint8 vcompare;
+    buint8 vcompare;
   } status;
 
-  uint16 vcounter;
+  buint16 vcounter;
 
   struct Background {
     struct Control {
@@ -53,8 +53,8 @@ struct Registers {
   } bg[4];
 
   struct Window {
-    uint8 x1, x2;
-    uint8 y1, y2;
+    buint8 x1, x2;
+    buint8 y1, y2;
   } window[2];
 
   struct WindowFlags {

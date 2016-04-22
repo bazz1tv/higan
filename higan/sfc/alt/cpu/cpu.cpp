@@ -15,14 +15,14 @@ CPU::CPU() : queue(512, {&CPU::queue_event, this}) {
 }
 
 auto CPU::step(uint clocks) -> void {
-  smp.clock -= clocks * (uint64)smp.frequency;
+  smp.clock -= clocks * (buint64)smp.frequency;
   ppu.clock -= clocks;
   for(uint i = 0; i < coprocessors.size(); i++) {
     auto& chip = *coprocessors[i];
-    chip.clock -= clocks * (uint64)chip.frequency;
+    chip.clock -= clocks * (buint64)chip.frequency;
   }
-  device.controllerPort1->clock -= clocks * (uint64)device.controllerPort1->frequency;
-  device.controllerPort2->clock -= clocks * (uint64)device.controllerPort2->frequency;
+  device.controllerPort1->clock -= clocks * (buint64)device.controllerPort1->frequency;
+  device.controllerPort2->clock -= clocks * (buint64)device.controllerPort2->frequency;
   synchronizeDevices();
 }
 
@@ -75,8 +75,8 @@ auto CPU::main() -> void {
 }
 
 auto CPU::enable() -> void {
-  function<auto (uint, uint8) -> uint8> reader{&CPU::mmio_read, (CPU*)&cpu};
-  function<auto (uint, uint8) -> void> writer{&CPU::mmio_write, (CPU*)&cpu};
+  function<auto (uint, buint8) -> buint8> reader{&CPU::mmio_read, (CPU*)&cpu};
+  function<auto (uint, buint8) -> void> writer{&CPU::mmio_write, (CPU*)&cpu};
 
   bus.map(reader, writer, 0x00, 0x3f, 0x2140, 0x2183);
   bus.map(reader, writer, 0x80, 0xbf, 0x2140, 0x2183);
@@ -90,8 +90,8 @@ auto CPU::enable() -> void {
   bus.map(reader, writer, 0x00, 0x3f, 0x4300, 0x437f);
   bus.map(reader, writer, 0x80, 0xbf, 0x4300, 0x437f);
 
-  reader = [](uint addr, uint8 data) { return cpu.wram[addr]; };
-  writer = [](uint addr, uint8 data) { cpu.wram[addr] = data; };
+  reader = [](uint addr, buint8 data) { return cpu.wram[addr]; };
+  writer = [](uint addr, buint8 data) { cpu.wram[addr] = data; };
 
   bus.map(reader, writer, 0x00, 0x3f, 0x0000, 0x1fff, 0x002000);
   bus.map(reader, writer, 0x80, 0xbf, 0x0000, 0x1fff, 0x002000);

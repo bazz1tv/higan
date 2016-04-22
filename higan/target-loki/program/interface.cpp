@@ -43,7 +43,7 @@ auto Program::saveRequest(uint id, string filename) -> void {
 //return emulator->save(id, stream);
 }
 
-auto Program::videoRefresh(const uint32* data, uint pitch, uint width, uint height) -> void {
+auto Program::videoRefresh(const buint32* data, uint pitch, uint width, uint height) -> void {
   uint32_t* output;
   uint length;
 
@@ -51,7 +51,7 @@ auto Program::videoRefresh(const uint32* data, uint pitch, uint width, uint heig
     pitch >>= 2, length >>= 2;
 
     for(auto y : range(height)) {
-      memory::copy(output + y * length, data + y * pitch, width * sizeof(uint32));
+      memory::copy(output + y * length, data + y * pitch, width * sizeof(buint32));
     }
 
     video->unlock();

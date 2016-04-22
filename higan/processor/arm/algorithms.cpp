@@ -19,7 +19,7 @@ auto ARM::condition(uint4 condition) -> bool {
   }
 }
 
-auto ARM::bit(uint32 result) -> uint32 {
+auto ARM::bit(buint32 result) -> buint32 {
   if(cpsr().t || instruction() & (1 << 20)) {
     cpsr().n = result >> 31;
     cpsr().z = result == 0;
@@ -28,10 +28,10 @@ auto ARM::bit(uint32 result) -> uint32 {
   return result;
 }
 
-auto ARM::add(uint32 source, uint32 modify, bool carry) -> uint32 {
-  uint32 result = source + modify + carry;
+auto ARM::add(buint32 source, buint32 modify, bool carry) -> buint32 {
+  buint32 result = source + modify + carry;
   if(cpsr().t || instruction() & (1 << 20)) {
-    uint32 overflow = ~(source ^ modify) & (source ^ result);
+    buint32 overflow = ~(source ^ modify) & (source ^ result);
     cpsr().n = result >> 31;
     cpsr().z = result == 0;
     cpsr().c = (1u << 31) & (overflow ^ source ^ modify ^ result);
@@ -40,11 +40,11 @@ auto ARM::add(uint32 source, uint32 modify, bool carry) -> uint32 {
   return result;
 }
 
-auto ARM::sub(uint32 source, uint32 modify, bool carry) -> uint32 {
+auto ARM::sub(buint32 source, buint32 modify, bool carry) -> buint32 {
   return add(source, ~modify, carry);
 }
 
-auto ARM::mul(uint32 product, uint32 multiplicand, uint32 multiplier) -> uint32 {
+auto ARM::mul(buint32 product, buint32 multiplicand, buint32 multiplier) -> buint32 {
   idle();
   if((multiplier & 0xffffff00) != 0x00000000 && (multiplier & 0xffffff00) != 0xffffff00) idle();
   if((multiplier & 0xffff0000) != 0x00000000 && (multiplier & 0xffff0000) != 0xffff0000) idle();
@@ -60,7 +60,7 @@ auto ARM::mul(uint32 product, uint32 multiplicand, uint32 multiplier) -> uint32 
   return product;
 }
 
-auto ARM::lsl(uint32 source, uint8 shift) -> uint32 {
+auto ARM::lsl(buint32 source, buint8 shift) -> buint32 {
   carryout() = cpsr().c;
   if(shift == 0) return source;
 
@@ -69,7 +69,7 @@ auto ARM::lsl(uint32 source, uint8 shift) -> uint32 {
   return source;
 }
 
-auto ARM::lsr(uint32 source, uint8 shift) -> uint32 {
+auto ARM::lsr(buint32 source, buint8 shift) -> buint32 {
   carryout() = cpsr().c;
   if(shift == 0) return source;
 
@@ -78,7 +78,7 @@ auto ARM::lsr(uint32 source, uint8 shift) -> uint32 {
   return source;
 }
 
-auto ARM::asr(uint32 source, uint8 shift) -> uint32 {
+auto ARM::asr(buint32 source, buint8 shift) -> buint32 {
   carryout() = cpsr().c;
   if(shift == 0) return source;
 
@@ -87,7 +87,7 @@ auto ARM::asr(uint32 source, uint8 shift) -> uint32 {
   return source;
 }
 
-auto ARM::ror(uint32 source, uint8 shift) -> uint32 {
+auto ARM::ror(buint32 source, buint8 shift) -> buint32 {
   carryout() = cpsr().c;
   if(shift == 0) return source;
 
@@ -97,7 +97,7 @@ auto ARM::ror(uint32 source, uint8 shift) -> uint32 {
   return source;
 }
 
-auto ARM::rrx(uint32 source) -> uint32 {
+auto ARM::rrx(buint32 source) -> buint32 {
   carryout() = source & 1;
   return (cpsr().c << 31) | (source >> 1);
 }

@@ -12,8 +12,8 @@ private:
   struct Buffer {
     int16 left[256];
     int16 right[256];
-    uint8 read;
-    uint8 write;
+    buint8 read;
+    buint8 write;
   } dsp, mix;
 };
 

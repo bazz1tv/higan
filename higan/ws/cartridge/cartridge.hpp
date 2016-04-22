@@ -8,25 +8,25 @@ struct Cartridge : Thread, IO {
   auto unload() -> void;
 
   //memory.cpp
-  auto romRead(uint20 addr) -> uint8;
-  auto romWrite(uint20 addr, uint8 data) -> void;
+  auto romRead(uint20 addr) -> buint8;
+  auto romWrite(uint20 addr, buint8 data) -> void;
 
-  auto ramRead(uint20 addr) -> uint8;
-  auto ramWrite(uint20 addr, uint8 data) -> void;
+  auto ramRead(uint20 addr) -> buint8;
+  auto ramWrite(uint20 addr, buint8 data) -> void;
 
   //rtc.cpp
   auto rtcLoad() -> void;
   auto rtcSave() -> void;
   auto rtcTickSecond() -> void;
   auto rtcCheckAlarm() -> void;
-  auto rtcStatus() -> uint8;
-  auto rtcCommand(uint8 data) -> void;
-  auto rtcRead() -> uint8;
-  auto rtcWrite(uint8 data) -> void;
+  auto rtcStatus() -> buint8;
+  auto rtcCommand(buint8 data) -> void;
+  auto rtcRead() -> buint8;
+  auto rtcWrite(buint8 data) -> void;
 
   //io.cpp
-  auto portRead(uint16 addr) -> uint8 override;
-  auto portWrite(uint16 addr, uint8 data) -> void override;
+  auto portRead(buint16 addr) -> buint8 override;
+  auto portWrite(buint16 addr, buint8 data) -> void override;
 
   //serialization.cpp
   auto serialize(serializer&) -> void;
@@ -40,46 +40,46 @@ struct Cartridge : Thread, IO {
 
   struct Registers {
     //$00c0  BANK_ROM2
-    uint8 romBank2;
+    buint8 romBank2;
 
     //$00c1  BANK_SRAM
-    uint8 sramBank;
+    buint8 sramBank;
 
     //$00c2  BANK_ROM0
-    uint8 romBank0;
+    buint8 romBank0;
 
     //$00c3  BANK_ROM1
-    uint8 romBank1;
+    buint8 romBank1;
 
     //$00cc  GPO_EN
-    uint8 gpoEnable;
+    buint8 gpoEnable;
 
     //$00cd  GPO_DATA
-    uint8 gpoData;
+    buint8 gpoData;
   } r;
 
   struct Memory {
-    uint8* data = nullptr;
+    buint8* data = nullptr;
     uint size = 0;
     uint mask = 0;
     string name;
   };
 
   struct RTC : Memory {
-    uint8 command;
+    buint8 command;
     uint4 index;
 
-    uint8 alarm;
-    uint8 alarmHour;
-    uint8 alarmMinute;
+    buint8 alarm;
+    buint8 alarmHour;
+    buint8 alarmMinute;
 
-    auto year()    -> uint8& { return data[0]; }
-    auto month()   -> uint8& { return data[1]; }
-    auto day()     -> uint8& { return data[2]; }
-    auto weekday() -> uint8& { return data[3]; }
-    auto hour()    -> uint8& { return data[4]; }
-    auto minute()  -> uint8& { return data[5]; }
-    auto second()  -> uint8& { return data[6]; }
+    auto year()    -> buint8& { return data[0]; }
+    auto month()   -> buint8& { return data[1]; }
+    auto day()     -> buint8& { return data[2]; }
+    auto weekday() -> buint8& { return data[3]; }
+    auto hour()    -> buint8& { return data[4]; }
+    auto minute()  -> buint8& { return data[5]; }
+    auto second()  -> buint8& { return data[6]; }
   };
 
   Memory rom;

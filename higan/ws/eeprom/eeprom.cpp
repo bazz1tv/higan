@@ -5,7 +5,7 @@ namespace WonderSwan {
 #include "serialization.cpp"
 
 auto EEPROM::name() const -> string { return _name; }
-auto EEPROM::data() -> uint16* { return _data; }
+auto EEPROM::data() -> buint16* { return _data; }
 auto EEPROM::size() const -> uint { return _size; }
 
 auto EEPROM::setName(string name) -> void {
@@ -31,7 +31,7 @@ auto EEPROM::power() -> void {
   r.writeProtect = true;
 }
 
-auto EEPROM::read(uint port) -> uint8 {
+auto EEPROM::read(uint port) -> buint8 {
   if(!_size) return 0x00;
 
   if(port == DataLo) return r.latch.byte(0);
@@ -52,7 +52,7 @@ auto EEPROM::read(uint port) -> uint8 {
   return 0x00;
 }
 
-auto EEPROM::write(uint port, uint8 data) -> void {
+auto EEPROM::write(uint port, buint8 data) -> void {
   if(!_size) return;
 
   if(port == DataLo) {
@@ -134,7 +134,7 @@ auto EEPROM::execute() -> void {
   }
 }
 
-auto EEPROM::operator[](uint10 addr) -> uint16& {
+auto EEPROM::operator[](uint10 addr) -> buint16& {
   return _data[addr];
 }
 

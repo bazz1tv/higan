@@ -15,17 +15,17 @@ struct PPU : Thread, MMIO {
   auto scanline() -> void;
   auto frame() -> void;
 
-  auto read(uint32 addr) -> uint8;
-  auto write(uint32 addr, uint8 byte) -> void;
+  auto read(buint32 addr) -> buint8;
+  auto write(buint32 addr, buint8 byte) -> void;
 
-  auto vram_read(uint mode, uint32 addr) -> uint32;
-  auto vram_write(uint mode, uint32 addr, uint32 word) -> void;
+  auto vram_read(uint mode, buint32 addr) -> buint32;
+  auto vram_write(uint mode, buint32 addr, buint32 word) -> void;
 
-  auto pram_read(uint mode, uint32 addr) -> uint32;
-  auto pram_write(uint mode, uint32 addr, uint32 word) -> void;
+  auto pram_read(uint mode, buint32 addr) -> buint32;
+  auto pram_write(uint mode, buint32 addr, buint32 word) -> void;
 
-  auto oam_read(uint mode, uint32 addr) -> uint32;
-  auto oam_write(uint mode, uint32 addr, uint32 word) -> void;
+  auto oam_read(uint mode, buint32 addr) -> buint32;
+  auto oam_write(uint mode, buint32 addr, buint32 word) -> void;
 
   auto render_backgrounds() -> void;
   auto render_background_linear(Registers::Background&) -> void;
@@ -34,7 +34,7 @@ struct PPU : Thread, MMIO {
 
   auto render_objects() -> void;
   auto render_object(Object&) -> void;
-  auto object_vram_read(uint addr) const -> uint8;
+  auto object_vram_read(uint addr) const -> buint8;
 
   auto render_mosaic_background(uint id) -> void;
   auto render_mosaic_object() -> void;
@@ -46,9 +46,9 @@ struct PPU : Thread, MMIO {
 
   auto serialize(serializer&) -> void;
 
-  uint8 vram[96 * 1024];
-  uint16 pram[512];
-  uint32* output;
+  buint8 vram[96 * 1024];
+  buint16 pram[512];
+  buint32* output;
 };
 
 extern PPU ppu;

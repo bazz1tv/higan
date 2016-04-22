@@ -39,7 +39,7 @@ class Background {
     bool sub_enable;
   } regs;
 
-  uint16** mosaic_table;
+  buint16** mosaic_table;
 
   const uint id;
   uint opt_valid_bit;

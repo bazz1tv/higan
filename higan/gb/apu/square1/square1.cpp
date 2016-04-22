@@ -60,7 +60,7 @@ auto APU::Square1::clockEnvelope() -> void {
   }
 }
 
-auto APU::Square1::read(uint16 addr) -> uint8 {
+auto APU::Square1::read(buint16 addr) -> buint8 {
   if(addr == 0xff10) {  //NR10
     return 0x80 | sweepFrequency << 4 | sweepDirection << 3 | sweepShift;
   }
@@ -84,7 +84,7 @@ auto APU::Square1::read(uint16 addr) -> uint8 {
   return 0xff;
 }
 
-auto APU::Square1::write(uint16 addr, uint8 data) -> void {
+auto APU::Square1::write(buint16 addr, buint8 data) -> void {
   if(addr == 0xff10) {  //NR10
     if(sweepEnable && sweepNegate && !data.bit(3)) enable = false;
     sweepFrequency = data.bits(6,4);

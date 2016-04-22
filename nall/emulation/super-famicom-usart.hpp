@@ -11,17 +11,17 @@ using namespace nall;
 static function<auto () -> bool> usart_quit;
 static function<auto (uint microseconds) -> void> usart_usleep;
 static function<auto () -> bool> usart_readable;
-static function<auto () -> uint8> usart_read;
+static function<auto () -> buint8> usart_read;
 static function<auto () -> bool> usart_writable;
-static function<auto (uint8 data) -> void> usart_write;
+static function<auto (buint8 data) -> void> usart_write;
 
 extern "C" auto usart_init(
   function<auto () -> bool> quit,
   function<auto (uint microseconds) -> void> usleep,
   function<auto () -> bool> readable,
-  function<auto () -> uint8> read,
+  function<auto () -> buint8> read,
   function<auto () -> bool> writable,
-  function<auto (uint8 data) -> void> write
+  function<auto (buint8 data) -> void> write
 ) -> void {
   usart_quit = quit;
   usart_usleep = usleep;
@@ -57,9 +57,9 @@ static auto usarthw_readable() -> bool {
   return usart.readable();
 }
 
-static auto usarthw_read() -> uint8 {
+static auto usarthw_read() -> buint8 {
   while(true) {
-    uint8 buffer[1];
+    buint8 buffer[1];
     int length = usart.read((uint8_t*)&buffer, 1);
     if(length > 0) return buffer[0];
   }
@@ -69,9 +69,9 @@ static auto usarthw_writable() -> bool {
   return usart.writable();
 }
 
-static auto usarthw_write(uint8 data) -> void {
-  uint8 buffer[1] = {data};
-  usart.write((uint8*)&buffer, 1);
+static auto usarthw_write(buint8 data) -> void {
+  buint8 buffer[1] = {data};
+  usart.write((buint8*)&buffer, 1);
 }
 
 static auto sigint(int) -> void {

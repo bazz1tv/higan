@@ -1,8 +1,8 @@
 struct Sprite {
   struct Object {
     uint9 x;
-    uint8 y;
-    uint8 character;
+    buint8 y;
+    buint8 character;
     uint1 nameselect;
     uint1 vflip;
     uint1 hflip;
@@ -22,9 +22,9 @@ struct Sprite {
     bool  valid;
     uint9 x;
     uint2 priority;
-    uint8 palette;
+    buint8 palette;
     uint1 hflip;
-    uint8 d0, d1, d2, d3;
+    buint8 d0, d1, d2, d3;
   };
 
   struct State {
@@ -46,7 +46,7 @@ struct Sprite {
 
     uint3  base_size;
     uint2  nameselect;
-    uint16 tiledata_addr;
+    buint16 tiledata_addr;
     uint7  first_sprite;
 
     uint priority0;
@@ -61,14 +61,14 @@ struct Sprite {
   struct Output {
     struct Pixel {
       uint  priority;  //0 = none (transparent)
-      uint8 palette;
+      buint8 palette;
     } main, sub;
   } output;
 
   Sprite(PPU& self);
 
   //list.cpp
-  auto update(uint10 addr, uint8 data) -> void;
+  auto update(uint10 addr, buint8 data) -> void;
   auto synchronize() -> void;
 
   //sprite.cpp

@@ -1,13 +1,13 @@
 //accepts a callback binding so r14 writes can trigger ROM buffering transparently
 struct reg16_t {
-  uint16 data = 0;
-  function<auto (uint16) -> void> modify;
+  buint16 data = 0;
+  function<auto (buint16) -> void> modify;
 
   inline operator unsigned() const {
     return data;
   }
 
-  inline auto assign(uint16 i) -> uint16 {
+  inline auto assign(buint16 i) -> buint16 {
     if(modify) modify(i);
     else data = i;
     return data;
@@ -81,7 +81,7 @@ struct scmr_t {
     return ((ht >> 1) << 5) | (ron << 4) | (ran << 3) | ((ht & 1) << 2) | (md);
   }
 
-  auto& operator=(uint8 data) {
+  auto& operator=(buint8 data) {
     ht  = (bool)(data & 0x20) << 1;
     ht |= (bool)(data & 0x04) << 0;
     ron = data & 0x10;
@@ -102,7 +102,7 @@ struct por_t {
     return (obj << 4) | (freezehigh << 3) | (highnibble << 2) | (dither << 1) | (transparent);
   }
 
-  auto& operator=(uint8 data) {
+  auto& operator=(buint8 data) {
     obj         = data & 0x10;
     freezehigh  = data & 0x08;
     highnibble  = data & 0x04;
@@ -120,7 +120,7 @@ struct cfgr_t {
     return (irq << 7) | (ms0 << 5);
   }
 
-  auto& operator=(uint8 data) {
+  auto& operator=(buint8 data) {
     irq = data & 0x80;
     ms0 = data & 0x20;
     return *this;
@@ -128,30 +128,30 @@ struct cfgr_t {
 };
 
 struct regs_t {
-  uint8 pipeline;
-  uint16 ramaddr;
+  buint8 pipeline;
+  buint16 ramaddr;
 
   reg16_t r[16];    //general purpose registers
   sfr_t sfr;        //status flag register
-  uint8 pbr;        //program bank register
-  uint8 rombr;      //game pack ROM bank register
+  buint8 pbr;        //program bank register
+  buint8 rombr;      //game pack ROM bank register
   bool rambr;       //game pack RAM bank register
-  uint16 cbr;       //cache base register
-  uint8 scbr;       //screen base register
+  buint16 cbr;       //cache base register
+  buint8 scbr;       //screen base register
   scmr_t scmr;      //screen mode register
-  uint8 colr;       //color register
+  buint8 colr;       //color register
   por_t por;        //plot option register
   bool bramr;       //back-up RAM register
-  uint8 vcr;        //version code register
+  buint8 vcr;        //version code register
   cfgr_t cfgr;      //config register
   bool clsr;        //clock select register
 
   unsigned romcl;   //clock ticks until romdr is valid
-  uint8 romdr;      //ROM buffer data register
+  buint8 romdr;      //ROM buffer data register
 
   unsigned ramcl;   //clock ticks until ramdr is valid
-  uint16 ramar;     //RAM buffer address register
-  uint8 ramdr;      //RAM buffer data register
+  buint16 ramar;     //RAM buffer address register
+  buint8 ramdr;      //RAM buffer data register
 
   unsigned sreg, dreg;
   auto& sr() { return r[sreg]; }  //source register (from)
@@ -168,12 +168,12 @@ struct regs_t {
 } regs;
 
 struct cache_t {
-  uint8 buffer[512];
+  buint8 buffer[512];
   bool valid[32];
 } cache;
 
 struct pixelcache_t {
-  uint16 offset;
-  uint8 bitpend;
-  uint8 data[8];
+  buint16 offset;
+  buint8 bitpend;
+  buint8 data[8];
 } pixelcache[2];

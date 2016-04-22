@@ -7,13 +7,13 @@
 namespace Processor {
 
 struct R6502 {
-  virtual auto op_read(uint16 addr) -> uint8 = 0;
-  virtual auto op_write(uint16 addr, uint8 data) -> void = 0;
+  virtual auto op_read(buint16 addr) -> buint8 = 0;
+  virtual auto op_write(buint16 addr, buint8 data) -> void = 0;
   virtual auto last_cycle() -> void = 0;
-  virtual auto nmi(uint16& vector) -> void = 0;
-  virtual auto debugger_read(uint16 addr) -> uint8 { return 0u; }
+  virtual auto nmi(buint16& vector) -> void = 0;
+  virtual auto debugger_read(buint16 addr) -> buint8 { return 0u; }
 
-  auto mdr() const -> uint8;
+  auto mdr() const -> buint8;
   auto power() -> void;
   auto reset() -> void;
   auto interrupt() -> void;
@@ -22,16 +22,16 @@ struct R6502 {
   auto serialize(serializer&) -> void;
 
   //memory.cpp
-  auto op_readpc() -> uint8;
-  auto op_readpci() -> uint8;
-  auto op_readsp() -> uint8;
-  auto op_readzp(uint8 addr) -> uint8;
+  auto op_readpc() -> buint8;
+  auto op_readpci() -> buint8;
+  auto op_readsp() -> buint8;
+  auto op_readzp(buint8 addr) -> buint8;
 
-  auto op_writesp(uint8 data) -> void;
-  auto op_writezp(uint8 addr, uint8 data) -> void;
+  auto op_writesp(buint8 data) -> void;
+  auto op_writezp(buint8 addr, buint8 data) -> void;
 
-  auto op_page(uint16 x, uint16 y) -> void;
-  auto op_page_always(uint16 x, uint16 y) -> void;
+  auto op_page(buint16 x, buint16 y) -> void;
+  auto op_page_always(buint16 x, buint16 y) -> void;
 
   //instructions.cpp
   auto opf_asl();
@@ -59,10 +59,10 @@ struct R6502 {
 
   auto opi_branch(bool condition);
   auto opi_clear_flag(bool& flag);
-  auto opi_decrement(uint8& r);
-  auto opi_increment(uint8& r);
-  auto opi_pull(uint8& r);
-  auto opi_push(uint8& r);
+  auto opi_decrement(buint8& r);
+  auto opi_increment(buint8& r);
+  auto opi_pull(buint8& r);
+  auto opi_push(buint8& r);
   template<auto (R6502::*op)() -> void> auto opi_read_absolute();
   template<auto (R6502::*op)() -> void> auto opi_read_absolute_x();
   template<auto (R6502::*op)() -> void> auto opi_read_absolute_y();
@@ -78,15 +78,15 @@ struct R6502 {
   template<auto (R6502::*op)() -> void> auto opi_rmw_zero_page_x();
   auto opi_set_flag(bool& flag);
   template<auto (R6502::*op)() -> void> auto opi_shift();
-  auto opi_store_absolute(uint8& r);
-  auto opi_store_absolute_x(uint8& r);
-  auto opi_store_absolute_y(uint8& r);
-  auto opi_store_indirect_zero_page_x(uint8& r);
-  auto opi_store_indirect_zero_page_y(uint8& r);
-  auto opi_store_zero_page(uint8& r);
-  auto opi_store_zero_page_x(uint8& r);
-  auto opi_store_zero_page_y(uint8& r);
-  auto opi_transfer(uint8& s, uint8& d, bool flag);
+  auto opi_store_absolute(buint8& r);
+  auto opi_store_absolute_x(buint8& r);
+  auto opi_store_absolute_y(buint8& r);
+  auto opi_store_indirect_zero_page_x(buint8& r);
+  auto opi_store_indirect_zero_page_y(buint8& r);
+  auto opi_store_zero_page(buint8& r);
+  auto opi_store_zero_page_x(buint8& r);
+  auto opi_store_zero_page_y(buint8& r);
+  auto opi_transfer(buint8& s, buint8& d, bool flag);
 
   auto op_brk();
   auto op_jmp_absolute();

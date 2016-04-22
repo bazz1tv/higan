@@ -25,7 +25,7 @@ struct Coprocessor : Thread {
 #include <sfc/coprocessor/msu1/msu1.hpp>
 
 auto Coprocessor::step(uint clocks) -> void {
-  clock += clocks * (uint64)cpu.frequency;
+  clock += clocks * (buint64)cpu.frequency;
 }
 
 auto Coprocessor::synchronizeCPU() -> void {

@@ -13,7 +13,7 @@ SMP smp;
 #include "timing.cpp"
 
 SMP::SMP() {
-  apuram = new uint8[64 * 1024];
+  apuram = new buint8[64 * 1024];
   for(auto& byte : iplrom) byte = 0;
 }
 

@@ -24,7 +24,7 @@ PPU ppu;
 #include "serialization.cpp"
 
 PPU::PPU() {
-  output = new uint32[240 * 160];
+  output = new buint32[240 * 160];
 
   regs.bg[0].id = BG0;
   regs.bg[1].id = BG1;

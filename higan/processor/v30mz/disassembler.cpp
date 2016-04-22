@@ -1,32 +1,32 @@
 //todo: this is horribly broken in many cases; needs a total rewrite
-auto V30MZ::disassemble(uint16 cs, uint16 ip, bool registers, bool bytes) -> string {
+auto V30MZ::disassemble(buint16 cs, buint16 ip, bool registers, bool bytes) -> string {
   string s;
   uint20 ea = cs * 16 + ip;
-  vector<uint8> bytesRead;
+  vector<buint8> bytesRead;
 
-  auto fetch = [&](bool inc = true) -> uint8 {
-    uint8 data = read(cs * 16 + ip);
+  auto fetch = [&](bool inc = true) -> buint8 {
+    buint8 data = read(cs * 16 + ip);
     if(inc) ip++, bytesRead.append(data);
     return data;
   };
   auto readByte = [&]() -> string {
-    uint8 byte = fetch();
+    buint8 byte = fetch();
     return {"$", hex(byte, 2L)};
   };
   auto readWord = [&]() -> string {
-    uint16 word = fetch(); word |= fetch() << 8;
+    buint16 word = fetch(); word |= fetch() << 8;
     return {"$", hex(word, 4L)};
   };
   auto readByteSigned = [&]() -> string {
-    uint8 byte = fetch();
-    return {"$", byte & 0x80 ? "-" : "+", hex(byte & 0x80 ? uint8(256 - byte) : byte, 2L)};
+    buint8 byte = fetch();
+    return {"$", byte & 0x80 ? "-" : "+", hex(byte & 0x80 ? buint8(256 - byte) : byte, 2L)};
   };
   auto readRelativeByte = [&]() -> string {
-    uint8 byte = fetch();
+    buint8 byte = fetch();
     return {"$", hex(ip + (int8)byte, 4L)};
   };
   auto readRelativeWord = [&]() -> string {
-    uint16 word = fetch(); word |= fetch() << 8;
+    buint16 word = fetch(); word |= fetch() << 8;
     return {"$", hex(ip + (int16)word, 4L)};
   };
   auto readIndirectByte = [&]() -> string {
@@ -36,22 +36,22 @@ auto V30MZ::disassemble(uint16 cs, uint16 ip, bool registers, bool bytes) -> str
     return {"{", readWord(), "}"};
   };
   auto readRegByte = [&](bool inc = true) -> string {
-    uint8 modRM = fetch(inc);
+    buint8 modRM = fetch(inc);
     static const string reg[] = {"al", "cl", "dl", "bl", "ah", "ch", "dh", "bh"};
     return reg[(uint3)(modRM >> 3)];
   };
   auto readRegWord = [&](bool inc = true) -> string {
-    uint8 modRM = fetch(inc);
+    buint8 modRM = fetch(inc);
     static const string reg[] = {"ax", "cx", "dx", "bx", "sp", "bp", "si", "di"};
     return reg[(uint3)(modRM >> 3)];
   };
   auto readSeg = [&](bool inc = true) -> string {
-    uint8 modRM = fetch(inc);
+    buint8 modRM = fetch(inc);
     static const string seg[] = {"es", "cs", "ss", "ds"};
     return seg[(uint2)(modRM >> 3)];
   };
   auto readMemByte = [&](bool inc = true) -> string {
-    uint8 modRM = fetch(inc);
+    buint8 modRM = fetch(inc);
     static const string reg[] = {"al", "cl", "dl", "bl", "ah", "ch", "dh", "bh"};
     if(modRM >= 0xc0) return reg[(uint3)modRM];
     if((modRM & 0xc7) == 0x06) return {"[", readWord(), "]"};
@@ -61,7 +61,7 @@ auto V30MZ::disassemble(uint16 cs, uint16 ip, bool registers, bool bytes) -> str
     return {"[", mem[(uint3)modRM], "]"};
   };
   auto readMemWord = [&](bool inc = true) -> string {
-    uint8 modRM = fetch(inc);
+    buint8 modRM = fetch(inc);
     static const string reg[] = {"ax", "cx", "dx", "bx", "sp", "bp", "si", "di"};
     if(modRM >= 0xc0) return reg[(uint3)modRM];
     if((modRM & 0xc7) == 0x06) return {"{", readWord(), "}"};
@@ -71,7 +71,7 @@ auto V30MZ::disassemble(uint16 cs, uint16 ip, bool registers, bool bytes) -> str
     return {"{", mem[(uint3)modRM], "}"};
   };
   auto readGroup = [&](uint group) -> string {
-    uint8 modRM = fetch(false);
+    buint8 modRM = fetch(false);
     static const string opcode[4][8] = {
       {"add ", "or  ", "adc ", "sbb ", "and ", "sub ", "xor ", "cmp "},
       {"rol ", "ror ", "rcl ", "rcr ", "shl ", "shr ", "sal ", "sar "},

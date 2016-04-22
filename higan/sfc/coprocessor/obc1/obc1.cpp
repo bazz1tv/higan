@@ -24,7 +24,7 @@ auto OBC1::reset() -> void {
   status.shift   = (ramRead(0x1ff6) & 3) << 1;
 }
 
-auto OBC1::read(uint24 addr, uint8) -> uint8 {
+auto OBC1::read(uint24 addr, buint8) -> buint8 {
   addr &= 0x1fff;
 
   switch(addr) {
@@ -38,7 +38,7 @@ auto OBC1::read(uint24 addr, uint8) -> uint8 {
   return ramRead(addr);
 }
 
-auto OBC1::write(uint24 addr, uint8 data) -> void {
+auto OBC1::write(uint24 addr, buint8 data) -> void {
   addr &= 0x1fff;
 
   switch(addr) {
@@ -47,7 +47,7 @@ auto OBC1::write(uint24 addr, uint8 data) -> void {
   case 0x1ff2: ramWrite(status.baseptr + (status.address << 2) + 2, data); return;
   case 0x1ff3: ramWrite(status.baseptr + (status.address << 2) + 3, data); return;
   case 0x1ff4: {
-    uint8 temp = ramRead(status.baseptr + (status.address >> 2) + 0x200);
+    buint8 temp = ramRead(status.baseptr + (status.address >> 2) + 0x200);
     temp = (temp & ~(3 << status.shift)) | ((data & 3) << status.shift);
     ramWrite(status.baseptr + (status.address >> 2) + 0x200, temp);
   } return;
@@ -68,11 +68,11 @@ auto OBC1::write(uint24 addr, uint8 data) -> void {
   return ramWrite(addr, data);
 }
 
-auto OBC1::ramRead(uint addr) -> uint8 {
+auto OBC1::ramRead(uint addr) -> buint8 {
   return ram.read(addr & 0x1fff);
 }
 
-auto OBC1::ramWrite(uint addr, uint8 data) -> void {
+auto OBC1::ramWrite(uint addr, buint8 data) -> void {
   ram.write(addr & 0x1fff, data);
 }
 

@@ -1,5 +1,5 @@
 auto PPU::LayerWindow::render(bool screen) -> void {
-  uint8* output;
+  buint8* output;
   if(screen == 0) {
     output = main;
     if(main_enable == false) {
@@ -50,7 +50,7 @@ auto PPU::LayerWindow::render(bool screen) -> void {
 //
 
 auto PPU::ColorWindow::render(bool screen) -> void {
-  uint8* output = (screen == 0 ? main : sub);
+  buint8* output = (screen == 0 ? main : sub);
   bool set = 1, clr = 0;
 
   switch(screen == 0 ? main_mask : sub_mask) {

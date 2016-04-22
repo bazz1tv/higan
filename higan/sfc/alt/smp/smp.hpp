@@ -18,33 +18,33 @@ struct SMP : Thread {
 
   auto serialize(serializer&) -> void;
 
-  auto disassemble_opcode(char* output, uint16 addr) -> void;
+  auto disassemble_opcode(char* output, buint16 addr) -> void;
 
-  uint8 iplrom[64];
-  uint8* apuram;
+  buint8 iplrom[64];
+  buint8* apuram;
 
 //private:
   auto tick() -> void;
   alwaysinline auto op_io() -> void;
-  alwaysinline auto op_read(uint16 addr) -> uint8;
-  alwaysinline auto op_write(uint16 addr, uint8 data) -> void;
+  alwaysinline auto op_read(buint16 addr) -> buint8;
+  alwaysinline auto op_write(buint16 addr, buint8 data) -> void;
   alwaysinline auto op_step() -> void;
 
-  auto op_adc (uint8  x, uint8  y) -> uint8;
-  auto op_addw(uint16 x, uint16 y) -> uint16;
-  auto op_and (uint8  x, uint8  y) -> uint8;
-  auto op_cmp (uint8  x, uint8  y) -> uint8;
-  auto op_cmpw(uint16 x, uint16 y) -> uint16;
-  auto op_eor (uint8  x, uint8  y) -> uint8;
-  auto op_inc (uint8  x) -> uint8;
-  auto op_dec (uint8  x) -> uint8;
-  auto op_or  (uint8  x, uint8  y) -> uint8;
-  auto op_sbc (uint8  x, uint8  y) -> uint8;
-  auto op_subw(uint16 x, uint16 y) -> uint16;
-  auto op_asl (uint8  x) -> uint8;
-  auto op_lsr (uint8  x) -> uint8;
-  auto op_rol (uint8  x) -> uint8;
-  auto op_ror (uint8  x) -> uint8;
+  auto op_adc (buint8  x, buint8  y) -> buint8;
+  auto op_addw(buint16 x, buint16 y) -> buint16;
+  auto op_and (buint8  x, buint8  y) -> buint8;
+  auto op_cmp (buint8  x, buint8  y) -> buint8;
+  auto op_cmpw(buint16 x, buint16 y) -> buint16;
+  auto op_eor (buint8  x, buint8  y) -> buint8;
+  auto op_inc (buint8  x) -> buint8;
+  auto op_dec (buint8  x) -> buint8;
+  auto op_or  (buint8  x, buint8  y) -> buint8;
+  auto op_sbc (buint8  x, buint8  y) -> buint8;
+  auto op_subw(buint16 x, buint16 y) -> buint16;
+  auto op_asl (buint8  x) -> buint8;
+  auto op_lsr (buint8  x) -> buint8;
+  auto op_rol (buint8  x) -> buint8;
+  auto op_ror (buint8  x) -> buint8;
 
   struct Flags {
     alwaysinline operator uint() const {
@@ -66,17 +66,17 @@ struct SMP : Thread {
   };
 
   struct Regs {
-    uint16 pc;
-    uint8 sp;
+    buint16 pc;
+    buint8 sp;
     union {
       uint16_t ya;
       struct { uint8_t order_lsb2(a, y); };
     };
-    uint8 x;
+    buint8 x;
     Flags p;
   } regs;
 
-  uint16 rd, wr, dp, sp, ya, bit;
+  buint16 rd, wr, dp, sp, ya, bit;
 
   struct Status {
     //$00f1
@@ -99,10 +99,10 @@ struct SMP : Thread {
     auto tick(uint clocks) -> void;
 
     bool enable;
-    uint8 target;
-    uint8 stage1_ticks;
-    uint8 stage2_ticks;
-    uint8 stage3_ticks;
+    buint8 target;
+    buint8 stage1_ticks;
+    buint8 stage2_ticks;
+    buint8 stage3_ticks;
   };
 
   Timer<128> timer0;
@@ -110,9 +110,9 @@ struct SMP : Thread {
   Timer< 16> timer2;
 
   static const uint cycle_count_table[256];
-  uint64 cycle_table_cpu[256];
+  buint64 cycle_table_cpu[256];
   uint cycle_table_dsp[256];
-  uint64 cycle_step_cpu;
+  buint64 cycle_step_cpu;
 };
 
 extern SMP smp;

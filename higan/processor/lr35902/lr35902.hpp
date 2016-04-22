@@ -6,10 +6,10 @@ namespace Processor {
 
 struct LR35902 {
   virtual auto op_io() -> void = 0;
-  virtual auto op_read(uint16 addr) -> uint8 = 0;
-  virtual auto op_write(uint16 addr, uint8 data) -> void = 0;
+  virtual auto op_read(buint16 addr) -> buint8 = 0;
+  virtual auto op_write(buint16 addr, buint8 data) -> void = 0;
   virtual auto stop() -> bool = 0;
-  virtual auto debugger_read(uint16 addr) -> uint8 { return 0u; }
+  virtual auto debugger_read(buint16 addr) -> buint8 { return 0u; }
 
   auto power() -> void;
   auto exec() -> void;
@@ -50,42 +50,42 @@ privileged:
   template<uint x> auto op_pop_rr();
 
   //8-bit arithmetic commands
-  auto opi_add_a(uint8 x);
+  auto opi_add_a(buint8 x);
   template<uint x> auto op_add_a_r();
   auto op_add_a_n();
   auto op_add_a_hl();
 
-  auto opi_adc_a(uint8 x);
+  auto opi_adc_a(buint8 x);
   template<uint x> auto op_adc_a_r();
   auto op_adc_a_n();
   auto op_adc_a_hl();
 
-  auto opi_sub_a(uint8 x);
+  auto opi_sub_a(buint8 x);
   template<uint x> auto op_sub_a_r();
   auto op_sub_a_n();
   auto op_sub_a_hl();
 
-  auto opi_sbc_a(uint8 x);
+  auto opi_sbc_a(buint8 x);
   template<uint x> auto op_sbc_a_r();
   auto op_sbc_a_n();
   auto op_sbc_a_hl();
 
-  auto opi_and_a(uint8 x);
+  auto opi_and_a(buint8 x);
   template<uint x> auto op_and_a_r();
   auto op_and_a_n();
   auto op_and_a_hl();
 
-  auto opi_xor_a(uint8 x);
+  auto opi_xor_a(buint8 x);
   template<uint x> auto op_xor_a_r();
   auto op_xor_a_n();
   auto op_xor_a_hl();
 
-  auto opi_or_a(uint8 x);
+  auto opi_or_a(buint8 x);
   template<uint x> auto op_or_a_r();
   auto op_or_a_n();
   auto op_or_a_hl();
 
-  auto opi_cp_a(uint8 x);
+  auto opi_cp_a(buint8 x);
   template<uint x> auto op_cp_a_r();
   auto op_cp_a_n();
   auto op_cp_a_hl();
@@ -157,9 +157,9 @@ privileged:
   template<uint n> auto op_rst_n();
 
   //disassembler.cpp
-  auto disassemble(uint16 pc) -> string;
-  auto disassembleOpcode(uint16 pc) -> string;
-  auto disassembleOpcodeCB(uint16 pc) -> string;
+  auto disassemble(buint16 pc) -> string;
+  auto disassembleOpcode(buint16 pc) -> string;
+  auto disassembleOpcodeCB(buint16 pc) -> string;
 };
 
 }

@@ -9,8 +9,8 @@ struct PPU : Thread, IO {
   auto power() -> void;
 
   //io.cpp
-  auto portRead(uint16 addr) -> uint8 override;
-  auto portWrite(uint16 addr, uint8 data) -> void override;
+  auto portRead(buint16 addr) -> buint8 override;
+  auto portWrite(buint16 addr, buint8 data) -> void override;
 
   //latch.cpp
   auto latchRegisters() -> void;
@@ -47,37 +47,37 @@ struct PPU : Thread, IO {
 
   struct Latches {
     //latchRegisters()
-    uint8 backColor;
+    buint8 backColor;
 
     uint1 screenOneEnable;
     uint4 screenOneMapBase;
-    uint8 scrollOneX;
-    uint8 scrollOneY;
+    buint8 scrollOneX;
+    buint8 scrollOneY;
 
     uint1 screenTwoEnable;
     uint4 screenTwoMapBase;
-    uint8 scrollTwoX;
-    uint8 scrollTwoY;
+    buint8 scrollTwoX;
+    buint8 scrollTwoY;
     uint1 screenTwoWindowEnable;
     uint1 screenTwoWindowInvert;
-    uint8 screenTwoWindowX0;
-    uint8 screenTwoWindowY0;
-    uint8 screenTwoWindowX1;
-    uint8 screenTwoWindowY1;
+    buint8 screenTwoWindowX0;
+    buint8 screenTwoWindowY0;
+    buint8 screenTwoWindowX1;
+    buint8 screenTwoWindowY1;
 
     uint1 spriteEnable;
     uint1 spriteWindowEnable;
-    uint8 spriteWindowX0;
-    uint8 spriteWindowY0;
-    uint8 spriteWindowX1;
-    uint8 spriteWindowY1;
+    buint8 spriteWindowX0;
+    buint8 spriteWindowY0;
+    buint8 spriteWindowX1;
+    buint8 spriteWindowY1;
 
     //latchSprites()
-    uint32 sprite[32];
+    buint32 sprite[32];
     uint spriteCount;
 
     //latchOAM()
-    uint32 oam[2][128];
+    buint32 oam[2][128];
     uint oamCount;
   } l;
 
@@ -91,10 +91,10 @@ struct PPU : Thread, IO {
     uint1 screenTwoWindowEnable;
 
     //$0001  BACK_COLOR
-    uint8 backColor;
+    buint8 backColor;
 
     //$0003  LINE_CMP
-    uint8 lineCompare;
+    buint8 lineCompare;
 
     //$0004  SPR_BASE
     uint6 spriteBase;
@@ -103,47 +103,47 @@ struct PPU : Thread, IO {
     uint7 spriteFirst;
 
     //$0006  SPR_COUNT
-    uint8 spriteCount;  //0 - 128
+    buint8 spriteCount;  //0 - 128
 
     //$0007  MAP_BASE
     uint4 screenOneMapBase;
     uint4 screenTwoMapBase;
 
     //$0008  SCR2_WIN_X0
-    uint8 screenTwoWindowX0;
+    buint8 screenTwoWindowX0;
 
     //$0009  SCR2_WIN_Y0
-    uint8 screenTwoWindowY0;
+    buint8 screenTwoWindowY0;
 
     //$000a  SCR2_WIN_X1
-    uint8 screenTwoWindowX1;
+    buint8 screenTwoWindowX1;
 
     //$000b  SCR2_WIN_Y1
-    uint8 screenTwoWindowY1;
+    buint8 screenTwoWindowY1;
 
     //$000c  SPR_WIN_X0
-    uint8 spriteWindowX0;
+    buint8 spriteWindowX0;
 
     //$000d  SPR_WIN_Y0
-    uint8 spriteWindowY0;
+    buint8 spriteWindowY0;
 
     //$000e  SPR_WIN_X1
-    uint8 spriteWindowX1;
+    buint8 spriteWindowX1;
 
     //$000f  SPR_WIN_Y1
-    uint8 spriteWindowY1;
+    buint8 spriteWindowY1;
 
     //$0010  SCR1_X
-    uint8 scrollOneX;
+    buint8 scrollOneX;
 
     //$0011  SCR1_Y
-    uint8 scrollOneY;
+    buint8 scrollOneY;
 
     //$0012  SCR2_X
-    uint8 scrollTwoX;
+    buint8 scrollTwoX;
 
     //$0013  SCR2_Y
-    uint8 scrollTwoY;
+    buint8 scrollTwoY;
 
     //$0014  LCD_CTRL
     uint1 lcdEnable;
@@ -159,10 +159,10 @@ struct PPU : Thread, IO {
     uint1 iconAux3;
 
     //$0016  LCD_VTOTAL
-    uint8 vtotal;
+    buint8 vtotal;
 
     //$0017  LCD_VBLANK
-    uint8 vblank;
+    buint8 vblank;
 
     //$001c-001f  PALMONO_POOL
     uint4 pool[8];
@@ -179,16 +179,16 @@ struct PPU : Thread, IO {
     uint1 vtimerRepeat;
 
     //$00a4,$00a5  HTMR_FREQ
-    uint16 htimerFrequency;
+    buint16 htimerFrequency;
 
     //$00a6,$00a7  VTMR_FREQ
-    uint16 vtimerFrequency;
+    buint16 vtimerFrequency;
 
     //$00a8,$00a9  HTMR_CTR
-    uint16 htimerCounter;
+    buint16 htimerCounter;
 
     //$00aa,$00ab  VTMR_CTR
-    uint16 vtimerCounter;
+    buint16 vtimerCounter;
   } r;
 };
 

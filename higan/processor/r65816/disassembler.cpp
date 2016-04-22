@@ -1,4 +1,4 @@
-auto R65816::dreadb(uint24 addr) -> uint8 {
+auto R65816::dreadb(uint24 addr) -> buint8 {
   if((addr & 0x40ffff) >= 0x2000 && (addr & 0x40ffff) <= 0x5fff) {
     //$00-3f|80-bf:2000-5fff
     //do not read MMIO registers within debugger
@@ -7,8 +7,8 @@ auto R65816::dreadb(uint24 addr) -> uint8 {
   return disassemblerRead(addr);
 }
 
-auto R65816::dreadw(uint24 addr) -> uint16 {
-  uint16 data;
+auto R65816::dreadw(uint24 addr) -> buint16 {
+  buint16 data;
   data.byte(0) = dreadb(addr++);
   data.byte(1) = dreadb(addr++);
   return data;
@@ -22,7 +22,7 @@ auto R65816::dreadl(uint24 addr) -> uint24 {
   return data;
 }
 
-auto R65816::decode(uint8 mode, uint24 addr) -> uint24 {
+auto R65816::decode(buint8 mode, uint24 addr) -> uint24 {
   uint24 r = 0;
 
   switch(mode) {
@@ -113,10 +113,10 @@ auto R65816::disassemble(uint24 addr, bool e, bool m, bool x) -> string {
   pc.d = addr;
   s = {hex(pc, 6), " "};
 
-  uint8 op  = dreadb(pc.d); pc.w++;
-  uint8 op0 = dreadb(pc.d); pc.w++;
-  uint8 op1 = dreadb(pc.d); pc.w++;
-  uint8 op2 = dreadb(pc.d);
+  buint8 op  = dreadb(pc.d); pc.w++;
+  buint8 op0 = dreadb(pc.d); pc.w++;
+  buint8 op1 = dreadb(pc.d); pc.w++;
+  buint8 op2 = dreadb(pc.d);
 
   #define op8  ((op0))
   #define op16 ((op0) | (op1 << 8))

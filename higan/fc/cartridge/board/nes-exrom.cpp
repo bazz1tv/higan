@@ -7,19 +7,19 @@ struct NES_ExROM : Board {
     mmc5.main();
   }
 
-  auto prg_read(uint addr) -> uint8 {
+  auto prg_read(uint addr) -> buint8 {
     return mmc5.prg_read(addr);
   }
 
-  auto prg_write(uint addr, uint8 data) -> void {
+  auto prg_write(uint addr, buint8 data) -> void {
     mmc5.prg_write(addr, data);
   }
 
-  auto chr_read(uint addr) -> uint8 {
+  auto chr_read(uint addr) -> buint8 {
     return mmc5.chr_read(addr);
   }
 
-  auto chr_write(uint addr, uint8 data) -> void {
+  auto chr_write(uint addr, buint8 data) -> void {
     mmc5.chr_write(addr, data);
   }
 

@@ -85,7 +85,7 @@ auto PPU::Window::test(
   bool& main, bool& sub,
   bool one_enable, bool one_invert,
   bool two_enable, bool two_invert,
-  uint8 mask, bool main_enable, bool sub_enable
+  buint8 mask, bool main_enable, bool sub_enable
 ) -> void {
   bool one = Window::one ^ one_invert;
   bool two = Window::two ^ two_invert;

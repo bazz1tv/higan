@@ -15,7 +15,7 @@ struct NES_SxROM : Board {
     return (bank << 13) | (addr & 0x1fff);
   }
 
-  auto prg_read(uint addr) -> uint8 {
+  auto prg_read(uint addr) -> buint8 {
     if((addr & 0xe000) == 0x6000) {
       if(revision == Revision::SNROM) {
         if(mmc1.chr_bank[0] & 0x10) return cpu.mdr();
@@ -35,7 +35,7 @@ struct NES_SxROM : Board {
     return cpu.mdr();
   }
 
-  auto prg_write(uint addr, uint8 data) -> void {
+  auto prg_write(uint addr, buint8 data) -> void {
     if((addr & 0xe000) == 0x6000) {
       if(revision == Revision::SNROM) {
         if(mmc1.chr_bank[0] & 0x10) return;
@@ -47,12 +47,12 @@ struct NES_SxROM : Board {
     if(addr & 0x8000) return mmc1.mmio_write(addr, data);
   }
 
-  auto chr_read(uint addr) -> uint8 {
+  auto chr_read(uint addr) -> buint8 {
     if(addr & 0x2000) return ppu.ciram_read(mmc1.ciram_addr(addr));
     return Board::chr_read(mmc1.chr_addr(addr));
   }
 
-  auto chr_write(uint addr, uint8 data) -> void {
+  auto chr_write(uint addr, buint8 data) -> void {
     if(addr & 0x2000) return ppu.ciram_write(mmc1.ciram_addr(addr), data);
     return Board::chr_write(mmc1.chr_addr(addr), data);
   }

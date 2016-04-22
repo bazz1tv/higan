@@ -123,7 +123,7 @@ auto Cartridge::load() -> void {
     sha.data(spc7110.drom.data(), spc7110.drom.size());
     sha.data(sdd1.rom.data(), sdd1.rom.size());
     //hash all firmware that exists
-    vector<uint8> buffer;
+    vector<buint8> buffer;
     buffer = armdsp.firmware();
     sha.data(buffer.data(), buffer.size());
     buffer = hitachidsp.firmware();
@@ -156,7 +156,7 @@ auto Cartridge::loadBSMemory() -> void {
 
   if(rom["name"]) {
     uint size = rom["size"].natural();
-    bsmemory.memory.map(allocate<uint8>(size, 0xff), size);
+    bsmemory.memory.map(allocate<buint8>(size, 0xff), size);
     interface->loadRequest(ID::BSMemoryROM, rom["name"].text(), true);
 
     bsmemory.readonly = (rom["type"].text() == "mrom");
@@ -173,13 +173,13 @@ auto Cartridge::loadSufamiTurboA() -> void {
 
   if(rom["name"]) {
     uint size = rom["size"].natural();
-    sufamiturboA.rom.map(allocate<uint8>(size, 0xff), size);
+    sufamiturboA.rom.map(allocate<buint8>(size, 0xff), size);
     interface->loadRequest(ID::SufamiTurboSlotAROM, rom["name"].text(), true);
   }
 
   if(ram["name"]) {
     uint size = ram["size"].natural();
-    sufamiturboA.ram.map(allocate<uint8>(size, 0xff), size);
+    sufamiturboA.ram.map(allocate<buint8>(size, 0xff), size);
     interface->loadRequest(ID::SufamiTurboSlotARAM, ram["name"].text(), false);
     memory.append({ID::SufamiTurboSlotARAM, ram["name"].text()});
   }
@@ -199,13 +199,13 @@ auto Cartridge::loadSufamiTurboB() -> void {
 
   if(rom["name"]) {
     uint size = rom["size"].natural();
-    sufamiturboB.rom.map(allocate<uint8>(size, 0xff), size);
+    sufamiturboB.rom.map(allocate<buint8>(size, 0xff), size);
     interface->loadRequest(ID::SufamiTurboSlotBROM, rom["name"].text(), true);
   }
 
   if(ram["name"]) {
     uint size = ram["size"].natural();
-    sufamiturboB.ram.map(allocate<uint8>(size, 0xff), size);
+    sufamiturboB.ram.map(allocate<buint8>(size, 0xff), size);
     interface->loadRequest(ID::SufamiTurboSlotBRAM, ram["name"].text(), false);
     memory.append({ID::SufamiTurboSlotBRAM, ram["name"].text()});
   }

@@ -16,8 +16,8 @@ auto PPU::Background::render_mode7() -> void {
 
   int y = (self.regs.mode7_vflip == false ? (uint)self.vcounter() : 255 - self.vcounter());
 
-  uint16* mosaic_x;
-  uint16* mosaic_y;
+  buint16* mosaic_x;
+  buint16* mosaic_y;
   if(id == ID::BG1) {
     mosaic_x = mosaic_table[self.bg1.regs.mosaic];
     mosaic_y = mosaic_table[self.bg1.regs.mosaic];

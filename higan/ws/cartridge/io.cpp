@@ -1,4 +1,4 @@
-auto Cartridge::portRead(uint16 addr) -> uint8 {
+auto Cartridge::portRead(buint16 addr) -> buint8 {
   //BANK_ROM2
   if(addr == 0x00c0) return r.romBank2;
 
@@ -37,7 +37,7 @@ auto Cartridge::portRead(uint16 addr) -> uint8 {
   return 0x00;
 }
 
-auto Cartridge::portWrite(uint16 addr, uint8 data) -> void {
+auto Cartridge::portWrite(buint16 addr, buint8 data) -> void {
   //BANK_ROM2
   if(addr == 0x00c0) r.romBank2 = data;
 

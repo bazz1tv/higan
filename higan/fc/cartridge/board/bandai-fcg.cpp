@@ -24,16 +24,16 @@ struct BandaiFCG : Board {
     }
   }
 
-  auto prg_read(uint addr) -> uint8 {
+  auto prg_read(uint addr) -> buint8 {
     if(addr & 0x8000) {
       bool region = addr & 0x4000;
-      uint bank = (region == 0 ? prg_bank : (uint8)0x0f);
+      uint bank = (region == 0 ? prg_bank : (buint8)0x0f);
       return prgrom.read((bank << 14) | (addr & 0x3fff));
     }
     return cpu.mdr();
   }
 
-  auto prg_write(uint addr, uint8 data) -> void {
+  auto prg_write(uint addr, buint8 data) -> void {
     if(addr >= 0x6000) {
       switch(addr & 15) {
       case 0x00: case 0x01: case 0x02: case 0x03:
@@ -64,13 +64,13 @@ struct BandaiFCG : Board {
     }
   }
 
-  auto chr_read(uint addr) -> uint8 {
+  auto chr_read(uint addr) -> buint8 {
     if(addr & 0x2000) return ppu.ciram_read(ciram_addr(addr));
     addr = (chr_bank[addr >> 10] << 10) | (addr & 0x03ff);
     return Board::chr_read(addr);
   }
 
-  auto chr_write(uint addr, uint8 data) -> void {
+  auto chr_write(uint addr, buint8 data) -> void {
     if(addr & 0x2000) return ppu.ciram_write(ciram_addr(addr), data);
     addr = (chr_bank[addr >> 10] << 10) | (addr & 0x03ff);
     return Board::chr_write(addr, data);
@@ -100,10 +100,10 @@ struct BandaiFCG : Board {
     s.integer(irq_latch);
   }
 
-  uint8 chr_bank[8];
-  uint8 prg_bank;
+  buint8 chr_bank[8];
+  buint8 prg_bank;
   uint2 mirror;
   bool irq_counter_enable;
-  uint16 irq_counter;
-  uint16 irq_latch;
+  buint16 irq_counter;
+  buint16 irq_latch;
 };

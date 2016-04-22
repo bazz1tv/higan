@@ -1,4 +1,4 @@
-auto LR35902::disassemble(uint16 pc) -> string {
+auto LR35902::disassemble(buint16 pc) -> string {
   char output[80];
   memset(output, ' ', sizeof output);
   output[79] = 0;
@@ -19,11 +19,11 @@ auto LR35902::disassemble(uint16 pc) -> string {
   return output;
 }
 
-auto LR35902::disassembleOpcode(uint16 pc) -> string {
-  uint8 opcode = debugger_read(pc);
-  uint8 p0 = debugger_read(pc + 1);
-  uint8 p1 = debugger_read(pc + 2);
-  uint8 p2 = debugger_read(pc + 3);
+auto LR35902::disassembleOpcode(buint16 pc) -> string {
+  buint8 opcode = debugger_read(pc);
+  buint8 p0 = debugger_read(pc + 1);
+  buint8 p1 = debugger_read(pc + 2);
+  buint8 p2 = debugger_read(pc + 3);
 
   switch(opcode) {
     case 0x00: return { "nop" };
@@ -287,11 +287,11 @@ auto LR35902::disassembleOpcode(uint16 pc) -> string {
   return "";
 }
 
-auto LR35902::disassembleOpcodeCB(uint16 pc) -> string {
-  uint8 opcode = debugger_read(pc);
-  uint8 p0 = debugger_read(pc + 1);
-  uint8 p1 = debugger_read(pc + 2);
-  uint8 p2 = debugger_read(pc + 3);
+auto LR35902::disassembleOpcodeCB(buint16 pc) -> string {
+  buint8 opcode = debugger_read(pc);
+  buint8 p0 = debugger_read(pc + 1);
+  buint8 p1 = debugger_read(pc + 2);
+  buint8 p2 = debugger_read(pc + 3);
 
   switch(opcode) {
     case 0x00: return { "rlc  b" };

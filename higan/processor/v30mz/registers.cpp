@@ -1,4 +1,4 @@
-auto V30MZ::repeat() -> uint8 {
+auto V30MZ::repeat() -> buint8 {
   for(auto prefix : prefixes) {
     if(prefix == RepeatWhileZero) return prefix;
     if(prefix == RepeatWhileNotZero) return prefix;
@@ -6,7 +6,7 @@ auto V30MZ::repeat() -> uint8 {
   return {};
 }
 
-auto V30MZ::segment(uint16 segment) -> uint16 {
+auto V30MZ::segment(buint16 segment) -> buint16 {
   for(auto prefix : prefixes) {
     if(prefix == SegmentOverrideES) return r.es;
     if(prefix == SegmentOverrideCS) return r.cs;
@@ -16,14 +16,14 @@ auto V30MZ::segment(uint16 segment) -> uint16 {
   return segment;
 }
 
-auto V30MZ::getAcc(Size size) -> uint32 {
+auto V30MZ::getAcc(Size size) -> buint32 {
   if(size == Byte) return r.al;
   if(size == Word) return r.ax;
   if(size == Long) return r.dx << 16 | r.ax;
   unreachable;
 }
 
-auto V30MZ::setAcc(Size size, uint32 data) -> void {
+auto V30MZ::setAcc(Size size, buint32 data) -> void {
   if(size == Byte) r.al = data;
   if(size == Word) r.ax = data;
   if(size == Long) r.ax = data, r.dx = data >> 16;

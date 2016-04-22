@@ -20,15 +20,15 @@ struct PPU : Thread, public PPUcounter {
 
   auto serialize(serializer&) -> void;
 
-  uint8 vram[64 * 1024];
-  uint8 oam[544];
-  uint8 cgram[512];
+  buint8 vram[64 * 1024];
+  buint8 oam[544];
+  buint8 cgram[512];
 
 privileged:
   uint ppu1_version = 1;  //allowed: 1
   uint ppu2_version = 3;  //allowed: 1, 2, 3
 
-  uint32* output = nullptr;
+  buint32* output = nullptr;
 
   struct {
     bool interlace;
@@ -62,12 +62,12 @@ privileged:
   friend class Video;
 
   struct Debugger {
-    hook<auto (uint16, uint8) -> void> vram_read;
-    hook<auto (uint16, uint8) -> void> oam_read;
-    hook<auto (uint16, uint8) -> void> cgram_read;
-    hook<auto (uint16, uint8) -> void> vram_write;
-    hook<auto (uint16, uint8) -> void> oam_write;
-    hook<auto (uint16, uint8) -> void> cgram_write;
+    hook<auto (buint16, buint8) -> void> vram_read;
+    hook<auto (buint16, buint8) -> void> oam_read;
+    hook<auto (buint16, buint8) -> void> cgram_read;
+    hook<auto (buint16, buint8) -> void> vram_write;
+    hook<auto (buint16, buint8) -> void> oam_write;
+    hook<auto (buint16, buint8) -> void> cgram_write;
   } debugger;
 };
 

@@ -1,5 +1,5 @@
-auto MMIO::read(uint mode, uint32 addr) -> uint32 {
-  uint32 word = 0;
+auto MMIO::read(uint mode, buint32 addr) -> buint32 {
+  buint32 word = 0;
 
   if(mode & Word) {
     addr &= ~3;
@@ -18,7 +18,7 @@ auto MMIO::read(uint mode, uint32 addr) -> uint32 {
   return word;
 }
 
-auto MMIO::write(uint mode, uint32 addr, uint32 word) -> void {
+auto MMIO::write(uint mode, buint32 addr, buint32 word) -> void {
   if(mode & Word) {
     addr &= ~3;
     write(addr + 0, word >>  0);

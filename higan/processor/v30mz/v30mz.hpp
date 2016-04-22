@@ -18,72 +18,72 @@ struct V30MZ {
   };
 
   virtual auto wait(uint clocks = 1) -> void = 0;
-  virtual auto read(uint20 addr) -> uint8 = 0;
-  virtual auto write(uint20 addr, uint8 data) -> void = 0;
-  virtual auto in(uint16 port) -> uint8 = 0;
-  virtual auto out(uint16 port, uint8 data) -> void = 0;
+  virtual auto read(uint20 addr) -> buint8 = 0;
+  virtual auto write(uint20 addr, buint8 data) -> void = 0;
+  virtual auto in(buint16 port) -> buint8 = 0;
+  virtual auto out(buint16 port, buint8 data) -> void = 0;
 
   auto debug(string text) -> void;
   auto power() -> void;
   auto exec() -> void;
-  auto interrupt(uint8 vector) -> void;
+  auto interrupt(buint8 vector) -> void;
   auto instruction() -> void;
 
   //registers.cpp
-  auto repeat() -> uint8;
-  auto segment(uint16) -> uint16;
+  auto repeat() -> buint8;
+  auto segment(buint16) -> buint16;
 
-  auto getAcc(Size) -> uint32;
-  auto setAcc(Size, uint32) -> void;
+  auto getAcc(Size) -> buint32;
+  auto setAcc(Size, buint32) -> void;
 
   //modrm.cpp
   auto modRM() -> void;
 
-  auto getMem(Size, uint offset = 0) -> uint16;
-  auto setMem(Size, uint16) -> void;
+  auto getMem(Size, uint offset = 0) -> buint16;
+  auto setMem(Size, buint16) -> void;
 
-  auto getReg(Size) -> uint16;
-  auto setReg(Size, uint16) -> void;
+  auto getReg(Size) -> buint16;
+  auto setReg(Size, buint16) -> void;
 
-  auto getSeg() -> uint16;
-  auto setSeg(uint16) -> void;
+  auto getSeg() -> buint16;
+  auto setSeg(buint16) -> void;
 
   //memory.cpp
-  auto read(Size, uint16, uint16) -> uint32;
-  auto write(Size, uint16, uint16, uint16) -> void;
+  auto read(Size, buint16, buint16) -> buint32;
+  auto write(Size, buint16, buint16, buint16) -> void;
 
-  auto in(Size, uint16) -> uint16;
-  auto out(Size, uint16, uint16) -> void;
+  auto in(Size, buint16) -> buint16;
+  auto out(Size, buint16, buint16) -> void;
 
-  auto fetch(Size = Byte) -> uint16;
-  auto pop() -> uint16;
-  auto push(uint16) -> void;
+  auto fetch(Size = Byte) -> buint16;
+  auto pop() -> buint16;
+  auto push(buint16) -> void;
 
   //algorithms.cpp
-  auto parity(uint8) const -> bool;
-  auto alAdc(Size, uint16, uint16) -> uint16;
-  auto alAdd(Size, uint16, uint16) -> uint16;
-  auto alAnd(Size, uint16, uint16) -> uint16;
-  auto alDec(Size, uint16        ) -> uint16;
-  auto alDiv(Size, uint32, uint32) -> uint32;
-  auto alDivi(Size, int32,  int32) -> uint32;
-  auto alInc(Size, uint16        ) -> uint16;
-  auto alMul(Size, uint16, uint16) -> uint32;
-  auto alMuli(Size, int16,  int16) -> uint32;
-  auto alNeg(Size, uint16        ) -> uint16;
-  auto alNot(Size, uint16        ) -> uint16;
-  auto alOr (Size, uint16, uint16) -> uint16;
-  auto alRcl(Size, uint16, uint5 ) -> uint16;
-  auto alRcr(Size, uint16, uint5 ) -> uint16;
-  auto alRol(Size, uint16, uint4 ) -> uint16;
-  auto alRor(Size, uint16, uint4 ) -> uint16;
-  auto alSal(Size, uint16, uint5 ) -> uint16;
-  auto alSar(Size, uint16, uint5 ) -> uint16;
-  auto alSbb(Size, uint16, uint16) -> uint16;
-  auto alSub(Size, uint16, uint16) -> uint16;
-  auto alShl(Size, uint16, uint5 ) -> uint16;
-  auto alShr(Size, uint16, uint5 ) -> uint16;
-  auto alXor(Size, uint16, uint16) -> uint16;
+  auto parity(buint8) const -> bool;
+  auto alAdc(Size, buint16, buint16) -> buint16;
+  auto alAdd(Size, buint16, buint16) -> buint16;
+  auto alAnd(Size, buint16, buint16) -> buint16;
+  auto alDec(Size, buint16        ) -> buint16;
+  auto alDiv(Size, buint32, buint32) -> buint32;
+  auto alDivi(Size, int32,  int32) -> buint32;
+  auto alInc(Size, buint16        ) -> buint16;
+  auto alMul(Size, buint16, buint16) -> buint32;
+  auto alMuli(Size, int16,  int16) -> buint32;
+  auto alNeg(Size, buint16        ) -> buint16;
+  auto alNot(Size, buint16        ) -> buint16;
+  auto alOr (Size, buint16, buint16) -> buint16;
+  auto alRcl(Size, buint16, uint5 ) -> buint16;
+  auto alRcr(Size, buint16, uint5 ) -> buint16;
+  auto alRol(Size, buint16, uint4 ) -> buint16;
+  auto alRor(Size, buint16, uint4 ) -> buint16;
+  auto alSal(Size, buint16, uint5 ) -> buint16;
+  auto alSar(Size, buint16, uint5 ) -> buint16;
+  auto alSbb(Size, buint16, buint16) -> buint16;
+  auto alSub(Size, buint16, buint16) -> buint16;
+  auto alShl(Size, buint16, uint5 ) -> buint16;
+  auto alShr(Size, buint16, uint5 ) -> buint16;
+  auto alXor(Size, buint16, buint16) -> buint16;
 
   //instructions-adjust.cpp
   auto opDecimalAdjust(bool);
@@ -161,12 +161,12 @@ struct V30MZ {
 
   //instructions-group.cpp
   auto opGroup1MemImm(Size, bool);
-  auto opGroup2MemImm(Size, maybe<uint8> = {});
+  auto opGroup2MemImm(Size, maybe<buint8> = {});
   auto opGroup3MemImm(Size);
   auto opGroup4MemImm(Size);
 
   //instructions-misc.cpp
-  auto opSegment(uint16);
+  auto opSegment(buint16);
   auto opRepeat(bool);
   auto opLock();
   auto opWait();
@@ -207,7 +207,7 @@ struct V30MZ {
   auto serialize(serializer&) -> void;
 
   //disassembler.cpp
-  auto disassemble(uint16 cs, uint16 ip, bool registers = true, bool bytes = true) -> string;
+  auto disassemble(buint16 cs, buint16 ip, bool registers = true, bool bytes = true) -> string;
 
   struct State {
     bool halt;    //set to true for hlt instruction; blocks execution until next interrupt
@@ -215,16 +215,16 @@ struct V30MZ {
     bool prefix;  //set to true for prefix instructions; prevents flushing of Prefix struct
   } state;
 
-  uint8 opcode;
-  vector<uint8> prefixes;
+  buint8 opcode;
+  vector<buint8> prefixes;
 
   struct ModRM {
     uint2 mod;
     uint3 reg;
     uint3 mem;
 
-    uint16 segment;
-    uint16 address;
+    buint16 segment;
+    buint16 address;
   } modrm;
 
   struct Registers {

@@ -1,14 +1,14 @@
 Video video;
 
 Video::Video() {
-  output = new uint32[160 * 144];
-  paletteLiteral = new uint32[1 << 15];
-  paletteStandard = new uint32[1 << 15];
-  paletteEmulation = new uint32[1 << 15];
+  output = new buint32[160 * 144];
+  paletteLiteral = new buint32[1 << 15];
+  paletteStandard = new buint32[1 << 15];
+  paletteEmulation = new buint32[1 << 15];
 }
 
 auto Video::power() -> void {
-  memory::fill(output(), 160 * 144 * sizeof(uint32));
+  memory::fill(output(), 160 * 144 * sizeof(buint32));
 
   if(system.dmg()) {
     for(auto color : range(1 << 2)) {
@@ -85,7 +85,7 @@ auto Video::refresh() -> void {
 //#define DMG_PALETTE_YELLOW
 //#define DMG_PALETTE_WHITE
 
-const uint16 Video::monochrome[4][3] = {
+const buint16 Video::monochrome[4][3] = {
   #if defined(DMG_PALETTE_GREEN)
   {0xaeae, 0xd9d9, 0x2727},
   {0x5858, 0xa0a0, 0x2828},

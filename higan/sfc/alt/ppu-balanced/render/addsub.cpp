@@ -1,6 +1,6 @@
 //color addition / subtraction
 //thanks go to blargg for the optimized algorithms
-inline auto PPU::addsub(uint32 x, uint32 y, bool halve) -> uint16 {
+inline auto PPU::addsub(buint32 x, buint32 y, bool halve) -> buint16 {
   if(!regs.color_mode) {
     if(!halve) {
       uint sum = x + y;

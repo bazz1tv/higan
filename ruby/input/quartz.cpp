@@ -28,7 +28,7 @@ struct InputQuartz : Input {
     return devices;
   }
 
-  auto rumble(uint64 id, bool enable) -> bool {
+  auto rumble(buint64 id, bool enable) -> bool {
     return false;
   }
 

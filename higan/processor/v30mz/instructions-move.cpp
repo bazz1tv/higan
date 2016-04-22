@@ -46,7 +46,7 @@ auto V30MZ::opMoveMemImm(Size size) {
 
 auto V30MZ::opExchange(uint16_t& x, uint16_t& y) {
   wait(2);
-  uint16 z = x;
+  buint16 z = x;
   x = y;
   y = z;
 }

@@ -82,7 +82,7 @@ auto ARM::thumb_op_shift_immediate() {
 auto ARM::thumb_op_immediate() {
   uint2 opcode = instruction() >> 11;
   uint3 d = instruction() >> 8;
-  uint8 immediate = instruction();
+  buint8 immediate = instruction();
 
   switch(opcode) {
   case 0: r(d) = bit(      immediate   ); break;
@@ -140,7 +140,7 @@ auto ARM::thumb_op_alu_hi() {
 //o = offset
 auto ARM::thumb_op_load_literal() {
   uint3 d = instruction() >> 8;
-  uint8 displacement = instruction();
+  buint8 displacement = instruction();
 
   unsigned rm = (r(15) & ~3) + displacement * 4;
   r(d) = load(Word | Nonsequential, rm);
@@ -226,7 +226,7 @@ auto ARM::thumb_op_move_half_immediate() {
 auto ARM::thumb_op_move_stack() {
   uint1 l = instruction() >> 11;
   uint3 d = instruction() >> 8;
-  uint8 immediate = instruction();
+  buint8 immediate = instruction();
 
   if(l == 1) r(d) = load(Word | Nonsequential, r(13) + immediate * 4);
   if(l == 0) store(Word | Nonsequential, r(13) + immediate * 4, r(d));
@@ -240,7 +240,7 @@ auto ARM::thumb_op_move_stack() {
 auto ARM::thumb_op_add_register_hi() {
   uint1 sp = instruction() >> 11;
   uint3 d = instruction() >> 8;
-  uint8 immediate = instruction();
+  buint8 immediate = instruction();
 
   if(sp == 0) r(d) = (r(15) & ~2) + immediate * 4;
   if(sp == 1) r(d) = r(13) + immediate * 4;
@@ -267,9 +267,9 @@ auto ARM::thumb_op_adjust_stack() {
 auto ARM::thumb_op_stack_multiple() {
   uint1 l = instruction() >> 11;
   uint1 branch = instruction() >> 8;
-  uint8 list = instruction();
+  buint8 list = instruction();
 
-  uint32 sp = 0;
+  buint32 sp = 0;
   if(l == 1) sp = r(13);
   if(l == 0) sp = r(13) - (bit::count(list) + branch) * 4;
 
@@ -307,8 +307,8 @@ auto ARM::thumb_op_stack_multiple() {
 auto ARM::thumb_op_move_multiple() {
   uint1 l = instruction() >> 11;
   uint3 n = instruction() >> 8;
-  uint8 list = instruction();
-  uint32 rn = r(n);  //rn may be in register list; so we must cache it
+  buint8 list = instruction();
+  buint32 rn = r(n);  //rn may be in register list; so we must cache it
 
   for(unsigned m = 0; m < 8; m++) {
     if(list & 1 << m) {
@@ -326,7 +326,7 @@ auto ARM::thumb_op_move_multiple() {
 //1101 1111 iiii iiii
 //i = immediate
 auto ARM::thumb_op_software_interrupt() {
-  uint8 immediate = instruction();
+  buint8 immediate = instruction();
 
   vector(0x00000008, Processor::Mode::SVC);
 }

@@ -3,11 +3,11 @@ class Screen {
 
   alwaysinline auto get_palette(uint color) -> uint;
   auto get_direct_color(uint palette, uint tile) -> uint;
-  alwaysinline auto addsub(uint x, uint y, bool halve) -> uint16;
+  alwaysinline auto addsub(uint x, uint y, bool halve) -> buint16;
   auto scanline() -> void;
   auto render_black() -> void;
-  alwaysinline auto get_pixel_main(uint x) -> uint16;
-  alwaysinline auto get_pixel_sub(uint x) -> uint16;
+  alwaysinline auto get_pixel_main(uint x) -> buint16;
+  alwaysinline auto get_pixel_sub(uint x) -> buint16;
   auto render() -> void;
 
   auto serialize(serializer&) -> void;

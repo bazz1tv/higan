@@ -37,7 +37,7 @@ auto PPU::render_background_linear(Registers::Background& bg) -> void {
   uint px = hoffset & 7, py = voffset & 7;
 
   Tile tile;
-  uint8 data[8];
+  buint8 data[8];
 
   for(auto x : range(240)) {
     if(x == 0 || px & 8) {
@@ -48,7 +48,7 @@ auto PPU::render_background_linear(Registers::Background& bg) -> void {
       if(bg.control.screensize & 1) if(tx & 32) offset += 32 * 32;
       if(bg.control.screensize & 2) if(ty & 32) offset += 32 * 32 * (1 + (bg.control.screensize & 1));
       offset = basemap + offset * 2;
-      uint16 mapdata = vram_read(Half, offset);
+      buint16 mapdata = vram_read(Half, offset);
 
       tile.character = mapdata >>  0;
       tile.hflip     = mapdata >> 10;
@@ -57,19 +57,19 @@ auto PPU::render_background_linear(Registers::Background& bg) -> void {
 
       if(bg.control.colormode == 0) {
         offset = basechr + tile.character * 32 + (py ^ (tile.vflip ? 7 : 0)) * 4;
-        uint32 word = vram_read(Word, offset);
+        buint32 word = vram_read(Word, offset);
         for(auto n : range(8)) data[n] = (word >> (n * 4)) & 15;
       } else {
         offset = basechr + tile.character * 64 + (py ^ (tile.vflip ? 7 : 0)) * 8;
-        uint32 wordlo = vram_read(Word, offset + 0);
-        uint32 wordhi = vram_read(Word, offset + 4);
+        buint32 wordlo = vram_read(Word, offset + 0);
+        buint32 wordhi = vram_read(Word, offset + 4);
         for(auto n : range(4)) data[0 + n] = (wordlo >> (n * 8)) & 255;
         for(auto n : range(4)) data[4 + n] = (wordhi >> (n * 8)) & 255;
       }
     }
 
     hoffset++;
-    uint8 color = data[px++ ^ (tile.hflip ? 7 : 0)];
+    buint8 color = data[px++ ^ (tile.hflip ? 7 : 0)];
 
     if(color) {
       if(bg.control.colormode == 0) output[x].write(true, bg.control.priority, pram[tile.palette * 16 + color]);
@@ -100,8 +100,8 @@ auto PPU::render_background_affine(Registers::Background& bg) -> void {
     uint cy = (fy >> 8) & screenwrap, ty = cy / 8, py = cy & 7;
 
     if(tx < screensize && ty < screensize) {
-      uint8 character = vram[basemap + ty * screensize + tx];
-      uint8 color = vram[basechr + (character * 64) + py * 8 + px];
+      buint8 character = vram[basemap + ty * screensize + tx];
+      buint8 color = vram[basechr + (character * 64) + py * 8 + px];
       if(color) output[x].write(true, bg.control.priority, pram[color]);
     }
 

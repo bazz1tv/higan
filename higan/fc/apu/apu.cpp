@@ -108,9 +108,9 @@ auto APU::reset() -> void {
   set_irq_line();
 }
 
-auto APU::read(uint16 addr) -> uint8 {
+auto APU::read(buint16 addr) -> buint8 {
   if(addr == 0x4015) {
-    uint8 result = 0x00;
+    buint8 result = 0x00;
     result |= pulse[0].length_counter ? 0x01 : 0;
     result |= pulse[1].length_counter ? 0x02 : 0;
     result |= triangle.length_counter ? 0x04 : 0;
@@ -128,7 +128,7 @@ auto APU::read(uint16 addr) -> uint8 {
   return cpu.mdr();
 }
 
-auto APU::write(uint16 addr, uint8 data) -> void {
+auto APU::write(buint16 addr, buint8 data) -> void {
   const uint n = (addr >> 2) & 1;  //pulse#
 
   switch(addr) {
@@ -299,24 +299,24 @@ auto APU::clock_frame_counter_divider() -> void {
   }
 }
 
-const uint8 APU::length_counter_table[32] = {
+const buint8 APU::length_counter_table[32] = {
   0x0a, 0xfe, 0x14, 0x02, 0x28, 0x04, 0x50, 0x06, 0xa0, 0x08, 0x3c, 0x0a, 0x0e, 0x0c, 0x1a, 0x0e,
   0x0c, 0x10, 0x18, 0x12, 0x30, 0x14, 0x60, 0x16, 0xc0, 0x18, 0x48, 0x1a, 0x10, 0x1c, 0x20, 0x1e,
 };
 
-const uint16 APU::ntsc_noise_period_table[16] = {
+const buint16 APU::ntsc_noise_period_table[16] = {
   4, 8, 16, 32, 64, 96, 128, 160, 202, 254, 380, 508, 762, 1016, 2034, 4068,
 };
 
-const uint16 APU::pal_noise_period_table[16] = {
+const buint16 APU::pal_noise_period_table[16] = {
   4, 7, 14, 30, 60, 88, 118, 148, 188, 236, 354, 472, 708,  944, 1890, 3778,
 };
 
-const uint16 APU::ntsc_dmc_period_table[16] = {
+const buint16 APU::ntsc_dmc_period_table[16] = {
   428, 380, 340, 320, 286, 254, 226, 214, 190, 160, 142, 128, 106, 84, 72, 54,
 };
 
-const uint16 APU::pal_dmc_period_table[16] = {
+const buint16 APU::pal_dmc_period_table[16] = {
   398, 354, 316, 298, 276, 236, 210, 198, 176, 148, 132, 118,  98, 78, 66, 50,
 };
 

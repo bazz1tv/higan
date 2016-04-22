@@ -6,8 +6,8 @@ struct Square1 {
   auto clockLength() -> void;
   auto clockSweep() -> void;
   auto clockEnvelope() -> void;
-  auto read(uint16 addr) -> uint8;
-  auto write(uint16 addr, uint8 data) -> void;
+  auto read(buint16 addr) -> buint8;
+  auto write(buint16 addr, buint8 data) -> void;
   auto power(bool initializeLength = true) -> void;
 
   auto serialize(serializer&) -> void;

@@ -24,8 +24,8 @@ struct Cartridge {
   auto unload() -> void;
   auto power() -> void;
 
-  auto read(uint mode, uint32 addr) -> uint32;
-  auto write(uint mode, uint32 addr, uint32 word) -> void;
+  auto read(uint mode, buint32 addr) -> buint32;
+  auto write(uint mode, buint32 addr, buint32 word) -> void;
 
   auto serialize(serializer&) -> void;
 

@@ -29,7 +29,7 @@ struct VRC3 : Chip {
     return (bank * 0x4000) + (addr & 0x3fff);
   }
 
-  auto reg_write(uint addr, uint8 data) -> void {
+  auto reg_write(uint addr, buint8 data) -> void {
     switch(addr & 0xf000) {
     case 0x8000: irq_latch = (irq_latch & 0xfff0) | ((data & 0x0f) <<  0); break;
     case 0x9000: irq_latch = (irq_latch & 0xff0f) | ((data & 0x0f) <<  4); break;
@@ -81,7 +81,7 @@ struct VRC3 : Chip {
   bool irq_mode;
   bool irq_enable;
   bool irq_acknowledge;
-  uint16 irq_latch;
+  buint16 irq_latch;
   struct {
     union {
       uint16_t w;

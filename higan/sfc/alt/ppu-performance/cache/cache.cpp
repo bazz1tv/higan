@@ -1,16 +1,16 @@
 PPU::Cache::Cache(PPU& self) : self(self) {
-  tiledata[0] = new uint8[262144]();
-  tiledata[1] = new uint8[131072]();
-  tiledata[2] = new uint8[ 65536]();
-  tilevalid[0] = new uint8[ 4096]();
-  tilevalid[1] = new uint8[ 2048]();
-  tilevalid[2] = new uint8[ 1024]();
+  tiledata[0] = new buint8[262144]();
+  tiledata[1] = new buint8[131072]();
+  tiledata[2] = new buint8[ 65536]();
+  tilevalid[0] = new buint8[ 4096]();
+  tilevalid[1] = new buint8[ 2048]();
+  tilevalid[2] = new buint8[ 1024]();
 }
 
-auto PPU::Cache::tile_2bpp(uint tile) -> uint8* {
+auto PPU::Cache::tile_2bpp(uint tile) -> buint8* {
   if(tilevalid[0][tile] == 0) {
     tilevalid[0][tile] = 1;
-    uint8* output = (uint8*)tiledata[0] + (tile << 6);
+    buint8* output = (buint8*)tiledata[0] + (tile << 6);
     uint offset = tile << 4;
     uint y = 8;
     uint color, d0, d1;
@@ -36,10 +36,10 @@ auto PPU::Cache::tile_2bpp(uint tile) -> uint8* {
   return tiledata[0] + (tile << 6);
 }
 
-auto PPU::Cache::tile_4bpp(uint tile) -> uint8* {
+auto PPU::Cache::tile_4bpp(uint tile) -> buint8* {
   if(tilevalid[1][tile] == 0) {
     tilevalid[1][tile] = 1;
-    uint8* output = (uint8*)tiledata[1] + (tile << 6);
+    buint8* output = (buint8*)tiledata[1] + (tile << 6);
     uint offset = tile << 5;
     uint y = 8;
     uint color, d0, d1, d2, d3;
@@ -69,10 +69,10 @@ auto PPU::Cache::tile_4bpp(uint tile) -> uint8* {
   return tiledata[1] + (tile << 6);
 }
 
-auto PPU::Cache::tile_8bpp(uint tile) -> uint8* {
+auto PPU::Cache::tile_8bpp(uint tile) -> buint8* {
   if(tilevalid[2][tile] == 0) {
     tilevalid[2][tile] = 1;
-    uint8* output = (uint8*)tiledata[2] + (tile << 6);
+    buint8* output = (buint8*)tiledata[2] + (tile << 6);
     uint offset = tile << 6;
     uint y = 8;
     uint color, d0, d1, d2, d3, d4, d5, d6, d7;
@@ -110,7 +110,7 @@ auto PPU::Cache::tile_8bpp(uint tile) -> uint8* {
   return tiledata[2] + (tile << 6);
 }
 
-auto PPU::Cache::tile(uint bpp, uint tile) -> uint8* {
+auto PPU::Cache::tile(uint bpp, uint tile) -> buint8* {
   switch(bpp) {
   case 0: return tile_2bpp(tile);
   case 1: return tile_4bpp(tile);

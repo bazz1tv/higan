@@ -1,4 +1,4 @@
-auto CPU::dma_transfer_valid(uint8 bbus, uint abus) -> bool {
+auto CPU::dma_transfer_valid(buint8 bbus, uint abus) -> bool {
   //transfers from WRAM to WRAM are invalid; chip only has one address bus
   if(bbus == 0x80 && ((abus & 0xfe0000) == 0x7e0000 || (abus & 0x40e000) == 0x0000)) return false;
   return true;
@@ -13,28 +13,28 @@ auto CPU::dma_addr_valid(uint abus) -> bool {
   return true;
 }
 
-auto CPU::dma_read(uint abus) -> uint8 {
+auto CPU::dma_read(uint abus) -> buint8 {
   if(dma_addr_valid(abus) == false) return 0x00;
   return bus.read(abus, regs.mdr);
 }
 
-auto CPU::dma_write(bool valid, uint addr, uint8 data) -> void {
+auto CPU::dma_write(bool valid, uint addr, buint8 data) -> void {
   if(valid) bus.write(addr, data);
 }
 
-auto CPU::dma_transfer(bool direction, uint8 bbus, uint abus) -> void {
+auto CPU::dma_transfer(bool direction, buint8 bbus, uint abus) -> void {
   if(direction == 0) {
-    uint8 data = dma_read(abus);
+    buint8 data = dma_read(abus);
     add_clocks(8);
     dma_write(dma_transfer_valid(bbus, abus), 0x2100 | bbus, data);
   } else {
-    uint8 data = dma_transfer_valid(bbus, abus) ? bus.read(0x2100 | bbus, regs.mdr) : (uint8)0x00;
+    buint8 data = dma_transfer_valid(bbus, abus) ? bus.read(0x2100 | bbus, regs.mdr) : (buint8)0x00;
     add_clocks(8);
     dma_write(dma_addr_valid(abus), abus, data);
   }
 }
 
-auto CPU::dma_bbus(uint i, uint index) -> uint8 {
+auto CPU::dma_bbus(uint i, uint index) -> buint8 {
   switch(channel[i].transfer_mode) { default:
     case 0: return (channel[i].dest_addr);                       //0
     case 1: return (channel[i].dest_addr + (index & 1));         //0,1

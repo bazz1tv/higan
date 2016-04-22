@@ -389,7 +389,7 @@ auto GSU::op_mult_r() {
 //$80-8f(alt1): umult rN
 template<int n>
 auto GSU::op_umult_r() {
-  regs.dr() = (uint8)regs.sr() * (uint8)regs.r[n];
+  regs.dr() = (buint8)regs.sr() * (buint8)regs.r[n];
   regs.sfr.s = (regs.dr() & 0x8000);
   regs.sfr.z = (regs.dr() == 0);
   regs.reset();
@@ -409,7 +409,7 @@ auto GSU::op_mult_i() {
 //$80-8f(alt3): umult #N
 template<int n>
 auto GSU::op_umult_i() {
-  regs.dr() = (uint8)regs.sr() * (uint8)n;
+  regs.dr() = (buint8)regs.sr() * (buint8)n;
   regs.sfr.s = (regs.dr() & 0x8000);
   regs.sfr.z = (regs.dr() == 0);
   regs.reset();

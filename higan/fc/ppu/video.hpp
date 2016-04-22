@@ -5,12 +5,12 @@ struct Video {
   auto refresh() -> void;
 
 private:
-  auto generateColor(uint, double, double, double, double, double) -> uint32;
+  auto generateColor(uint, double, double, double, double, double) -> buint32;
 
-  unique_pointer<uint32[]> output;
-  unique_pointer<uint32[]> paletteLiteral;
-  unique_pointer<uint32[]> paletteStandard;
-  unique_pointer<uint32[]> paletteEmulation;
+  unique_pointer<buint32[]> output;
+  unique_pointer<buint32[]> paletteLiteral;
+  unique_pointer<buint32[]> paletteStandard;
+  unique_pointer<buint32[]> paletteEmulation;
 };
 
 extern Video video;

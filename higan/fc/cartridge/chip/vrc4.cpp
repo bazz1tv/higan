@@ -57,7 +57,7 @@ struct VRC4 : Chip {
     throw;
   }
 
-  auto reg_write(uint addr, uint8 data) -> void {
+  auto reg_write(uint addr, buint8 data) -> void {
     switch(addr) {
     case 0x8000: case 0x8001: case 0x8002: case 0x8003:
       prg_bank[0] = data & 0x1f;
@@ -163,14 +163,14 @@ struct VRC4 : Chip {
   bool prg_mode;
   uint5 prg_bank[2];
   uint2 mirror;
-  uint8 chr_bank[8];
+  buint8 chr_bank[8];
 
-  uint8 irq_latch;
+  buint8 irq_latch;
   bool irq_mode;
   bool irq_enable;
   bool irq_acknowledge;
 
-  uint8 irq_counter;
+  buint8 irq_counter;
   int irq_scalar;
   bool irq_line;
 };

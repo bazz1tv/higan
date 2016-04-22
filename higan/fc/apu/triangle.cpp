@@ -14,8 +14,8 @@ auto APU::Triangle::clock_linear_length() -> void {
   if(halt_length_counter == 0) reload_linear = false;
 }
 
-auto APU::Triangle::clock() -> uint8 {
-  uint8 result = step_counter & 0x0f;
+auto APU::Triangle::clock() -> buint8 {
+  buint8 result = step_counter & 0x0f;
   if((step_counter & 0x10) == 0) result ^= 0x0f;
   if(length_counter == 0 || linear_length_counter == 0) return result;
 

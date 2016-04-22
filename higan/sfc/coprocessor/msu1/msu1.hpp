@@ -10,8 +10,8 @@ struct MSU1 : Coprocessor {
   auto dataOpen() -> void;
   auto audioOpen() -> void;
 
-  auto mmioRead(uint24 addr, uint8 data) -> uint8;
-  auto mmioWrite(uint24 addr, uint8 data) -> void;
+  auto mmioRead(uint24 addr, buint8 data) -> buint8;
+  auto mmioWrite(uint24 addr, buint8 data) -> void;
 
   auto serialize(serializer&) -> void;
 
@@ -29,17 +29,17 @@ private:
   };
 
   struct MMIO {
-    uint32 dataSeekOffset;
-    uint32 dataReadOffset;
+    buint32 dataSeekOffset;
+    buint32 dataReadOffset;
 
-    uint32 audioPlayOffset;
-    uint32 audioLoopOffset;
+    buint32 audioPlayOffset;
+    buint32 audioLoopOffset;
 
-    uint16 audioTrack;
-    uint8 audioVolume;
+    buint16 audioTrack;
+    buint8 audioVolume;
 
-    uint32 audioResumeTrack;
-    uint32 audioResumeOffset;
+    buint32 audioResumeTrack;
+    buint32 audioResumeOffset;
 
     bool dataBusy;
     bool audioBusy;

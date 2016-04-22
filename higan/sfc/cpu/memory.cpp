@@ -1,8 +1,8 @@
-auto CPU::portRead(uint2 port) const -> uint8 {
+auto CPU::portRead(uint2 port) const -> buint8 {
   return status.port[port];
 }
 
-auto CPU::portWrite(uint2 port, uint8 data) -> void {
+auto CPU::portWrite(uint2 port, buint8 data) -> void {
   status.port[port] = data;
 }
 
@@ -13,7 +13,7 @@ auto CPU::io() -> void {
   aluEdge();
 }
 
-auto CPU::read(uint24 addr) -> uint8 {
+auto CPU::read(uint24 addr) -> buint8 {
   status.clock_count = speed(addr);
   dmaEdge();
   addClocks(status.clock_count - 4);
@@ -24,7 +24,7 @@ auto CPU::read(uint24 addr) -> uint8 {
   return regs.mdr;
 }
 
-auto CPU::write(uint24 addr, uint8 data) -> void {
+auto CPU::write(uint24 addr, buint8 data) -> void {
   aluEdge();
   status.clock_count = speed(addr);
   dmaEdge();
@@ -43,6 +43,6 @@ auto CPU::speed(uint24 addr) const -> uint {
   return 12;
 }
 
-auto CPU::disassemblerRead(uint24 addr) -> uint8 {
+auto CPU::disassemblerRead(uint24 addr) -> buint8 {
   return bus.read(addr, regs.mdr);
 }

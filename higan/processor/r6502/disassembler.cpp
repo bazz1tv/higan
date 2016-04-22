@@ -18,7 +18,7 @@ auto R6502::disassemble() -> string {
     case byte: output.append(#prefix, " ", mode()); \
     break
 
-  uint8 opcode = debugger_read(regs.pc);
+  buint8 opcode = debugger_read(regs.pc);
   switch(opcode) {
     op(0x00, brk, imm);
     op(0x01, ora, izx);

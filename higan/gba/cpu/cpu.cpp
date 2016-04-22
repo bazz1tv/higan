@@ -12,8 +12,8 @@ namespace GameBoyAdvance {
 CPU cpu;
 
 CPU::CPU() {
-  iwram = new uint8[ 32 * 1024];
-  ewram = new uint8[256 * 1024];
+  iwram = new buint8[ 32 * 1024];
+  ewram = new buint8[256 * 1024];
 
   regs.dma[0].source.resize(27); regs.dma[0].run.source.resize(27);
   regs.dma[0].target.resize(27); regs.dma[0].run.target.resize(27);

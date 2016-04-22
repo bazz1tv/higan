@@ -16,21 +16,21 @@ struct uPD96050 {
   auto execJP(uint24 opcode) -> void;
   auto execLD(uint24 opcode) -> void;
 
-  auto readSR() -> uint8;
-  auto writeSR(uint8 data) -> void;
+  auto readSR() -> buint8;
+  auto writeSR(buint8 data) -> void;
 
-  auto readDR() -> uint8;
-  auto writeDR(uint8 data) -> void;
+  auto readDR() -> buint8;
+  auto writeDR(buint8 data) -> void;
 
-  auto readDP(uint12 addr) -> uint8;
-  auto writeDP(uint12 addr, uint8 data) -> void;
+  auto readDP(uint12 addr) -> buint8;
+  auto writeDP(uint12 addr, buint8 data) -> void;
 
   auto disassemble(uint14 ip) -> string;
 
   enum class Revision : uint { uPD7725, uPD96050 } revision;
   uint24 programROM[16384];
-  uint16 dataROM[2048];
-  uint16 dataRAM[2048];
+  buint16 dataROM[2048];
+  buint16 dataRAM[2048];
 
   //registers.cpp
   struct Flag {
@@ -48,7 +48,7 @@ struct uPD96050 {
   };
 
   struct Regs {
-    uint16 stack[16];    //LIFO
+    buint16 stack[16];    //LIFO
     VariadicNatural pc;  //program counter
     VariadicNatural rp;  //ROM pointer
     VariadicNatural dp;  //data pointer
@@ -61,12 +61,12 @@ struct uPD96050 {
     int16 b;             //accumulator
     Flag flaga;
     Flag flagb;
-    uint16 tr;           //temporary register
-    uint16 trb;          //temporary register
+    buint16 tr;           //temporary register
+    buint16 trb;          //temporary register
     Status sr;           //status register
-    uint16 dr;           //data register
-    uint16 si;
-    uint16 so;
+    buint16 dr;           //data register
+    buint16 si;
+    buint16 so;
   } regs;
 };
 

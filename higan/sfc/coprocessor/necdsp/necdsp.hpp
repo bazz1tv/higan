@@ -2,11 +2,11 @@ struct NECDSP : Processor::uPD96050, Coprocessor {
   static auto Enter() -> void;
   auto main() -> void;
 
-  auto read(uint24 addr, uint8 data) -> uint8;
-  auto write(uint24 addr, uint8 data) -> void;
+  auto read(uint24 addr, buint8 data) -> buint8;
+  auto write(uint24 addr, buint8 data) -> void;
 
-  auto readRAM(uint24 addr, uint8 data) -> uint8;
-  auto writeRAM(uint24 addr, uint8 data) -> void;
+  auto readRAM(uint24 addr, buint8 data) -> buint8;
+  auto writeRAM(uint24 addr, buint8 data) -> void;
 
   auto init() -> void;
   auto load() -> void;
@@ -14,7 +14,7 @@ struct NECDSP : Processor::uPD96050, Coprocessor {
   auto power() -> void;
   auto reset() -> void;
 
-  auto firmware() const -> vector<uint8>;
+  auto firmware() const -> vector<buint8>;
   auto serialize(serializer&) -> void;
 };
 

@@ -1,4 +1,4 @@
-auto CPU::op_read(uint16 addr) -> uint8 {
+auto CPU::op_read(buint16 addr) -> buint8 {
   if(status.oam_dma_pending) {
     status.oam_dma_pending = false;
     op_read(addr);
@@ -15,7 +15,7 @@ auto CPU::op_read(uint16 addr) -> uint8 {
   return regs.mdr;
 }
 
-auto CPU::op_write(uint16 addr, uint8 data) -> void {
+auto CPU::op_write(buint16 addr, buint8 data) -> void {
   bus.write(addr, regs.mdr = data);
   add_clocks(12);
 }
@@ -24,7 +24,7 @@ auto CPU::last_cycle() -> void {
   status.interrupt_pending = ((status.irq_line | status.irq_apu_line) & ~regs.p.i) | status.nmi_pending;
 }
 
-auto CPU::nmi(uint16& vector) -> void {
+auto CPU::nmi(buint16& vector) -> void {
   if(status.nmi_pending) {
     status.nmi_pending = false;
     vector = 0xfffa;
@@ -33,7 +33,7 @@ auto CPU::nmi(uint16& vector) -> void {
 
 auto CPU::oam_dma() -> void {
   for(uint n : range(256)) {
-    uint8 data = op_read((status.oam_dma_page << 8) + n);
+    buint8 data = op_read((status.oam_dma_page << 8) + n);
     op_write(0x2004, data);
   }
 }
@@ -58,7 +58,7 @@ auto CPU::set_rdy_line(bool line) -> void {
   status.rdy_line = line;
 }
 
-auto CPU::set_rdy_addr(bool valid, uint16 value) -> void {
+auto CPU::set_rdy_addr(bool valid, buint16 value) -> void {
   status.rdy_addr_valid = valid;
   status.rdy_addr_value = value;
 }

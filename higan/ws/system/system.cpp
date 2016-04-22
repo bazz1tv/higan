@@ -31,7 +31,7 @@ auto System::load(Model model) -> void {
 
   if(auto node = document["system/eeprom"]) {
     eeprom.setName(node["name"].text());
-    eeprom.setSize(node["size"].natural() / sizeof(uint16));
+    eeprom.setSize(node["size"].natural() / sizeof(buint16));
     eeprom.erase();
     //initialize user-data section
     for(uint addr = 0x0030; addr <= 0x003a; addr++) eeprom[addr] = 0x0000;

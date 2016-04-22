@@ -1,4 +1,4 @@
-auto PPU::update_sprite_list(uint addr, uint8 data) -> void {
+auto PPU::update_sprite_list(uint addr, buint8 data) -> void {
   if(addr < 0x0200) {
     unsigned i = addr >> 2;
     switch(addr & 3) {
@@ -77,7 +77,7 @@ auto PPU::is_sprite_on_scanline() -> bool {
 
 auto PPU::load_oam_tiles() -> void {
   sprite_item* spr = &sprite_list[active_sprite];
-  uint16 tile_width = spr->width >> 3;
+  buint16 tile_width = spr->width >> 3;
   int x = spr->x;
   int y = (line - spr->y) & 0xff;
   if(regs.oam_interlace == true) {
@@ -99,9 +99,9 @@ auto PPU::load_oam_tiles() -> void {
   x &= 511;
   y &= 255;
 
-  uint16 tdaddr = cache.oam_tdaddr;
-  uint16 chrx   = (spr->character     ) & 15;
-  uint16 chry   = (spr->character >> 4) & 15;
+  buint16 tdaddr = cache.oam_tdaddr;
+  buint16 chrx   = (spr->character     ) & 15;
+  buint16 chry   = (spr->character >> 4) & 15;
   if(spr->use_nameselect == true) {
     tdaddr += (256 * 32) + (cache.oam_nameselect << 13);
   }
@@ -130,15 +130,15 @@ auto PPU::load_oam_tiles() -> void {
 
 auto PPU::render_oam_tile(int tile_num) -> void {
   oam_tileitem* t     = &oam_tilelist[tile_num];
-  uint8* oam_td       = (uint8*)bg_tiledata[COLORDEPTH_16];
-  uint8* oam_td_state = (uint8*)bg_tiledata_state[COLORDEPTH_16];
+  buint8* oam_td       = (buint8*)bg_tiledata[COLORDEPTH_16];
+  buint8* oam_td_state = (buint8*)bg_tiledata_state[COLORDEPTH_16];
 
   if(oam_td_state[t->tile] == 1) {
     render_bg_tile<COLORDEPTH_16>(t->tile);
   }
 
   unsigned sx = t->x;
-  uint8* tile_ptr = (uint8*)oam_td + (t->tile << 6) + ((t->y & 7) << 3);
+  buint8* tile_ptr = (buint8*)oam_td + (t->tile << 6) + ((t->y & 7) << 3);
   for(unsigned x = 0; x < 8; x++) {
     sx &= 511;
     if(sx < 256) {
@@ -198,7 +198,7 @@ auto PPU::render_line_oam_rto() -> void {
     pixel_cache[x].ce_sub  = (oam_line_pal[x] < 192); \
   }
 
-auto PPU::render_line_oam(uint8 pri0_pos, uint8 pri1_pos, uint8 pri2_pos, uint8 pri3_pos) -> void {
+auto PPU::render_line_oam(buint8 pri0_pos, buint8 pri1_pos, buint8 pri2_pos, buint8 pri3_pos) -> void {
   if(layer_enabled[OAM][0] == false) pri0_pos = 0;
   if(layer_enabled[OAM][1] == false) pri1_pos = 0;
   if(layer_enabled[OAM][2] == false) pri2_pos = 0;
@@ -216,8 +216,8 @@ auto PPU::render_line_oam(uint8 pri0_pos, uint8 pri1_pos, uint8 pri2_pos, uint8 
   bool bgsub_enabled = regs.bgsub_enabled[OAM];
 
   build_window_tables(OAM);
-  uint8* wt_main = window[OAM].main;
-  uint8* wt_sub  = window[OAM].sub;
+  buint8* wt_main = window[OAM].main;
+  buint8* wt_sub  = window[OAM].sub;
 
   unsigned pri_tbl[4] = { pri0_pos, pri1_pos, pri2_pos, pri3_pos };
   for(int x = 0; x < 256; x++) {

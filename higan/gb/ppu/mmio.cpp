@@ -1,8 +1,8 @@
-auto PPU::vram_addr(uint16 addr) const -> uint {
+auto PPU::vram_addr(buint16 addr) const -> uint {
   return (status.vram_bank * 0x2000) + (addr & 0x1fff);
 }
 
-auto PPU::mmio_read(uint16 addr) -> uint8 {
+auto PPU::mmio_read(buint16 addr) -> buint8 {
   if(addr >= 0x8000 && addr <= 0x9fff) {
     return vram[vram_addr(addr)];
   }
@@ -106,7 +106,7 @@ auto PPU::mmio_read(uint16 addr) -> uint8 {
   return 0xff;  //should never occur
 }
 
-auto PPU::mmio_write(uint16 addr, uint8 data) -> void {
+auto PPU::mmio_write(buint16 addr, buint8 data) -> void {
   if(addr >= 0x8000 && addr <= 0x9fff) {
     vram[vram_addr(addr)] = data;
     return;

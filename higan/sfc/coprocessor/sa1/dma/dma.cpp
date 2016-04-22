@@ -4,9 +4,9 @@
 
 auto SA1::dma_normal() -> void {
   while(mmio.dtc--) {
-    uint8 data = regs.mdr;
-    uint32 dsa = mmio.dsa++;
-    uint32 dda = mmio.dda++;
+    buint8 data = regs.mdr;
+    buint32 dsa = mmio.dsa++;
+    buint32 dda = mmio.dda++;
 
     //source and destination cannot be the same
     if(mmio.sd == DMA::SourceBWRAM && mmio.dd == DMA::DestBWRAM) continue;
@@ -65,7 +65,7 @@ auto SA1::dma_cc1() -> void {
   }
 }
 
-auto SA1::dma_cc1_read(uint addr) -> uint8 {
+auto SA1::dma_cc1_read(uint addr) -> buint8 {
   //16 bytes/char (2bpp); 32 bytes/char (4bpp); 64 bytes/char (8bpp)
   uint charmask = (1 << (6 - mmio.dmacb)) - 1;
 
@@ -80,13 +80,13 @@ auto SA1::dma_cc1_read(uint addr) -> uint8 {
     uint bwaddr = mmio.dsa + ty * 8 * bpl + tx * bpp;
 
     for(auto y : range(8)) {
-      uint64 data = 0;
+      buint64 data = 0;
       for(auto byte : range(bpp)) {
-        data |= (uint64)bwram.read((bwaddr + byte) & bwmask) << (byte << 3);
+        data |= (buint64)bwram.read((bwaddr + byte) & bwmask) << (byte << 3);
       }
       bwaddr += bpl;
 
-      uint8 out[] = {0, 0, 0, 0, 0, 0, 0, 0};
+      buint8 out[] = {0, 0, 0, 0, 0, 0, 0, 0};
       for(auto x : range(8)) {
         out[0] |= (data & 1) << (7 - x); data >>= 1;
         out[1] |= (data & 1) << (7 - x); data >>= 1;
@@ -116,7 +116,7 @@ auto SA1::dma_cc1_read(uint addr) -> uint8 {
 
 auto SA1::dma_cc2() -> void {
   //select register file index (0-7 or 8-15)
-  const uint8* brf = &mmio.brf[(dma.line & 1) << 3];
+  const buint8* brf = &mmio.brf[(dma.line & 1) << 3];
   uint bpp = 2 << (2 - mmio.dmacb);
   uint addr = mmio.dda & 0x07ff;
   addr &= ~((1 << (7 - mmio.dmacb)) - 1);
@@ -124,7 +124,7 @@ auto SA1::dma_cc2() -> void {
   addr += (dma.line & 7) * 2;
 
   for(auto byte : range(bpp)) {
-    uint8 output = 0;
+    buint8 output = 0;
     for(auto bit : range(8)) {
       output |= ((brf[bit] >> byte) & 1) << (7 - bit);
     }

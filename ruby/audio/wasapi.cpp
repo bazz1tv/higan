@@ -50,7 +50,7 @@ struct AudioWASAPI : Audio {
     return false;
   }
 
-  auto sample(uint16 left, uint16 right) -> void {
+  auto sample(buint16 left, buint16 right) -> void {
     int samples[] = {(int16)left, (int16)right};
     dsp.sample(samples);
     while(dsp.pending()) {
@@ -128,7 +128,7 @@ struct AudioWASAPI : Audio {
 private:
   auto write(int samples[]) -> void {
     while(true) {
-      uint32 padding = 0;
+      buint32 padding = 0;
       audioClient->GetCurrentPadding(&padding);
       if(bufferFrameCount - padding < 1) {
         if(!settings.synchronize) return;
@@ -163,7 +163,7 @@ private:
   HANDLE taskHandle = nullptr;
   DWORD taskIndex = 0;
   REFERENCE_TIME devicePeriod = 0;
-  uint32 bufferFrameCount = 0;
-  uint8* bufferData = nullptr;
+  buint32 bufferFrameCount = 0;
+  buint8* bufferData = nullptr;
   bool ieee = false;
 };

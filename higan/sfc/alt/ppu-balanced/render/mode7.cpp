@@ -11,7 +11,7 @@
 #define CLIP(x) ( ((x) & 0x2000) ? ( (x) | ~0x03ff) : ((x) & 0x03ff) )
 
 template<uint bg>
-auto PPU::render_line_mode7(uint8 pri0_pos, uint8 pri1_pos) -> void {
+auto PPU::render_line_mode7(buint8 pri0_pos, buint8 pri1_pos) -> void {
   if(layer_enabled[bg][0] == false) pri0_pos = 0;
   if(layer_enabled[bg][1] == false) pri1_pos = 0;
   if(pri0_pos + pri1_pos == 0) return;
@@ -36,21 +36,21 @@ auto PPU::render_line_mode7(uint8 pri0_pos, uint8 pri1_pos) -> void {
   bool _bgsub_enabled = regs.bgsub_enabled[bg];
 
   build_window_tables(bg);
-  uint8* wt_main = window[bg].main;
-  uint8* wt_sub  = window[bg].sub;
+  buint8* wt_main = window[bg].main;
+  buint8* wt_sub  = window[bg].sub;
 
   int32 y = (regs.mode7_vflip == false ? line : 255 - line);
 
-  uint16* mtable_x;
-  uint16* mtable_y;
+  buint16* mtable_x;
+  buint16* mtable_y;
   if(bg == BG1) {
-    mtable_x = (uint16*)mosaic_table[(regs.mosaic_enabled[BG1] == true) ? (uint)regs.mosaic_size : 0];
-    mtable_y = (uint16*)mosaic_table[(regs.mosaic_enabled[BG1] == true) ? (uint)regs.mosaic_size : 0];
+    mtable_x = (buint16*)mosaic_table[(regs.mosaic_enabled[BG1] == true) ? (uint)regs.mosaic_size : 0];
+    mtable_y = (buint16*)mosaic_table[(regs.mosaic_enabled[BG1] == true) ? (uint)regs.mosaic_size : 0];
   } else {  //bg == BG2
     //Mode7 EXTBG BG2 uses BG1 mosaic enable to control vertical mosaic,
     //and BG2 mosaic enable to control horizontal mosaic...
-    mtable_x = (uint16*)mosaic_table[(regs.mosaic_enabled[BG2] == true) ? (uint)regs.mosaic_size : 0];
-    mtable_y = (uint16*)mosaic_table[(regs.mosaic_enabled[BG1] == true) ? (uint)regs.mosaic_size : 0];
+    mtable_x = (buint16*)mosaic_table[(regs.mosaic_enabled[BG2] == true) ? (uint)regs.mosaic_size : 0];
+    mtable_y = (buint16*)mosaic_table[(regs.mosaic_enabled[BG1] == true) ? (uint)regs.mosaic_size : 0];
   }
 
   int32 psx = ((a * CLIP(hofs - cx)) & ~63) + ((b * CLIP(vofs - cy)) & ~63) + ((b * mtable_y[y]) & ~63) + (cx << 8);
@@ -110,7 +110,7 @@ auto PPU::render_line_mode7(uint8 pri0_pos, uint8 pri1_pos) -> void {
 
     _x = (regs.mode7_hflip == false) ? ((uint)x) : (255 - x);
 
-    uint32 col;
+    buint32 col;
     if(regs.direct_color == true && bg == BG1) {
       //direct color mode does not apply to bg2, as it is only 128 colors...
       col = get_direct_color(0, palette);

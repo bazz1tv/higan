@@ -11,11 +11,11 @@ struct Event : Coprocessor {
   auto power() -> void;
   auto reset() -> void;
 
-  auto mcuRead(uint24 addr, uint8) -> uint8;
-  auto mcuWrite(uint24 addr, uint8) -> void;
+  auto mcuRead(uint24 addr, buint8) -> buint8;
+  auto mcuWrite(uint24 addr, buint8) -> void;
 
-  auto read(uint24 addr, uint8 data) -> uint8;
-  auto write(uint24 addr, uint8 data) -> void;
+  auto read(uint24 addr, buint8 data) -> buint8;
+  auto write(uint24 addr, buint8 data) -> void;
 
   auto serialize(serializer&) -> void;
 
@@ -26,8 +26,8 @@ struct Event : Coprocessor {
   uint timer;
 
 privileged:
-  uint8 status;
-  uint8 select;
+  buint8 status;
+  buint8 select;
 
   bool timerActive;
   bool scoreActive;

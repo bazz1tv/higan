@@ -9,8 +9,8 @@ struct SharpRTC : Coprocessor {
   auto reset() -> void;
   auto sync() -> void;
 
-  auto read(uint24 addr, uint8 data) -> uint8;
-  auto write(uint24 addr, uint8 data) -> void;
+  auto read(uint24 addr, buint8 data) -> buint8;
+  auto write(uint24 addr, buint8 data) -> void;
 
   auto serialize(serializer&) -> void;
 
@@ -29,8 +29,8 @@ struct SharpRTC : Coprocessor {
   auto rtc_read(uint4 addr) -> uint4;
   auto rtc_write(uint4 addr, uint4 data) -> void;
 
-  auto load(const uint8* data) -> void;
-  auto save(uint8* data) -> void;
+  auto load(const buint8* data) -> void;
+  auto save(buint8* data) -> void;
 
   //time.cpp
   static const uint daysinmonth[12];

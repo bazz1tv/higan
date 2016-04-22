@@ -12,11 +12,11 @@ struct ArmDSP : Processor::ARM, Coprocessor {
 
   auto step(uint clocks) -> void override;
   auto bus_idle() -> void override;
-  auto bus_read(uint mode, uint32 addr) -> uint32 override;
-  auto bus_write(uint mode, uint32 addr, uint32 word) -> void override;
+  auto bus_read(uint mode, buint32 addr) -> buint32 override;
+  auto bus_write(uint mode, buint32 addr, buint32 word) -> void override;
 
-  auto mmio_read(uint24 addr, uint8 data) -> uint8;
-  auto mmio_write(uint24 addr, uint8 data) -> void;
+  auto mmio_read(uint24 addr, buint8 data) -> buint8;
+  auto mmio_write(uint24 addr, buint8 data) -> void;
 
   auto init() -> void;
   auto load() -> void;
@@ -25,12 +25,12 @@ struct ArmDSP : Processor::ARM, Coprocessor {
   auto reset() -> void;
   auto resetARM() -> void;
 
-  auto firmware() const -> nall::vector<uint8>;
+  auto firmware() const -> nall::vector<buint8>;
   auto serialize(serializer&) -> void;
 
-  uint8* programROM;
-  uint8* dataROM;
-  uint8* programRAM;
+  buint8* programROM;
+  buint8* dataROM;
+  buint8* programRAM;
 };
 
 extern ArmDSP armdsp;

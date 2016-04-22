@@ -22,7 +22,7 @@ auto S21FX::main() -> void {
 }
 
 auto S21FX::step(uint clocks) -> void {
-  clock += clocks * (uint64)cpu.frequency;
+  clock += clocks * (buint64)cpu.frequency;
   if(CPU::Threaded) {
     if(clock >= 0 && !scheduler.synchronizing()) co_switch(cpu.thread);
   } else {
@@ -71,11 +71,11 @@ auto S21FX::reset() -> void {
   booted = false;
 }
 
-auto S21FX::read(uint24 addr, uint8 data) -> uint8 {
+auto S21FX::read(uint24 addr, buint8 data) -> buint8 {
   addr &= 0x40ffff;
 
-  if(addr == 0xfffc) return booted ? resetVector.byte(0) : (uint8)0x84;
-  if(addr == 0xfffd) return booted ? resetVector.byte(1) : (booted = true, (uint8)0x21);
+  if(addr == 0xfffc) return booted ? resetVector.byte(0) : (buint8)0x84;
+  if(addr == 0xfffd) return booted ? resetVector.byte(1) : (booted = true, (buint8)0x21);
 
   if(addr >= 0x2184 && addr <= 0x21fd) return ram[addr - 0x2184];
 
@@ -94,7 +94,7 @@ auto S21FX::read(uint24 addr, uint8 data) -> uint8 {
   return data;
 }
 
-auto S21FX::write(uint24 addr, uint8 data) -> void {
+auto S21FX::write(uint24 addr, buint8 data) -> void {
   addr &= 0x40ffff;
 
   if(addr == 0x21ff) {
@@ -124,7 +124,7 @@ auto S21FX::writable() -> bool {
 }
 
 //SNES -> Link
-auto S21FX::read() -> uint8 {
+auto S21FX::read() -> buint8 {
   step(1);
   if(snesBuffer.size() > 0) {
     return snesBuffer.takeFirst();
@@ -133,7 +133,7 @@ auto S21FX::read() -> uint8 {
 }
 
 //Link -> SNES
-auto S21FX::write(uint8 data) -> void {
+auto S21FX::write(buint8 data) -> void {
   step(1);
   if(linkBuffer.size() < 65536) {
     linkBuffer.append(data);

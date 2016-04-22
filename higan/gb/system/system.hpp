@@ -38,9 +38,9 @@ struct System {
   auto serializeInit() -> void;
 
   struct BootROM {
-    uint8 dmg[ 256];
-    uint8 sgb[ 256];
-    uint8 cgb[2048];
+    buint8 dmg[ 256];
+    buint8 sgb[ 256];
+    buint8 cgb[2048];
   } bootROM;
 
   struct Information {

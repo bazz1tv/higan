@@ -311,13 +311,13 @@ auto Interface::load(uint id, const stream& stream) -> void {
   }
 
   if(id == ID::EpsonRTC) {
-    uint8 data[16] = {0};
+    buint8 data[16] = {0};
     stream.read((uint8_t*)data, min(stream.size(), sizeof data));
     epsonrtc.load(data);
   }
 
   if(id == ID::SharpRTC) {
-    uint8 data[16] = {0};
+    buint8 data[16] = {0};
     stream.read((uint8_t*)data, min(stream.size(), sizeof data));
     sharprtc.load(data);
   }
@@ -392,13 +392,13 @@ auto Interface::save(uint id, const stream& stream) -> void {
   }
 
   if(id == ID::EpsonRTC) {
-    uint8 data[16] = {0};
+    buint8 data[16] = {0};
     epsonrtc.save(data);
     stream.write((uint8_t*)data, sizeof data);
   }
 
   if(id == ID::SharpRTC) {
-    uint8 data[16] = {0};
+    buint8 data[16] = {0};
     sharprtc.save(data);
     stream.write((uint8_t*)data, sizeof data);
   }

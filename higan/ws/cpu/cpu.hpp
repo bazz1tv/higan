@@ -15,17 +15,17 @@ struct CPU : Processor::V30MZ, Thread, IO {
   auto step(uint clocks) -> void;
 
   auto wait(uint clocks = 1) -> void override;
-  auto read(uint20 addr) -> uint8 override;
-  auto write(uint20 addr, uint8 data) -> void override;
-  auto in(uint16 port) -> uint8 override;
-  auto out(uint16 port, uint8 data) -> void override;
+  auto read(uint20 addr) -> buint8 override;
+  auto write(uint20 addr, buint8 data) -> void override;
+  auto in(buint16 port) -> buint8 override;
+  auto out(buint16 port, buint8 data) -> void override;
 
   auto power() -> void;
 
   //io.cpp
   auto keypadRead() -> uint4;
-  auto portRead(uint16 addr) -> uint8 override;
-  auto portWrite(uint16 addr, uint8 data) -> void override;
+  auto portRead(buint16 addr) -> buint8 override;
+  auto portWrite(buint16 addr, buint8 data) -> void override;
 
   //interrupt.cpp
   auto poll() -> void;
@@ -43,30 +43,30 @@ struct CPU : Processor::V30MZ, Thread, IO {
     uint20 dmaSource;
 
     //$0044-0045  DMA_DST
-    uint16 dmaTarget;
+    buint16 dmaTarget;
 
     //$0046-0047  DMA_LEN
-    uint16 dmaLength;
+    buint16 dmaLength;
 
     //$0048  DMA_CTRL
     uint1 dmaEnable;
     uint1 dmaMode;  //0 = increment; 1 = decrement
 
     //$00b0  INT_BASE
-    uint8 interruptBase;
+    buint8 interruptBase;
 
     //$00b1  SER_DATA
-    uint8 serialData;
+    buint8 serialData;
 
     //$00b2  INT_ENABLE
-    uint8 interruptEnable;
+    buint8 interruptEnable;
 
     //$00b3  SER_STATUS
     uint1 serialBaudRate;  //0 = 9600; 1 = 38400
     uint1 serialEnable;
 
     //$00b4  INT_STATUS
-    uint8 interruptStatus;
+    buint8 interruptStatus;
 
     //$00b5  KEYPAD
     uint1 ypadEnable;

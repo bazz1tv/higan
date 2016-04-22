@@ -4,8 +4,8 @@ struct Board {
     inline Memory() : data(nullptr), size(0u), writable(false) {}
     inline ~Memory() { if(data) delete[] data; }
 
-    inline auto read(uint addr) const -> uint8;
-    inline auto write(uint addr, uint8 data) -> void;
+    inline auto read(uint addr) const -> buint8;
+    inline auto write(uint addr, buint8 data) -> void;
 
     uint8_t* data;
     uint size;
@@ -20,11 +20,11 @@ struct Board {
   virtual auto main() -> void;
   virtual auto tick() -> void;
 
-  virtual auto prg_read(uint addr) -> uint8 = 0;
-  virtual auto prg_write(uint addr, uint8 data) -> void = 0;
+  virtual auto prg_read(uint addr) -> buint8 = 0;
+  virtual auto prg_write(uint addr, buint8 data) -> void = 0;
 
-  virtual auto chr_read(uint addr) -> uint8;
-  virtual auto chr_write(uint addr, uint8 data) -> void;
+  virtual auto chr_read(uint addr) -> buint8;
+  virtual auto chr_write(uint addr, buint8 data) -> void;
 
   virtual inline auto scanline(uint y) -> void {}
 

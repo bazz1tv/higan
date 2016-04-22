@@ -6,8 +6,8 @@ struct BSMemory : Memory {
   auto reset() -> void;
 
   auto size() const -> uint;
-  auto read(uint24 addr, uint8) -> uint8;
-  auto write(uint24 addr, uint8 data) -> void;
+  auto read(uint24 addr, buint8) -> buint8;
+  auto write(uint24 addr, buint8 data) -> void;
 
   MappedRAM memory;
   bool readonly;
@@ -15,8 +15,8 @@ struct BSMemory : Memory {
 private:
   struct {
     uint command;
-    uint8 write_old;
-    uint8 write_new;
+    buint8 write_old;
+    buint8 write_new;
 
     bool flash_enable;
     bool read_enable;

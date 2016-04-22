@@ -5,19 +5,19 @@ struct SDD1 {
   auto power() -> void;
   auto reset() -> void;
 
-  auto read(uint24 addr, uint8 data) -> uint8;
-  auto write(uint24 addr, uint8 data) -> void;
+  auto read(uint24 addr, buint8 data) -> buint8;
+  auto write(uint24 addr, buint8 data) -> void;
 
-  auto dma_read(uint24 addr, uint8 data) -> uint8;
-  auto dma_write(uint24 addr, uint8 data) -> void;
+  auto dma_read(uint24 addr, buint8 data) -> buint8;
+  auto dma_write(uint24 addr, buint8 data) -> void;
 
-  auto mmc_read(uint24 addr) -> uint8;
+  auto mmc_read(uint24 addr) -> buint8;
 
-  auto mcurom_read(uint24 addr, uint8 data) -> uint8;
-  auto mcurom_write(uint24 addr, uint8 data) -> void;
+  auto mcurom_read(uint24 addr, buint8 data) -> buint8;
+  auto mcurom_write(uint24 addr, buint8 data) -> void;
 
-  auto mcuram_read(uint24 addr, uint8 data) -> uint8;
-  auto mcuram_write(uint24 addr, uint8 data) -> void;
+  auto mcuram_read(uint24 addr, buint8 data) -> buint8;
+  auto mcuram_write(uint24 addr, buint8 data) -> void;
 
   auto serialize(serializer&) -> void;
 
@@ -25,14 +25,14 @@ struct SDD1 {
   MappedRAM ram;
 
 private:
-  uint8 sdd1_enable;  //channel bit-mask
-  uint8 xfer_enable;  //channel bit-mask
+  buint8 sdd1_enable;  //channel bit-mask
+  buint8 xfer_enable;  //channel bit-mask
   bool dma_ready;     //used to initialize decompression module
   uint mmc[4];        //memory map controller ROM indices
 
   struct {
     uint addr;        //$43x2-$43x4 -- DMA transfer address
-    uint16 size;      //$43x5-$43x6 -- DMA transfer size
+    buint16 size;      //$43x5-$43x6 -- DMA transfer size
   } dma[8];
 
 public:

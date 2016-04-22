@@ -1,5 +1,5 @@
-auto arm_opcode(uint32 rm);
-auto arm_move_to_status(uint32 rm);
+auto arm_opcode(buint32 rm);
+auto arm_move_to_status(buint32 rm);
 
 auto arm_op_multiply();
 auto arm_op_multiply_long();

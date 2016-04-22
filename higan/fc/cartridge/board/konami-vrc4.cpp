@@ -8,13 +8,13 @@ struct KonamiVRC4 : Board {
     return vrc4.main();
   }
 
-  auto prg_read(uint addr) -> uint8 {
+  auto prg_read(uint addr) -> buint8 {
     if(addr < 0x6000) return cpu.mdr();
     if(addr < 0x8000) return prgram.read(addr);
     return prgrom.read(vrc4.prg_addr(addr));
   }
 
-  auto prg_write(uint addr, uint8 data) -> void {
+  auto prg_write(uint addr, buint8 data) -> void {
     if(addr < 0x6000) return;
     if(addr < 0x8000) return prgram.write(addr, data);
 
@@ -25,12 +25,12 @@ struct KonamiVRC4 : Board {
     return vrc4.reg_write(addr, data);
   }
 
-  auto chr_read(uint addr) -> uint8 {
+  auto chr_read(uint addr) -> buint8 {
     if(addr & 0x2000) return ppu.ciram_read(vrc4.ciram_addr(addr));
     return Board::chr_read(vrc4.chr_addr(addr));
   }
 
-  auto chr_write(uint addr, uint8 data) -> void {
+  auto chr_write(uint addr, buint8 data) -> void {
     if(addr & 0x2000) return ppu.ciram_write(vrc4.ciram_addr(addr), data);
     return Board::chr_write(vrc4.chr_addr(addr), data);
   }

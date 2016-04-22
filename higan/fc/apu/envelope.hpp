@@ -12,6 +12,6 @@ struct Envelope {
   bool loop_mode;
 
   bool reload_decay;
-  uint8 decay_counter;
+  buint8 decay_counter;
   uint4 decay_volume;
 };

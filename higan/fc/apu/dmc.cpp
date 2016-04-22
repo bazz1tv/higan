@@ -12,8 +12,8 @@ auto APU::DMC::stop() -> void {
   cpu.set_rdy_addr(false);
 }
 
-auto APU::DMC::clock() -> uint8 {
-  uint8 result = dac_latch;
+auto APU::DMC::clock() -> buint8 {
+  buint8 result = dac_latch;
 
   if(dma_delay_counter > 0) {
     dma_delay_counter--;

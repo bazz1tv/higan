@@ -1,4 +1,4 @@
-auto PPU::Sprite::update(uint10 addr, uint8 data) -> void {
+auto PPU::Sprite::update(uint10 addr, buint8 data) -> void {
   if(!addr.bit(9)) {
     uint n = addr >> 2;  //sprite#
     addr &= 3;

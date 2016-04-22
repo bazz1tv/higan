@@ -1,13 +1,13 @@
 BIOS::BIOS() {
   size = 16384;
-  data = new uint8[size]();
+  data = new buint8[size]();
 }
 
 BIOS::~BIOS() {
   delete[] data;
 }
 
-auto BIOS::read(uint mode, uint32 addr) -> uint32 {
+auto BIOS::read(uint mode, buint32 addr) -> buint32 {
   //unmapped memory
   if(addr >= 0x0000'4000) return cpu.pipeline.fetch.instruction;  //0000'4000-01ff'ffff
 
@@ -21,5 +21,5 @@ auto BIOS::read(uint mode, uint32 addr) -> uint32 {
   return mdr = data[addr];
 }
 
-auto BIOS::write(uint mode, uint32 addr, uint32 word) -> void {
+auto BIOS::write(uint mode, buint32 addr, buint32 word) -> void {
 }

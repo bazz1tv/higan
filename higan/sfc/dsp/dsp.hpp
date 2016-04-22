@@ -11,8 +11,8 @@ struct DSP : Thread {
   alwaysinline auto synchronizeSMP() -> void;
 
   auto mute() const -> bool;
-  auto read(uint8 addr) -> uint8;
-  auto write(uint8 addr, uint8 data) -> void;
+  auto read(buint8 addr) -> buint8;
+  auto write(buint8 addr, buint8 data) -> void;
 
   auto main() -> void;
   auto power() -> void;
@@ -57,7 +57,7 @@ privileged:
   };
 
   struct State {
-    uint8 regs[128];
+    buint8 regs[128];
 
     ModuloArray<int, EchoHistorySize> echoHistory[2];  //echo history keeps most recent 8 samples
     int echoHistoryOffset;
@@ -126,8 +126,8 @@ privileged:
   auto gaussianInterpolate(const Voice& v) -> int;
 
   //counter
-  static const uint16 CounterRate[32];
-  static const uint16 CounterOffset[32];
+  static const buint16 CounterRate[32];
+  static const buint16 CounterOffset[32];
   auto counterTick() -> void;
   auto counterPoll(uint rate) -> bool;
 

@@ -116,7 +116,7 @@ auto ICD2::saveRequest(uint id, string name) -> void {
   }
 }
 
-auto ICD2::videoRefresh(const uint32* data, uint pitch, uint width, uint height) -> void {
+auto ICD2::videoRefresh(const buint32* data, uint pitch, uint width, uint height) -> void {
 }
 
 auto ICD2::audioSample(int16 left, int16 right) -> void {

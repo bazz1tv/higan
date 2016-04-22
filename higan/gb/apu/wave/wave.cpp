@@ -24,7 +24,7 @@ auto APU::Wave::clockLength() -> void {
   }
 }
 
-auto APU::Wave::read(uint16 addr) -> uint8 {
+auto APU::Wave::read(buint16 addr) -> buint8 {
   if(addr == 0xff1a) {  //NR30
     return dacEnable << 7 | 0x7f;
   }
@@ -57,7 +57,7 @@ auto APU::Wave::read(uint16 addr) -> uint8 {
   return 0xff;
 }
 
-auto APU::Wave::write(uint16 addr, uint8 data) -> void {
+auto APU::Wave::write(buint16 addr, buint8 data) -> void {
   if(addr == 0xff1a) {  //NR30
     dacEnable = data.bit(7);
     if(!dacEnable) enable = false;

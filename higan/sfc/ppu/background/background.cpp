@@ -87,7 +87,7 @@ auto PPU::Background::get_tile() -> void {
   unsigned voffset = vscroll + py;
 
   if(self.regs.bgmode == 2 || self.regs.bgmode == 4 || self.regs.bgmode == 6) {
-    uint16 offset_x = (x + (hscroll & 7));
+    buint16 offset_x = (x + (hscroll & 7));
 
     if(offset_x >= 8) {
       unsigned hval = self.bg3.get_tile((offset_x - 8) + (self.bg3.hoffset() & ~7), self.bg3.voffset() + 0);
@@ -119,11 +119,11 @@ auto PPU::Background::get_tile() -> void {
   unsigned tx = hoffset >> tile_width;
   unsigned ty = voffset >> tile_height;
 
-  uint16 offset = ((ty & 0x1f) << 5) + (tx & 0x1f);
+  buint16 offset = ((ty & 0x1f) << 5) + (tx & 0x1f);
   if(tx & 0x20) offset += screen_x;
   if(ty & 0x20) offset += screen_y;
 
-  uint16 addr = regs.screen_addr + (offset << 1);
+  buint16 addr = regs.screen_addr + (offset << 1);
   tile = (ppu.vram[addr + 0] << 0) + (ppu.vram[addr + 1] << 8);
   bool mirror_y = tile & 0x8000;
   bool mirror_x = tile & 0x4000;
@@ -133,7 +133,7 @@ auto PPU::Background::get_tile() -> void {
 
   if(tile_width   == 4 && (bool)(hoffset & 8) != mirror_x) tile +=  1;
   if(tile_height  == 4 && (bool)(voffset & 8) != mirror_y) tile += 16;
-  uint16 character = ((tile & 0x03ff) + tiledata_index) & tile_mask;
+  buint16 character = ((tile & 0x03ff) + tiledata_index) & tile_mask;
 
   if(mirror_y) voffset ^= 7;
   offset = (character << (4 + color_depth)) + ((voffset & 7) << 1);
@@ -177,7 +177,7 @@ auto PPU::Background::run(bool screen) -> void {
 
   if(regs.mode == Mode::Mode7) return run_mode7();
 
-  uint8 palette = get_tile_color();
+  buint8 palette = get_tile_color();
   if(x == 0) mosaic.hcounter = 1;
   if(x >= 0 && --mosaic.hcounter == 0) {
     mosaic.hcounter = regs.mosaic + 1;
@@ -273,10 +273,10 @@ auto PPU::Background::get_tile(uint x, uint y) -> uint {
   x = (x & mask_x) >> tile_width;
   y = (y & mask_y) >> tile_height;
 
-  uint16 offset = ((y & 0x1f) << 5) + (x & 0x1f);
+  buint16 offset = ((y & 0x1f) << 5) + (x & 0x1f);
   if(x & 0x20) offset += screen_x;
   if(y & 0x20) offset += screen_y;
 
-  uint16 addr = regs.screen_addr + (offset << 1);
+  buint16 addr = regs.screen_addr + (offset << 1);
   return (ppu.vram[addr + 0] << 0) + (ppu.vram[addr + 1] << 8);
 }

@@ -24,7 +24,7 @@ struct VRC1 : Chip {
     throw;
   }
 
-  auto reg_write(uint addr, uint8 data) -> void {
+  auto reg_write(uint addr, buint8 data) -> void {
     switch(addr & 0xf000) {
     case 0x8000:
       prg_bank[0] = data & 0x0f;

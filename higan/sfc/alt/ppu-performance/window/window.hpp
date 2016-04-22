@@ -12,8 +12,8 @@ struct LayerWindow {
   bool main_enable;
   bool sub_enable;
 
-  uint8 main[256];
-  uint8 sub[256];
+  buint8 main[256];
+  buint8 sub[256];
 };
 
 struct ColorWindow {
@@ -30,6 +30,6 @@ struct ColorWindow {
   uint main_mask;
   uint sub_mask;
 
-  uint8 main[256];
-  uint8 sub[256];
+  buint8 main[256];
+  buint8 sub[256];
 };

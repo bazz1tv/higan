@@ -1,14 +1,14 @@
 auto PPU::renderFetch(uint10 tile, uint3 y, uint3 x) -> uint4 {
-  uint16 offset = 0x200 + tile << (4 + system.depth());
+  buint16 offset = 0x200 + tile << (4 + system.depth());
   uint4 color = 0;
 
   if(system.planar()) {
     if(!system.depth()) {
-      uint16 data = iram.read(offset + (y << 1), Word);
+      buint16 data = iram.read(offset + (y << 1), Word);
       color |= data.bit( 7 - x) << 0;
       color |= data.bit(15 - x) << 1;
     } else {
-      uint32 data = iram.read(offset + (y << 2), Long);
+      buint32 data = iram.read(offset + (y << 2), Long);
       color |= data.bit( 7 - x) << 0;
       color |= data.bit(15 - x) << 1;
       color |= data.bit(23 - x) << 2;
@@ -18,11 +18,11 @@ auto PPU::renderFetch(uint10 tile, uint3 y, uint3 x) -> uint4 {
 
   if(system.packed()) {
     if(!system.depth()) {
-      uint8 data = iram.read(offset + (y << 1) + (x >> 2));
+      buint8 data = iram.read(offset + (y << 1) + (x >> 2));
       color = data >> (6 - (x.bits(0,1) << 1));
       color = color.bits(0,1);
     } else {
-      uint8 data = iram.read(offset + (y << 2) + (x >> 1));
+      buint8 data = iram.read(offset + (y << 2) + (x >> 1));
       color = data >> (4 - (x.bit(0) << 2));
     }
   }
@@ -57,14 +57,14 @@ auto PPU::renderBack() -> void {
 }
 
 auto PPU::renderScreenOne() -> void {
-  uint8 scrollY = s.vclk + l.scrollOneY;
-  uint8 scrollX = s.hclk + l.scrollOneX;
+  buint8 scrollY = s.vclk + l.scrollOneY;
+  buint8 scrollX = s.hclk + l.scrollOneX;
 
-  uint16 tilemapOffset = l.screenOneMapBase.bits(0, 2 + system.depth()) << 11;
+  buint16 tilemapOffset = l.screenOneMapBase.bits(0, 2 + system.depth()) << 11;
   tilemapOffset += (scrollY >> 3) << 6;
   tilemapOffset += (scrollX >> 3) << 1;
 
-  uint16 tile = iram.read(tilemapOffset, Word);
+  buint16 tile = iram.read(tilemapOffset, Word);
   uint3 tileY = scrollY ^ tile.bit(15) * 7;
   uint3 tileX = scrollX ^ tile.bit(14) * 7;
   uint4 tileColor = renderFetch(tile.bit(13) << 9 | tile.bits(0,8), tileY, tileX);
@@ -79,14 +79,14 @@ auto PPU::renderScreenTwo() -> void {
   windowInside ^= l.screenTwoWindowInvert;
   if(l.screenTwoWindowEnable && !windowInside) return;
 
-  uint8 scrollY = s.vclk + l.scrollTwoY;
-  uint8 scrollX = s.hclk + l.scrollTwoX;
+  buint8 scrollY = s.vclk + l.scrollTwoY;
+  buint8 scrollX = s.hclk + l.scrollTwoX;
 
-  uint16 tilemapOffset = l.screenTwoMapBase.bits(0, 2 + system.depth()) << 11;
+  buint16 tilemapOffset = l.screenTwoMapBase.bits(0, 2 + system.depth()) << 11;
   tilemapOffset += (scrollY >> 3) << 6;
   tilemapOffset += (scrollX >> 3) << 1;
 
-  uint16 tile = iram.read(tilemapOffset, Word);
+  buint16 tile = iram.read(tilemapOffset, Word);
   uint3 tileY = scrollY ^ tile.bit(15) * 7;
   uint3 tileX = scrollX ^ tile.bit(14) * 7;
   uint4 tileColor = renderFetch(tile.bit(13) << 9 | tile.bits(0,8), tileY, tileX);
@@ -101,7 +101,7 @@ auto PPU::renderSprite() -> void {
   for(auto index : range(l.spriteCount)) {
     auto sprite = l.sprite[index];
     if(l.spriteWindowEnable && sprite.bit(12) == windowInside) continue;
-    if((uint8)(s.hclk - sprite.bits(24,31)) > 7) continue;
+    if((buint8)(s.hclk - sprite.bits(24,31)) > 7) continue;
 
     uint3 tileY = (s.vclk - sprite.bits(16,23)) ^ sprite.bit(15) * 7;
     uint3 tileX = (s.hclk - sprite.bits(24,31)) ^ sprite.bit(14) * 7;

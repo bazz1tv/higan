@@ -5,7 +5,7 @@ struct InputKeyboardCarbon {
   shared_pointer<HID::Keyboard> hid{new HID::Keyboard};
 
   struct Key {
-    uint8 id;
+    buint8 id;
     string name;
   };
   vector<Key> keys;
@@ -20,7 +20,7 @@ struct InputKeyboardCarbon {
   auto poll(vector<shared_pointer<HID::Device>>& devices) -> void {
     KeyMap keymap;
     GetKeys(keymap);
-    auto buffer = (const uint8*)keymap;
+    auto buffer = (const buint8*)keymap;
 
     uint inputID = 0;
     for(auto& key : keys) {

@@ -5,14 +5,14 @@ struct NES_FxROM : Board {
     revision = Revision::FKROM;
   }
 
-  auto prg_read(uint addr) -> uint8 {
+  auto prg_read(uint addr) -> buint8 {
     if(addr < 0x6000) return cpu.mdr();
     if(addr < 0x8000) return prgram.read(addr);
     uint bank = addr < 0xc000 ? prg_bank : (uint4)0x0f;
     return prgrom.read((bank * 0x4000) | (addr & 0x3fff));
   }
 
-  auto prg_write(uint addr, uint8 data) -> void {
+  auto prg_write(uint addr, buint8 data) -> void {
     if(addr < 0x6000) return;
     if(addr < 0x8000) return prgram.write(addr, data);
 
@@ -33,7 +33,7 @@ struct NES_FxROM : Board {
     }
   }
 
-  auto chr_read(uint addr) -> uint8 {
+  auto chr_read(uint addr) -> buint8 {
     if(addr & 0x2000) return ppu.ciram_read(ciram_addr(addr));
     bool region = addr & 0x1000;
     uint bank = chr_bank[region][latch[region]];
@@ -42,7 +42,7 @@ struct NES_FxROM : Board {
     return Board::chr_read((bank * 0x1000) | (addr & 0x0fff));
   }
 
-  auto chr_write(uint addr, uint8 data) -> void {
+  auto chr_write(uint addr, buint8 data) -> void {
     if(addr & 0x2000) return ppu.ciram_write(ciram_addr(addr), data);
     bool region = addr & 0x1000;
     uint bank = chr_bank[region][latch[region]];

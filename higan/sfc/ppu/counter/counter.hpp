@@ -16,14 +16,14 @@ public:
   alwaysinline void tick(unsigned clocks);
 
   alwaysinline bool   field   () const;
-  alwaysinline uint16 vcounter() const;
-  alwaysinline uint16 hcounter() const;
-  inline uint16 hdot() const;
-  inline uint16 lineclocks() const;
+  alwaysinline buint16 vcounter() const;
+  alwaysinline buint16 hcounter() const;
+  inline buint16 hdot() const;
+  inline buint16 lineclocks() const;
 
   alwaysinline bool   field   (unsigned offset) const;
-  alwaysinline uint16 vcounter(unsigned offset) const;
-  alwaysinline uint16 hcounter(unsigned offset) const;
+  alwaysinline buint16 vcounter(unsigned offset) const;
+  alwaysinline buint16 hcounter(unsigned offset) const;
 
   inline void reset();
   function<void ()> scanline;
@@ -35,14 +35,14 @@ private:
   struct {
     bool interlace;
     bool field;
-    uint16 vcounter;
-    uint16 hcounter;
+    buint16 vcounter;
+    buint16 hcounter;
   } status;
 
   struct {
     bool field[2048];
-    uint16 vcounter[2048];
-    uint16 hcounter[2048];
+    buint16 vcounter[2048];
+    buint16 hcounter[2048];
 
     int32 index;
   } history;

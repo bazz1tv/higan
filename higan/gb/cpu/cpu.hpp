@@ -5,26 +5,26 @@ struct CPU : Processor::LR35902, Thread, MMIO {
   auto main() -> void;
   auto interrupt_raise(Interrupt id) -> void;
   auto interrupt_test() -> void;
-  auto interrupt_exec(uint16 pc) -> void;
+  auto interrupt_exec(buint16 pc) -> void;
   auto stop() -> bool;
   auto power() -> void;
 
   auto serialize(serializer&) -> void;
 
   //mmio.cpp
-  auto wram_addr(uint16 addr) const -> uint;
+  auto wram_addr(buint16 addr) const -> uint;
   auto mmio_joyp_poll() -> void;
-  auto mmio_read(uint16 addr) -> uint8;
-  auto mmio_write(uint16 addr, uint8 data) -> void;
+  auto mmio_read(buint16 addr) -> buint8;
+  auto mmio_write(buint16 addr, buint8 data) -> void;
 
   //memory.cpp
   auto op_io() -> void;
-  auto op_read(uint16 addr) -> uint8;
-  auto op_write(uint16 addr, uint8 data) -> void;
+  auto op_read(buint16 addr) -> buint8;
+  auto op_write(buint16 addr, buint8 data) -> void;
   auto cycle_edge() -> void;
-  auto dma_read(uint16 addr) -> uint8;
-  auto dma_write(uint16 addr, uint8 data) -> void;
-  auto debugger_read(uint16 addr) -> uint8;
+  auto dma_read(buint16 addr) -> buint8;
+  auto dma_write(buint16 addr, buint8 data) -> void;
+  auto debugger_read(buint16 addr) -> buint8;
 
   //timing.cpp
   auto add_clocks(uint clocks) -> void;
@@ -41,11 +41,11 @@ struct CPU : Processor::LR35902, Thread, MMIO {
     //$ff00  JOYP
     bool p15;
     bool p14;
-    uint8 joyp;
-    uint8 mlt_req;
+    buint8 joyp;
+    buint8 mlt_req;
 
     //$ff01  SB
-    uint8 serial_data;
+    buint8 serial_data;
     uint serial_bits;
 
     //$ff02  SC
@@ -53,13 +53,13 @@ struct CPU : Processor::LR35902, Thread, MMIO {
     bool serial_clock;
 
     //$ff04  DIV
-    uint16 div;
+    buint16 div;
 
     //$ff05  TIMA
-    uint8 tima;
+    buint8 tima;
 
     //$ff06  TMA
-    uint8 tma;
+    buint8 tma;
 
     //$ff07  TAC
     bool timer_enable;
@@ -77,27 +77,27 @@ struct CPU : Processor::LR35902, Thread, MMIO {
     bool speed_switch;
 
     //$ff51,$ff52  HDMA1,HDMA2
-    uint16 dma_source;
+    buint16 dma_source;
 
     //$ff53,$ff54  HDMA3,HDMA4
-    uint16 dma_target;
+    buint16 dma_target;
 
     //$ff55  HDMA5
     bool dma_mode;
-    uint16 dma_length;
+    buint16 dma_length;
     bool dma_completed;
 
     //$ff6c  ???
-    uint8 ff6c;
+    buint8 ff6c;
 
     //$ff70  SVBK
     uint3 wram_bank;
 
     //$ff72-$ff75  ???
-    uint8 ff72;
-    uint8 ff73;
-    uint8 ff74;
-    uint8 ff75;
+    buint8 ff72;
+    buint8 ff73;
+    buint8 ff74;
+    buint8 ff75;
 
     //$ffff  IE
     bool interrupt_enable_joypad;
@@ -107,8 +107,8 @@ struct CPU : Processor::LR35902, Thread, MMIO {
     bool interrupt_enable_vblank;
   } status;
 
-  uint8 wram[32768];  //GB=8192, GBC=32768
-  uint8 hram[128];
+  buint8 wram[32768];  //GB=8192, GBC=32768
+  buint8 hram[128];
 };
 
 extern CPU cpu;

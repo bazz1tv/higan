@@ -38,7 +38,7 @@ struct Sunsoft5B : Board {
     uint12 frequency;
     uint4 volume;
 
-    uint16 counter;  //12-bit countdown + 4-bit phase
+    buint16 counter;  //12-bit countdown + 4-bit phase
     uint1 duty;
     uint4 output;
   } pulse[3];
@@ -59,10 +59,10 @@ struct Sunsoft5B : Board {
     tick();
   }
 
-  auto prg_read(uint addr) -> uint8 {
+  auto prg_read(uint addr) -> buint8 {
     if(addr < 0x6000) return cpu.mdr();
 
-    uint8 bank = 0x3f;  //((addr & 0xe000) == 0xe000
+    buint8 bank = 0x3f;  //((addr & 0xe000) == 0xe000
     if((addr & 0xe000) == 0x6000) bank = prg_bank[0];
     if((addr & 0xe000) == 0x8000) bank = prg_bank[1];
     if((addr & 0xe000) == 0xa000) bank = prg_bank[2];
@@ -81,7 +81,7 @@ struct Sunsoft5B : Board {
     return prgrom.read(addr);
   }
 
-  auto prg_write(uint addr, uint8 data) -> void {
+  auto prg_write(uint addr, buint8 data) -> void {
     if((addr & 0xe000) == 0x6000) {
       prgram.data[addr & 0x1fff] = data;
     }
@@ -140,7 +140,7 @@ struct Sunsoft5B : Board {
   }
 
   auto chr_addr(uint addr) -> uint {
-    uint8 bank = (addr >> 10) & 7;
+    buint8 bank = (addr >> 10) & 7;
     return (chr_bank[bank] << 10) | (addr & 0x03ff);
   }
 
@@ -153,12 +153,12 @@ struct Sunsoft5B : Board {
     }
   }
 
-  auto chr_read(uint addr) -> uint8 {
+  auto chr_read(uint addr) -> buint8 {
     if(addr & 0x2000) return ppu.ciram_read(ciram_addr(addr));
     return Board::chr_read(chr_addr(addr));
   }
 
-  auto chr_write(uint addr, uint8 data) -> void {
+  auto chr_write(uint addr, buint8 data) -> void {
     if(addr & 0x2000) return ppu.ciram_write(ciram_addr(addr), data);
     return Board::chr_write(chr_addr(addr), data);
   }
@@ -207,12 +207,12 @@ struct Sunsoft5B : Board {
   uint4 mmu_port;
   uint4 apu_port;
 
-  uint8 prg_bank[4];
-  uint8 chr_bank[8];
+  buint8 prg_bank[4];
+  buint8 chr_bank[8];
   uint2 mirror;
   bool irq_enable;
   bool irq_counter_enable;
-  uint16 irq_counter;
+  buint16 irq_counter;
 
   int16 dac[16];
 };

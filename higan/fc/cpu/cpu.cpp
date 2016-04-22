@@ -61,19 +61,19 @@ auto CPU::reset() -> void {
   status.controller_port1 = 0;
 }
 
-auto CPU::debugger_read(uint16 addr) -> uint8 {
+auto CPU::debugger_read(buint16 addr) -> buint8 {
   return bus.read(addr);
 }
 
-auto CPU::ram_read(uint16 addr) -> uint8 {
+auto CPU::ram_read(buint16 addr) -> buint8 {
   return ram[addr & 0x07ff];
 }
 
-auto CPU::ram_write(uint16 addr, uint8 data) -> void {
+auto CPU::ram_write(buint16 addr, buint8 data) -> void {
   ram[addr & 0x07ff] = data;
 }
 
-auto CPU::read(uint16 addr) -> uint8 {
+auto CPU::read(buint16 addr) -> buint8 {
   if(addr == 0x4016) {
     return (mdr() & 0xc0) | input.data(0);
   }
@@ -85,7 +85,7 @@ auto CPU::read(uint16 addr) -> uint8 {
   return apu.read(addr);
 }
 
-auto CPU::write(uint16 addr, uint8 data) -> void {
+auto CPU::write(buint16 addr, buint8 data) -> void {
   if(addr == 0x4014) {
     status.oam_dma_page = data;
     status.oam_dma_pending = true;

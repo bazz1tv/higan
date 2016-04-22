@@ -9,19 +9,19 @@ struct CPU : Processor::R65816, Thread, public PPUcounter {
   auto synchronizeCoprocessors() -> void;
   auto synchronizeDevices() -> void;
 
-  auto pio() -> uint8;
+  auto pio() -> buint8;
   auto joylatch() -> bool;
   auto interruptPending() const -> bool;
-  auto port_read(uint8 port) -> uint8;
-  auto port_write(uint8 port, uint8 data) -> void;
-  auto dmaPortRead(uint24 addr, uint8 data) -> uint8;
-  auto dmaPortWrite(uint24 addr, uint8 data) -> void;
-  auto mmio_read(uint addr, uint8 data) -> uint8;
-  auto mmio_write(uint addr, uint8 data) -> void;
+  auto port_read(buint8 port) -> buint8;
+  auto port_write(buint8 port, buint8 data) -> void;
+  auto dmaPortRead(uint24 addr, buint8 data) -> buint8;
+  auto dmaPortWrite(uint24 addr, buint8 data) -> void;
+  auto mmio_read(uint addr, buint8 data) -> buint8;
+  auto mmio_write(uint addr, buint8 data) -> void;
 
   auto io() -> void;
-  auto read(uint24 addr) -> uint8;
-  auto write(uint24 addr, uint8 data) -> void;
+  auto read(uint24 addr) -> buint8;
+  auto write(uint24 addr, buint8 data) -> void;
 
   auto main() -> void;
   auto enable() -> void;
@@ -30,7 +30,7 @@ struct CPU : Processor::R65816, Thread, public PPUcounter {
 
   auto serialize(serializer&) -> void;
 
-  uint8 wram[128 * 1024];
+  buint8 wram[128 * 1024];
   vector<Thread*> coprocessors;
 
 private:
@@ -56,12 +56,12 @@ private:
   auto speed(uint addr) const -> uint;
 
   //dma
-  auto dma_transfer_valid(uint8 bbus, uint abus) -> bool;
+  auto dma_transfer_valid(buint8 bbus, uint abus) -> bool;
   auto dma_addr_valid(uint abus) -> bool;
-  auto dma_read(uint abus) -> uint8;
-  auto dma_write(bool valid, uint addr, uint8 data) -> void;
-  auto dma_transfer(bool direction, uint8 bbus, uint abus) -> void;
-  auto dma_bbus(uint i, uint index) -> uint8;
+  auto dma_read(uint abus) -> buint8;
+  auto dma_write(bool valid, uint addr, buint8 data) -> void;
+  auto dma_transfer(bool direction, buint8 bbus, uint abus) -> void;
+  auto dma_bbus(uint i, uint index) -> buint8;
   auto dma_addr(uint i) -> uint;
   auto hdma_addr(uint i) -> uint;
   auto hdma_iaddr(uint i) -> uint;
@@ -73,7 +73,7 @@ private:
   auto dma_reset() -> void;
 
   //registers
-  uint8 port_data[4];
+  buint8 port_data[4];
 
   struct Channel {
     bool dma_enabled;
@@ -84,21 +84,21 @@ private:
     bool unused;
     bool reverse_transfer;
     bool fixed_transfer;
-    uint8 transfer_mode;
+    buint8 transfer_mode;
 
-    uint8 dest_addr;
-    uint16 source_addr;
-    uint8 source_bank;
+    buint8 dest_addr;
+    buint16 source_addr;
+    buint8 source_bank;
 
     union {
       uint16_t transfer_size;
       uint16_t indirect_addr;
     };
 
-    uint8 indirect_bank;
-    uint16 hdma_addr;
-    uint8 line_counter;
-    uint8 unknown;
+    buint8 indirect_bank;
+    buint16 hdma_addr;
+    buint8 line_counter;
+    buint8 unknown;
 
     bool hdma_completed;
     bool hdma_do_transfer;
@@ -127,25 +127,25 @@ private:
     bool hirq_enabled;
     bool auto_joypad_poll_enabled;
 
-    uint8 pio;
+    buint8 pio;
 
-    uint8 wrmpya;
-    uint8 wrmpyb;
-    uint16 wrdiva;
-    uint8 wrdivb;
+    buint8 wrmpya;
+    buint8 wrmpyb;
+    buint16 wrdiva;
+    buint8 wrdivb;
 
-    uint16 htime;
-    uint16 vtime;
+    buint16 htime;
+    buint16 vtime;
 
     uint rom_speed;
 
-    uint16 rddiv;
-    uint16 rdmpy;
+    buint16 rddiv;
+    buint16 rdmpy;
 
-    uint8 joy1l, joy1h;
-    uint8 joy2l, joy2h;
-    uint8 joy3l, joy3h;
-    uint8 joy4l, joy4h;
+    buint8 joy1l, joy1h;
+    buint8 joy2l, joy2h;
+    buint8 joy3l, joy3h;
+    buint8 joy4l, joy4h;
   } status;
 };
 

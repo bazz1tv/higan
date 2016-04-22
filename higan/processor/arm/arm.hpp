@@ -26,30 +26,30 @@ struct ARM {
 
   virtual auto step(unsigned clocks) -> void = 0;
   virtual auto bus_idle() -> void = 0;
-  virtual auto bus_read(unsigned mode, uint32 addr) -> uint32 = 0;
-  virtual auto bus_write(unsigned mode, uint32 addr, uint32 word) -> void = 0;
+  virtual auto bus_read(unsigned mode, buint32 addr) -> buint32 = 0;
+  virtual auto bus_write(unsigned mode, buint32 addr, buint32 word) -> void = 0;
 
   //arm.cpp
   auto power() -> void;
   auto exec() -> void;
   auto idle() -> void;
-  auto read(unsigned mode, uint32 addr) -> uint32;
-  auto load(unsigned mode, uint32 addr) -> uint32;
-  auto write(unsigned mode, uint32 addr, uint32 word) -> void;
-  auto store(unsigned mode, uint32 addr, uint32 word) -> void;
-  auto vector(uint32 addr, Processor::Mode mode) -> void;
+  auto read(unsigned mode, buint32 addr) -> buint32;
+  auto load(unsigned mode, buint32 addr) -> buint32;
+  auto write(unsigned mode, buint32 addr, buint32 word) -> void;
+  auto store(unsigned mode, buint32 addr, buint32 word) -> void;
+  auto vector(buint32 addr, Processor::Mode mode) -> void;
 
   //algorithms.cpp
   auto condition(uint4 condition) -> bool;
-  auto bit(uint32 result) -> uint32;
-  auto add(uint32 source, uint32 modify, bool carry) -> uint32;
-  auto sub(uint32 source, uint32 modify, bool carry) -> uint32;
-  auto mul(uint32 product, uint32 multiplicand, uint32 multiplier) -> uint32;
-  auto lsl(uint32 source, uint8 shift) -> uint32;
-  auto lsr(uint32 source, uint8 shift) -> uint32;
-  auto asr(uint32 source, uint8 shift) -> uint32;
-  auto ror(uint32 source, uint8 shift) -> uint32;
-  auto rrx(uint32 source) -> uint32;
+  auto bit(buint32 result) -> buint32;
+  auto add(buint32 source, buint32 modify, bool carry) -> buint32;
+  auto sub(buint32 source, buint32 modify, bool carry) -> buint32;
+  auto mul(buint32 product, buint32 multiplicand, buint32 multiplier) -> buint32;
+  auto lsl(buint32 source, buint8 shift) -> buint32;
+  auto lsr(buint32 source, buint8 shift) -> buint32;
+  auto asr(buint32 source, buint8 shift) -> buint32;
+  auto ror(buint32 source, buint8 shift) -> buint32;
+  auto rrx(buint32 source) -> buint32;
 
   //step.cpp
   auto pipeline_step() -> void;

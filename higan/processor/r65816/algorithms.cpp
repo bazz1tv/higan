@@ -73,42 +73,42 @@ auto R65816::op_bit_w() {
 auto R65816::op_cmp_b() {
   int r = regs.a.l - rd.l;
   regs.p.n = r & 0x80;
-  regs.p.z = (uint8)r == 0;
+  regs.p.z = (buint8)r == 0;
   regs.p.c = r >= 0;
 }
 
 auto R65816::op_cmp_w() {
   int r = regs.a.w - rd.w;
   regs.p.n = r & 0x8000;
-  regs.p.z = (uint16)r == 0;
+  regs.p.z = (buint16)r == 0;
   regs.p.c = r >= 0;
 }
 
 auto R65816::op_cpx_b() {
   int r = regs.x.l - rd.l;
   regs.p.n = r & 0x80;
-  regs.p.z = (uint8)r == 0;
+  regs.p.z = (buint8)r == 0;
   regs.p.c = r >= 0;
 }
 
 auto R65816::op_cpx_w() {
   int r = regs.x.w - rd.w;
   regs.p.n = r & 0x8000;
-  regs.p.z = (uint16)r == 0;
+  regs.p.z = (buint16)r == 0;
   regs.p.c = r >= 0;
 }
 
 auto R65816::op_cpy_b() {
   int r = regs.y.l - rd.l;
   regs.p.n = r & 0x80;
-  regs.p.z = (uint8)r == 0;
+  regs.p.z = (buint8)r == 0;
   regs.p.c = r >= 0;
 }
 
 auto R65816::op_cpy_w() {
   int r = regs.y.w - rd.w;
   regs.p.n = r & 0x8000;
-  regs.p.z = (uint16)r == 0;
+  regs.p.z = (buint16)r == 0;
   regs.p.c = r >= 0;
 }
 

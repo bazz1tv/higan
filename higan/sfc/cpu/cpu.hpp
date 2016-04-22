@@ -2,7 +2,7 @@ struct CPU : Processor::R65816, Thread, public PPUcounter {
   enum : bool { Threaded = true };
 
   auto interruptPending() const -> bool override;
-  auto pio() const -> uint8;
+  auto pio() const -> buint8;
   auto joylatch() const -> bool;
 
   CPU();
@@ -13,8 +13,8 @@ struct CPU : Processor::R65816, Thread, public PPUcounter {
   auto synchronizeCoprocessors() -> void;
   auto synchronizeDevices() -> void;
 
-  auto portRead(uint2 port) const -> uint8;
-  auto portWrite(uint2 port, uint8 data) -> void;
+  auto portRead(uint2 port) const -> buint8;
+  auto portWrite(uint2 port, buint8 data) -> void;
 
   static auto Enter() -> void;
   auto main() -> void;
@@ -24,13 +24,13 @@ struct CPU : Processor::R65816, Thread, public PPUcounter {
 
   //dma.cpp
   auto dmaAddClocks(uint clocks) -> void;
-  auto dmaTransferValid(uint8 bbus, uint24 abus) -> bool;
+  auto dmaTransferValid(buint8 bbus, uint24 abus) -> bool;
   auto dmaAddressValid(uint24 abus) -> bool;
-  auto dmaRead(uint24 abus) -> uint8;
-  auto dmaWrite(bool valid, uint addr = 0, uint8 data = 0) -> void;
-  auto dmaTransfer(bool direction, uint8 bbus, uint24 abus) -> void;
+  auto dmaRead(uint24 abus) -> buint8;
+  auto dmaWrite(bool valid, uint addr = 0, buint8 data = 0) -> void;
+  auto dmaTransfer(bool direction, buint8 bbus, uint24 abus) -> void;
 
-  auto dmaAddressB(uint n, uint channel) -> uint8;
+  auto dmaAddressB(uint n, uint channel) -> buint8;
   auto dmaAddress(uint n) -> uint24;
   auto hdmaAddress(uint n) -> uint24;
   auto hdmaIndirectAddress(uint n) -> uint24;
@@ -49,18 +49,18 @@ struct CPU : Processor::R65816, Thread, public PPUcounter {
 
   //memory.cpp
   auto io() -> void override;
-  auto read(uint24 addr) -> uint8 override;
-  auto write(uint24 addr, uint8 data) -> void override;
+  auto read(uint24 addr) -> buint8 override;
+  auto write(uint24 addr, buint8 data) -> void override;
   alwaysinline auto speed(uint24 addr) const -> uint;
-  auto disassemblerRead(uint24 addr) -> uint8 override;
+  auto disassemblerRead(uint24 addr) -> buint8 override;
 
   //mmio.cpp
-  auto apuPortRead(uint24 addr, uint8 data) -> uint8;
-  auto cpuPortRead(uint24 addr, uint8 data) -> uint8;
-  auto dmaPortRead(uint24 addr, uint8 data) -> uint8;
-  auto apuPortWrite(uint24 addr, uint8 data) -> void;
-  auto cpuPortWrite(uint24 addr, uint8 data) -> void;
-  auto dmaPortWrite(uint24 addr, uint8 data) -> void;
+  auto apuPortRead(uint24 addr, buint8 data) -> buint8;
+  auto cpuPortRead(uint24 addr, buint8 data) -> buint8;
+  auto dmaPortRead(uint24 addr, buint8 data) -> buint8;
+  auto apuPortWrite(uint24 addr, buint8 data) -> void;
+  auto cpuPortWrite(uint24 addr, buint8 data) -> void;
+  auto dmaPortWrite(uint24 addr, buint8 data) -> void;
 
   //timing.cpp
   auto dmaCounter() const -> uint;
@@ -74,7 +74,7 @@ struct CPU : Processor::R65816, Thread, public PPUcounter {
 
   //irq.cpp
   alwaysinline auto pollInterrupts() -> void;
-  auto nmitimenUpdate(uint8 data) -> void;
+  auto nmitimenUpdate(buint8 data) -> void;
   auto rdnmi() -> bool;
   auto timeup() -> bool;
 
@@ -87,7 +87,7 @@ struct CPU : Processor::R65816, Thread, public PPUcounter {
   //serialization.cpp
   auto serialize(serializer&) -> void;
 
-  uint8 wram[128 * 1024];
+  buint8 wram[128 * 1024];
   vector<Thread*> coprocessors;
 
 privileged:
@@ -142,15 +142,15 @@ privileged:
 
     //MMIO
     //$2140-217f
-    uint8 port[4];
+    buint8 port[4];
 
     //$2181-$2183
     uint17 wram_addr;
 
     //$4016-$4017
     bool joypad_strobe_latch;
-    uint32 joypad1_bits;
-    uint32 joypad2_bits;
+    buint32 joypad1_bits;
+    buint32 joypad2_bits;
 
     //$4200
     bool nmi_enabled;
@@ -158,15 +158,15 @@ privileged:
     bool auto_joypad_poll;
 
     //$4201
-    uint8 pio;
+    buint8 pio;
 
     //$4202-$4203
-    uint8 wrmpya;
-    uint8 wrmpyb;
+    buint8 wrmpya;
+    buint8 wrmpyb;
 
     //$4204-$4206
-    uint16 wrdiva;
-    uint8 wrdivb;
+    buint16 wrdiva;
+    buint8 wrdivb;
 
     //$4207-$420a
     uint9 hirq_pos;
@@ -176,14 +176,14 @@ privileged:
     uint rom_speed;
 
     //$4214-$4217
-    uint16 rddiv;
-    uint16 rdmpy;
+    buint16 rddiv;
+    buint16 rdmpy;
 
     //$4218-$421f
-    uint16 joy1;
-    uint16 joy2;
-    uint16 joy3;
-    uint16 joy4;
+    buint16 joy1;
+    buint16 joy2;
+    buint16 joy3;
+    buint16 joy4;
   } status;
 
   struct ALU {
@@ -208,13 +208,13 @@ privileged:
     uint3 transfer_mode;
 
     //$43x1
-    uint8 dest_addr;
+    buint8 dest_addr;
 
     //$43x2-$43x3
-    uint16 source_addr;
+    buint16 source_addr;
 
     //$43x4
-    uint8 source_bank;
+    buint8 source_bank;
 
     //$43x5-$43x6
     union {
@@ -223,16 +223,16 @@ privileged:
     };
 
     //$43x7
-    uint8 indirect_bank;
+    buint8 indirect_bank;
 
     //$43x8-$43x9
-    uint16 hdma_addr;
+    buint16 hdma_addr;
 
     //$43xa
-    uint8 line_counter;
+    buint8 line_counter;
 
     //$43xb/$43xf
-    uint8 unknown;
+    buint8 unknown;
 
     //internal state
     bool hdma_completed;
@@ -242,13 +242,13 @@ privileged:
   struct Pipe {
     bool valid;
     uint addr;
-    uint8 data;
+    buint8 data;
   } pipe;
 
   struct Debugger {
     hook<auto (uint24) -> void> op_exec;
-    hook<auto (uint24, uint8) -> void> op_read;
-    hook<auto (uint24, uint8) -> void> op_write;
+    hook<auto (uint24, buint8) -> void> op_read;
+    hook<auto (uint24, buint8) -> void> op_write;
     hook<auto () -> void> op_nmi;
     hook<auto () -> void> op_irq;
   } debugger;

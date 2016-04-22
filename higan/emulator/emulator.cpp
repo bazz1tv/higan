@@ -2,13 +2,13 @@
 
 namespace Emulator {
 
-auto Interface::videoColor(uint16 r, uint16 g, uint16 b) -> uint32 {
+auto Interface::videoColor(buint16 r, buint16 g, buint16 b) -> buint32 {
   double saturation = 1.0;
   double gamma      = 1.0;
   double luminance  = 1.0;
 
   if(saturation != 1.0) {
-    uint16 grayscale = uclamp<16>((r + g + b) / 3);
+    buint16 grayscale = uclamp<16>((r + g + b) / 3);
     double inverse = max(0.0, 1.0 - saturation);
     r = uclamp<16>(r * saturation + grayscale * inverse);
     g = uclamp<16>(g * saturation + grayscale * inverse);
@@ -17,9 +17,9 @@ auto Interface::videoColor(uint16 r, uint16 g, uint16 b) -> uint32 {
 
   if(gamma != 1.0) {
     double reciprocal = 1.0 / 32767.0;
-    r = r > 32767 ? r : uint16(32767 * pow(r * reciprocal, gamma));
-    g = g > 32767 ? g : uint16(32767 * pow(g * reciprocal, gamma));
-    b = b > 32767 ? b : uint16(32767 * pow(b * reciprocal, gamma));
+    r = r > 32767 ? r : buint16(32767 * pow(r * reciprocal, gamma));
+    g = g > 32767 ? g : buint16(32767 * pow(g * reciprocal, gamma));
+    b = b > 32767 ? b : buint16(32767 * pow(b * reciprocal, gamma));
   }
 
   if(luminance != 1.0) {

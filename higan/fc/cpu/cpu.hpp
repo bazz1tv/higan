@@ -6,21 +6,21 @@ struct CPU : Processor::R6502, Thread {
   auto power() -> void;
   auto reset() -> void;
 
-  auto debugger_read(uint16 addr) -> uint8;
+  auto debugger_read(buint16 addr) -> buint8;
 
-  auto ram_read(uint16 addr) -> uint8;
-  auto ram_write(uint16 addr, uint8 data) -> void;
+  auto ram_read(buint16 addr) -> buint8;
+  auto ram_write(buint16 addr, buint8 data) -> void;
 
-  auto read(uint16 addr) -> uint8;
-  auto write(uint16 addr, uint8 data) -> void;
+  auto read(buint16 addr) -> buint8;
+  auto write(buint16 addr, buint8 data) -> void;
 
   auto serialize(serializer&) -> void;
 
   //timing.cpp
-  auto op_read(uint16 addr) -> uint8;
-  auto op_write(uint16 addr, uint8 data) -> void;
+  auto op_read(buint16 addr) -> buint8;
+  auto op_write(buint16 addr, buint8 data) -> void;
   auto last_cycle() -> void;
-  auto nmi(uint16& vector) -> void;
+  auto nmi(buint16& vector) -> void;
 
   auto oam_dma() -> void;
 
@@ -29,10 +29,10 @@ struct CPU : Processor::R6502, Thread {
   auto set_irq_apu_line(bool) -> void;
 
   auto set_rdy_line(bool) -> void;
-  auto set_rdy_addr(bool valid, uint16 value = 0) -> void;
+  auto set_rdy_addr(bool valid, buint16 value = 0) -> void;
 
 //protected:
-  uint8 ram[0x0800];
+  buint8 ram[0x0800];
 
   struct Status {
     bool interrupt_pending;
@@ -43,10 +43,10 @@ struct CPU : Processor::R6502, Thread {
 
     bool rdy_line;
     bool rdy_addr_valid;
-    uint16 rdy_addr_value;
+    buint16 rdy_addr_value;
 
     bool oam_dma_pending;
-    uint8 oam_dma_page;
+    buint8 oam_dma_page;
 
     bool controller_latch;
     uint controller_port0;

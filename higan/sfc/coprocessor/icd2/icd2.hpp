@@ -10,8 +10,8 @@ struct ICD2 : Emulator::Interface::Bind, GameBoy::Interface::Hook, Coprocessor {
   auto power() -> void;
   auto reset() -> void;
 
-  auto read(uint24 addr, uint8 data) -> uint8;
-  auto write(uint24 addr, uint8 data) -> void;
+  auto read(uint24 addr, buint8 data) -> buint8;
+  auto write(uint24 addr, buint8 data) -> void;
 
   auto serialize(serializer&) -> void;
 
@@ -34,8 +34,8 @@ struct ICD2 : Coprocessor {
   auto power() -> void {}
   auto reset() -> void {}
 
-  auto read(uint24, uint8) -> uint8 { return 0; }
-  auto write(uint24, uint8) -> void { return; }
+  auto read(uint24, buint8) -> buint8 { return 0; }
+  auto write(uint24, buint8) -> void { return; }
 
   auto serialize(serializer&) -> void {}
 

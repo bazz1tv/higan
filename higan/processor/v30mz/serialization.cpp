@@ -5,14 +5,14 @@ auto V30MZ::serialize(serializer& s) -> void {
 
   s.integer(opcode);
   if(s.mode() == serializer::Save) {
-    uint8 _prefixes[7] = {0};
-    uint8 _prefixCount = prefixes.size();
+    buint8 _prefixes[7] = {0};
+    buint8 _prefixCount = prefixes.size();
     for(auto n : range(prefixes)) _prefixes[n] = prefixes[n];
     s.integer(_prefixCount);
     s.array(_prefixes);
   } else {
-    uint8 _prefixes[7] = {0};
-    uint8 _prefixCount = 0;
+    buint8 _prefixes[7] = {0};
+    buint8 _prefixCount = 0;
     s.integer(_prefixCount);
     s.array(_prefixes);
     prefixes.resize(_prefixCount);

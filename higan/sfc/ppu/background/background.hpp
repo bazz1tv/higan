@@ -10,8 +10,8 @@ struct Background {
   Background(PPU& self, uint id);
 
   struct Regs {
-    uint16 tiledata_addr;
-    uint16 screen_addr;
+    buint16 tiledata_addr;
+    buint16 screen_addr;
     uint2 screen_size;
     uint4 mosaic;
     bool tile_size;
@@ -23,13 +23,13 @@ struct Background {
     bool main_enable;
     bool sub_enable;
 
-    uint16 hoffset;
-    uint16 voffset;
+    buint16 hoffset;
+    buint16 voffset;
   } regs;
 
   struct Cache {
-    uint16 hoffset;
-    uint16 voffset;
+    buint16 hoffset;
+    buint16 voffset;
   } cache;
 
   alwaysinline auto voffset() const -> uint;
@@ -38,8 +38,8 @@ struct Background {
   struct Output {
     struct Pixel {
       uint priority;  //0 = none (transparent)
-      uint8 palette;
-      uint16 tile;
+      buint8 palette;
+      buint16 tile;
     } main, sub;
   } output;
 
@@ -59,7 +59,7 @@ struct Background {
     uint priority;
     uint palette_number;
     uint palette_index;
-    uint8 data[8];
+    buint8 data[8];
   };
 
   auto frame() -> void;

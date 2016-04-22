@@ -3,7 +3,7 @@ PPU::Screen::Screen(PPU& self) : self(self) {
 
 auto PPU::Screen::get_palette(uint color) -> uint {
   #if defined(ENDIAN_LSB)
-  return ((uint16*)ppu.cgram)[color];
+  return ((buint16*)ppu.cgram)[color];
   #else
   color <<= 1;
   return (ppu.cgram[color + 0] << 0) + (ppu.cgram[color + 1] << 8);
@@ -16,7 +16,7 @@ auto PPU::Screen::get_direct_color(uint p, uint t) -> uint {
          ((t >> 6) << 13) | ((p >> 2) << 12);
 }
 
-auto PPU::Screen::addsub(uint x, uint y, bool halve) -> uint16 {
+auto PPU::Screen::addsub(uint x, uint y, bool halve) -> buint16 {
   if(!regs.color_mode) {
     if(!halve) {
       uint sum = x + y;
@@ -58,10 +58,10 @@ auto PPU::Screen::scanline() -> void {
 auto PPU::Screen::render_black() -> void {
   auto data = self.output + self.vcounter() * 1024;
   if(self.interlace() && self.field()) data += 512;
-  memory::fill(data, 512 * sizeof(uint32));
+  memory::fill(data, 512 * sizeof(buint32));
 }
 
-auto PPU::Screen::get_pixel_main(uint x) -> uint16 {
+auto PPU::Screen::get_pixel_main(uint x) -> buint16 {
   auto main = output.main[x];
   auto sub = output.sub[x];
 
@@ -88,7 +88,7 @@ auto PPU::Screen::get_pixel_main(uint x) -> uint16 {
   return main.color;
 }
 
-auto PPU::Screen::get_pixel_sub(uint x) -> uint16 {
+auto PPU::Screen::get_pixel_sub(uint x) -> buint16 {
   auto main = output.sub[x];
   auto sub = output.main[x];
 
@@ -121,7 +121,7 @@ auto PPU::Screen::render() -> void {
 
   if(!self.regs.pseudo_hires && self.regs.bgmode != 5 && self.regs.bgmode != 6) {
     for(uint i = 0; i < 256; i++) {
-      uint32 color = self.regs.display_brightness << 15 | get_pixel_main(i);
+      buint32 color = self.regs.display_brightness << 15 | get_pixel_main(i);
       *data++ = color;
       *data++ = color;
     }

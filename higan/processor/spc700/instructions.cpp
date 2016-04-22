@@ -1,12 +1,12 @@
 #define call (this->*op)
 
-template<auto (SPC700::*op)(uint8) -> uint8>
+template<auto (SPC700::*op)(buint8) -> buint8>
 auto SPC700::op_adjust(uint8_t& r) -> void {
   op_io();
   r = call(r);
 }
 
-template<auto (SPC700::*op)(uint8) -> uint8>
+template<auto (SPC700::*op)(buint8) -> buint8>
 auto SPC700::op_adjust_addr() -> void {
   dp.l = op_readpc();
   dp.h = op_readpc();
@@ -15,7 +15,7 @@ auto SPC700::op_adjust_addr() -> void {
   op_write(dp, rd);
 }
 
-template<auto (SPC700::*op)(uint8) -> uint8>
+template<auto (SPC700::*op)(buint8) -> buint8>
 auto SPC700::op_adjust_dp() -> void {
   dp = op_readpc();
   rd = op_readdp(dp);
@@ -33,7 +33,7 @@ auto SPC700::op_adjust_dpw(int n) -> void {
   regs.p.z = rd == 0;
 }
 
-template<auto (SPC700::*op)(uint8) -> uint8>
+template<auto (SPC700::*op)(buint8) -> buint8>
 auto SPC700::op_adjust_dpx() -> void {
   dp = op_readpc();
   op_io();
@@ -67,13 +67,13 @@ auto SPC700::op_pull(uint8_t& r) -> void {
   r = op_readsp();
 }
 
-auto SPC700::op_push(uint8 r) -> void {
+auto SPC700::op_push(buint8 r) -> void {
   op_io();
   op_io();
   op_writesp(r);
 }
 
-template<auto (SPC700::*op)(uint8, uint8) -> uint8>
+template<auto (SPC700::*op)(buint8, buint8) -> buint8>
 auto SPC700::op_read_addr(uint8_t& r) -> void {
   dp.l = op_readpc();
   dp.h = op_readpc();
@@ -81,7 +81,7 @@ auto SPC700::op_read_addr(uint8_t& r) -> void {
   r = call(r, rd);
 }
 
-template<auto (SPC700::*op)(uint8, uint8) -> uint8>
+template<auto (SPC700::*op)(buint8, buint8) -> buint8>
 auto SPC700::op_read_addri(uint8_t& r) -> void {
   dp.l = op_readpc();
   dp.h = op_readpc();
@@ -90,20 +90,20 @@ auto SPC700::op_read_addri(uint8_t& r) -> void {
   regs.a = call(regs.a, rd);
 }
 
-template<auto (SPC700::*op)(uint8, uint8) -> uint8>
+template<auto (SPC700::*op)(buint8, buint8) -> buint8>
 auto SPC700::op_read_const(uint8_t& r) -> void {
   rd = op_readpc();
   r = call(r, rd);
 }
 
-template<auto (SPC700::*op)(uint8, uint8) -> uint8>
+template<auto (SPC700::*op)(buint8, buint8) -> buint8>
 auto SPC700::op_read_dp(uint8_t& r) -> void {
   dp = op_readpc();
   rd = op_readdp(dp);
   r = call(r, rd);
 }
 
-template<auto (SPC700::*op)(uint8, uint8) -> uint8>
+template<auto (SPC700::*op)(buint8, buint8) -> buint8>
 auto SPC700::op_read_dpi(uint8_t& r, uint8_t& i) -> void {
   dp = op_readpc();
   op_io();
@@ -111,7 +111,7 @@ auto SPC700::op_read_dpi(uint8_t& r, uint8_t& i) -> void {
   r = call(r, rd);
 }
 
-template<auto (SPC700::*op)(uint16, uint16) -> uint16>
+template<auto (SPC700::*op)(buint16, buint16) -> buint16>
 auto SPC700::op_read_dpw() -> void {
   dp = op_readpc();
   rd.l = op_readdp(dp++);
@@ -120,7 +120,7 @@ auto SPC700::op_read_dpw() -> void {
   regs.ya = call(regs.ya, rd);
 }
 
-template<auto (SPC700::*op)(uint8, uint8) -> uint8>
+template<auto (SPC700::*op)(buint8, buint8) -> buint8>
 auto SPC700::op_read_idpx() -> void {
   dp = op_readpc() + regs.x;
   op_io();
@@ -130,7 +130,7 @@ auto SPC700::op_read_idpx() -> void {
   regs.a = call(regs.a, rd);
 }
 
-template<auto (SPC700::*op)(uint8, uint8) -> uint8>
+template<auto (SPC700::*op)(buint8, buint8) -> buint8>
 auto SPC700::op_read_idpy() -> void {
   dp = op_readpc();
   op_io();
@@ -140,7 +140,7 @@ auto SPC700::op_read_idpy() -> void {
   regs.a = call(regs.a, rd);
 }
 
-template<auto (SPC700::*op)(uint8, uint8) -> uint8>
+template<auto (SPC700::*op)(buint8, buint8) -> buint8>
 auto SPC700::op_read_ix() -> void {
   op_io();
   rd = op_readdp(regs.x);
@@ -241,7 +241,7 @@ auto SPC700::op_write_dpi(uint8_t& r, uint8_t& i) -> void {
   op_writedp(dp, r);
 }
 
-template<auto (SPC700::*op)(uint8, uint8) -> uint8>
+template<auto (SPC700::*op)(buint8, buint8) -> buint8>
 auto SPC700::op_write_dp_const() -> void {
   rd = op_readpc();
   dp = op_readpc();
@@ -250,7 +250,7 @@ auto SPC700::op_write_dp_const() -> void {
   op != &SPC700::op_cmp ? op_writedp(dp, wr) : op_io();
 }
 
-template<auto (SPC700::*op)(uint8, uint8) -> uint8>
+template<auto (SPC700::*op)(buint8, buint8) -> buint8>
 auto SPC700::op_write_dp_dp() -> void {
   sp = op_readpc();
   rd = op_readdp(sp);
@@ -260,7 +260,7 @@ auto SPC700::op_write_dp_dp() -> void {
   op != &SPC700::op_cmp ? op_writedp(dp, wr) : op_io();
 }
 
-template<auto (SPC700::*op)(uint8, uint8) -> uint8>
+template<auto (SPC700::*op)(buint8, buint8) -> buint8>
 auto SPC700::op_write_ix_iy() -> void {
   op_io();
   rd = op_readdp(regs.y);

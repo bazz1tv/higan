@@ -1,28 +1,28 @@
 struct Memory {
   ~Memory();
 
-  auto operator[](uint addr) -> uint8&;
+  auto operator[](uint addr) -> buint8&;
   auto allocate(uint size) -> void;
-  auto copy(const uint8* data, uint size) -> void;
+  auto copy(const buint8* data, uint size) -> void;
   auto free() -> void;
 
-  uint8* data = nullptr;
+  buint8* data = nullptr;
   uint size = 0;
 };
 
 struct MMIO {
-  virtual auto mmio_read(uint16 addr) -> uint8 = 0;
-  virtual auto mmio_write(uint16 addr, uint8 data) -> void = 0;
+  virtual auto mmio_read(buint16 addr) -> buint8 = 0;
+  virtual auto mmio_write(buint16 addr, buint8 data) -> void = 0;
 };
 
 struct Unmapped : MMIO {
-  auto mmio_read(uint16) -> uint8 { return 0xff; }
-  auto mmio_write(uint16, uint8) -> void {}
+  auto mmio_read(buint16) -> buint8 { return 0xff; }
+  auto mmio_write(buint16, buint8) -> void {}
 };
 
 struct Bus {
-  auto read(uint16 addr) -> uint8;
-  auto write(uint16 addr, uint8 data) -> void;
+  auto read(buint16 addr) -> buint8;
+  auto write(buint16 addr, buint8 data) -> void;
   auto power() -> void;
 
   MMIO* mmio[65536];

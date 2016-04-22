@@ -5,7 +5,7 @@ unique_pointer<InputManager> inputManager;
 auto InputMapping::bind() -> void {
   auto token = assignment.split("/");
   if(token.size() < 3) return unbind();
-  uint64 id = token[0].natural();
+  buint64 id = token[0].natural();
   uint group = token[1].natural();
   uint input = token[2].natural();
   string qualifier = token(3, "None");

@@ -2,13 +2,13 @@ struct Cartridge : MMIO, property<Cartridge> {
   auto load(System::Revision revision) -> void;
   auto unload() -> void;
 
-  auto rom_read(uint addr) -> uint8;
-  auto rom_write(uint addr, uint8 data) -> void;
-  auto ram_read(uint addr) -> uint8;
-  auto ram_write(uint addr, uint8 data) -> void;
+  auto rom_read(uint addr) -> buint8;
+  auto rom_write(uint addr, buint8 data) -> void;
+  auto ram_read(uint addr) -> buint8;
+  auto ram_write(uint addr, buint8 data) -> void;
 
-  auto mmio_read(uint16 addr) -> uint8;
-  auto mmio_write(uint16 addr, uint8 data) -> void;
+  auto mmio_read(buint16 addr) -> buint8;
+  auto mmio_write(buint16 addr, buint8 data) -> void;
 
   auto power() -> void;
 
@@ -60,10 +60,10 @@ struct Cartridge : MMIO, property<Cartridge> {
 
   readonly<string> sha256;
 
-  uint8* romdata = nullptr;
+  buint8* romdata = nullptr;
   uint romsize = 0;
 
-  uint8* ramdata = nullptr;
+  buint8* ramdata = nullptr;
   uint ramsize = 0;
 
   MMIO* mapper = nullptr;

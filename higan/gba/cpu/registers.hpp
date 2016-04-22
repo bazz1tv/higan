@@ -3,7 +3,7 @@ struct Registers {
     VariadicNatural source;
     VariadicNatural target;
     VariadicNatural length;
-    uint32 data;
+    buint32 data;
     struct Control {
       uint2 targetmode;
       uint2 sourcemode;
@@ -25,8 +25,8 @@ struct Registers {
   } dma[4];
 
   struct Timer {
-    uint16 period;
-    uint16 reload;
+    buint16 period;
+    buint16 reload;
     bool pending;
     struct Control {
       uint2 frequency;
@@ -37,7 +37,7 @@ struct Registers {
   } timer[4];
 
   struct Serial {
-    uint16 data[4];
+    buint16 data[4];
     struct Control {
       uint1 shiftclockselect;
       uint1 shiftclockfrequency;
@@ -47,7 +47,7 @@ struct Registers {
       uint1 transferlength;
       uint1 irqenable;
     } control;
-    uint8 data8;
+    buint8 data8;
   } serial;
 
   struct Keypad {
@@ -77,8 +77,8 @@ struct Registers {
       uint1 sendcomplete;
       uint1 irqenable;
     } control;
-    uint32 receive;
-    uint32 transmit;
+    buint32 receive;
+    buint32 transmit;
     struct Status {
       uint1 receiveflag;
       uint1 sendflag;
@@ -89,8 +89,8 @@ struct Registers {
   uint1 ime;
 
   struct IRQ {
-    uint16 enable;
-    uint16 flag;
+    buint16 enable;
+    buint16 flag;
   } irq;
 
   struct Wait {

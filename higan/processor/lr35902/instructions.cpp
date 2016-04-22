@@ -32,8 +32,8 @@ template<uint x> auto LR35902::op_ld_a_rr() {
 }
 
 auto LR35902::op_ld_a_nn() {
-  uint8 lo = op_read(r[PC]++);
-  uint8 hi = op_read(r[PC]++);
+  buint8 lo = op_read(r[PC]++);
+  buint8 hi = op_read(r[PC]++);
   r[A] = op_read((hi << 8) | (lo << 0));
 }
 
@@ -42,8 +42,8 @@ template<uint x> auto LR35902::op_ld_rr_a() {
 }
 
 auto LR35902::op_ld_nn_a() {
-  uint8 lo = op_read(r[PC]++);
-  uint8 hi = op_read(r[PC]++);
+  buint8 lo = op_read(r[PC]++);
+  buint8 hi = op_read(r[PC]++);
   op_write((hi << 8) | (lo << 0), r[A]);
 }
 
@@ -91,7 +91,7 @@ template<uint x> auto LR35902::op_ld_rr_nn() {
 }
 
 auto LR35902::op_ld_nn_sp() {
-  uint16 addr = op_read(r[PC]++) << 0;
+  buint16 addr = op_read(r[PC]++) << 0;
   addr |= op_read(r[PC]++) << 8;
   op_write(addr + 0, r[SP] >> 0);
   op_write(addr + 1, r[SP] >> 8);
@@ -115,11 +115,11 @@ template<uint x> auto LR35902::op_pop_rr() {
 
 //8-bit arithmetic commands
 
-auto LR35902::opi_add_a(uint8 x) {
-  uint16 rh = r[A] + x;
-  uint16 rl = (r[A] & 0x0f) + (x & 0x0f);
+auto LR35902::opi_add_a(buint8 x) {
+  buint16 rh = r[A] + x;
+  buint16 rl = (r[A] & 0x0f) + (x & 0x0f);
   r[A] = rh;
-  r.f.z = (uint8)rh == 0;
+  r.f.z = (buint8)rh == 0;
   r.f.n = 0;
   r.f.h = rl > 0x0f;
   r.f.c = rh > 0xff;
@@ -129,11 +129,11 @@ template<uint x> auto LR35902::op_add_a_r() { opi_add_a(r[x]); }
 auto LR35902::op_add_a_n() { opi_add_a(op_read(r[PC]++)); }
 auto LR35902::op_add_a_hl() { opi_add_a(op_read(r[HL])); }
 
-auto LR35902::opi_adc_a(uint8 x) {
-  uint16 rh = r[A] + x + r.f.c;
-  uint16 rl = (r[A] & 0x0f) + (x & 0x0f) + r.f.c;
+auto LR35902::opi_adc_a(buint8 x) {
+  buint16 rh = r[A] + x + r.f.c;
+  buint16 rl = (r[A] & 0x0f) + (x & 0x0f) + r.f.c;
   r[A] = rh;
-  r.f.z = (uint8)rh == 0;
+  r.f.z = (buint8)rh == 0;
   r.f.n = 0;
   r.f.h = rl > 0x0f;
   r.f.c = rh > 0xff;
@@ -143,11 +143,11 @@ template<uint x> auto LR35902::op_adc_a_r() { opi_adc_a(r[x]); }
 auto LR35902::op_adc_a_n() { opi_adc_a(op_read(r[PC]++)); }
 auto LR35902::op_adc_a_hl() { opi_adc_a(op_read(r[HL])); }
 
-auto LR35902::opi_sub_a(uint8 x) {
-  uint16 rh = r[A] - x;
-  uint16 rl = (r[A] & 0x0f) - (x & 0x0f);
+auto LR35902::opi_sub_a(buint8 x) {
+  buint16 rh = r[A] - x;
+  buint16 rl = (r[A] & 0x0f) - (x & 0x0f);
   r[A] = rh;
-  r.f.z = (uint8)rh == 0;
+  r.f.z = (buint8)rh == 0;
   r.f.n = 1;
   r.f.h = rl > 0x0f;
   r.f.c = rh > 0xff;
@@ -157,11 +157,11 @@ template<uint x> auto LR35902::op_sub_a_r() { opi_sub_a(r[x]); }
 auto LR35902::op_sub_a_n() { opi_sub_a(op_read(r[PC]++)); }
 auto LR35902::op_sub_a_hl() { opi_sub_a(op_read(r[HL])); }
 
-auto LR35902::opi_sbc_a(uint8 x) {
-  uint16 rh = r[A] - x - r.f.c;
-  uint16 rl = (r[A] & 0x0f) - (x & 0x0f) - r.f.c;
+auto LR35902::opi_sbc_a(buint8 x) {
+  buint16 rh = r[A] - x - r.f.c;
+  buint16 rl = (r[A] & 0x0f) - (x & 0x0f) - r.f.c;
   r[A] = rh;
-  r.f.z = (uint8)rh == 0;
+  r.f.z = (buint8)rh == 0;
   r.f.n = 1;
   r.f.h = rl > 0x0f;
   r.f.c = rh > 0xff;
@@ -171,7 +171,7 @@ template<uint x> auto LR35902::op_sbc_a_r() { opi_sbc_a(r[x]); }
 auto LR35902::op_sbc_a_n() { opi_sbc_a(op_read(r[PC]++)); }
 auto LR35902::op_sbc_a_hl() { opi_sbc_a(op_read(r[HL])); }
 
-auto LR35902::opi_and_a(uint8 x) {
+auto LR35902::opi_and_a(buint8 x) {
   r[A] &= x;
   r.f.z = r[A] == 0;
   r.f.n = 0;
@@ -183,7 +183,7 @@ template<uint x> auto LR35902::op_and_a_r() { opi_and_a(r[x]); }
 auto LR35902::op_and_a_n() { opi_and_a(op_read(r[PC]++)); }
 auto LR35902::op_and_a_hl() { opi_and_a(op_read(r[HL])); }
 
-auto LR35902::opi_xor_a(uint8 x) {
+auto LR35902::opi_xor_a(buint8 x) {
   r[A] ^= x;
   r.f.z = r[A] == 0;
   r.f.n = 0;
@@ -195,7 +195,7 @@ template<uint x> auto LR35902::op_xor_a_r() { opi_xor_a(r[x]); }
 auto LR35902::op_xor_a_n() { opi_xor_a(op_read(r[PC]++)); }
 auto LR35902::op_xor_a_hl() { opi_xor_a(op_read(r[HL])); }
 
-auto LR35902::opi_or_a(uint8 x) {
+auto LR35902::opi_or_a(buint8 x) {
   r[A] |= x;
   r.f.z = r[A] == 0;
   r.f.n = 0;
@@ -207,10 +207,10 @@ template<uint x> auto LR35902::op_or_a_r() { opi_or_a(r[x]); }
 auto LR35902::op_or_a_n() { opi_or_a(op_read(r[PC]++)); }
 auto LR35902::op_or_a_hl() { opi_or_a(op_read(r[HL])); }
 
-auto LR35902::opi_cp_a(uint8 x) {
-  uint16 rh = r[A] - x;
-  uint16 rl = (r[A] & 0x0f) - (x & 0x0f);
-  r.f.z = (uint8)rh == 0;
+auto LR35902::opi_cp_a(buint8 x) {
+  buint16 rh = r[A] - x;
+  buint16 rl = (r[A] & 0x0f) - (x & 0x0f);
+  r.f.z = (buint8)rh == 0;
   r.f.n = 1;
   r.f.h = rl > 0x0f;
   r.f.c = rh > 0xff;
@@ -228,7 +228,7 @@ template<uint x> auto LR35902::op_inc_r() {
 }
 
 auto LR35902::op_inc_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   op_write(r[HL], ++n);
   r.f.z = n == 0;
   r.f.n = 0;
@@ -243,7 +243,7 @@ template<uint x> auto LR35902::op_dec_r() {
 }
 
 auto LR35902::op_dec_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   op_write(r[HL], --n);
   r.f.z = n == 0;
   r.f.n = 1;
@@ -251,7 +251,7 @@ auto LR35902::op_dec_hl() {
 }
 
 auto LR35902::op_daa() {
-  uint16 a = r[A];
+  buint16 a = r[A];
   if(r.f.n == 0) {
     if(r.f.h || (a & 0x0f) > 0x09) a += 0x06;
     if(r.f.c || (a       ) > 0x9f) a += 0x60;
@@ -278,8 +278,8 @@ auto LR35902::op_cpl() {
 
 template<uint x> auto LR35902::op_add_hl_rr() {
   op_io();
-  uint32 rb = (r[HL] + r[x]);
-  uint32 rn = (r[HL] & 0xfff) + (r[x] & 0xfff);
+  buint32 rb = (r[HL] + r[x]);
+  buint32 rn = (r[HL] & 0xfff) + (r[x] & 0xfff);
   r[HL] = rb;
   r.f.n = 0;
   r.f.h = rn > 0x0fff;
@@ -362,7 +362,7 @@ template<uint x> auto LR35902::op_rlc_r() {
 }
 
 auto LR35902::op_rlc_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   n = (n << 1) | (n >> 7);
   op_write(r[HL], n);
   r.f.z = n == 0;
@@ -381,7 +381,7 @@ template<uint x> auto LR35902::op_rl_r() {
 }
 
 auto LR35902::op_rl_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   bool c = n & 0x80;
   n = (n << 1) | (r.f.c << 0);
   op_write(r[HL], n);
@@ -400,7 +400,7 @@ template<uint x> auto LR35902::op_rrc_r() {
 }
 
 auto LR35902::op_rrc_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   n = (n >> 1) | (n << 7);
   op_write(r[HL], n);
   r.f.z = n == 0;
@@ -419,7 +419,7 @@ template<uint x> auto LR35902::op_rr_r() {
 }
 
 auto LR35902::op_rr_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   bool c = n & 0x01;
   n = (n >> 1) | (r.f.c << 7);
   op_write(r[HL], n);
@@ -439,7 +439,7 @@ template<uint x> auto LR35902::op_sla_r() {
 }
 
 auto LR35902::op_sla_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   bool c = n & 0x80;
   n <<= 1;
   op_write(r[HL], n);
@@ -458,7 +458,7 @@ template<uint x> auto LR35902::op_swap_r() {
 }
 
 auto LR35902::op_swap_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   n = (n << 4) | (n >> 4);
   op_write(r[HL], n);
   r.f.z = n == 0;
@@ -477,7 +477,7 @@ template<uint x> auto LR35902::op_sra_r() {
 }
 
 auto LR35902::op_sra_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   bool c = n & 0x01;
   n = (int8)n >> 1;
   op_write(r[HL], n);
@@ -497,7 +497,7 @@ template<uint x> auto LR35902::op_srl_r() {
 }
 
 auto LR35902::op_srl_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   bool c = n & 0x01;
   n >>= 1;
   op_write(r[HL], n);
@@ -516,7 +516,7 @@ template<uint b, uint x> auto LR35902::op_bit_n_r() {
 }
 
 template<uint b> auto LR35902::op_bit_n_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   r.f.z = (n & (1 << b)) == 0;
   r.f.n = 0;
   r.f.h = 1;
@@ -527,7 +527,7 @@ template<uint b, uint x> auto LR35902::op_set_n_r() {
 }
 
 template<uint b> auto LR35902::op_set_n_hl() {
-  uint8 n = op_read(r[HL]);
+  buint8 n = op_read(r[HL]);
   n |= 1 << b;
   op_write(r[HL], n);
 }
@@ -582,8 +582,8 @@ auto LR35902::op_ei() {
 //jump commands
 
 auto LR35902::op_jp_nn() {
-  uint8 lo = op_read(r[PC]++);
-  uint8 hi = op_read(r[PC]++);
+  buint8 lo = op_read(r[PC]++);
+  buint8 hi = op_read(r[PC]++);
   r[PC] = (hi << 8) | (lo << 0);
   op_io();
 }
@@ -593,8 +593,8 @@ auto LR35902::op_jp_hl() {
 }
 
 template<uint x, bool y> auto LR35902::op_jp_f_nn() {
-  uint8 lo = op_read(r[PC]++);
-  uint8 hi = op_read(r[PC]++);
+  buint8 lo = op_read(r[PC]++);
+  buint8 hi = op_read(r[PC]++);
   if(r.f[x] == y) {
     r[PC] = (hi << 8) | (lo << 0);
     op_io();
@@ -616,8 +616,8 @@ template<uint x, bool y> auto LR35902::op_jr_f_n() {
 }
 
 auto LR35902::op_call_nn() {
-  uint8 lo = op_read(r[PC]++);
-  uint8 hi = op_read(r[PC]++);
+  buint8 lo = op_read(r[PC]++);
+  buint8 hi = op_read(r[PC]++);
   op_io();
   op_write(--r[SP], r[PC] >> 8);
   op_write(--r[SP], r[PC] >> 0);
@@ -625,8 +625,8 @@ auto LR35902::op_call_nn() {
 }
 
 template<uint x, bool y> auto LR35902::op_call_f_nn() {
-  uint8 lo = op_read(r[PC]++);
-  uint8 hi = op_read(r[PC]++);
+  buint8 lo = op_read(r[PC]++);
+  buint8 hi = op_read(r[PC]++);
   if(r.f[x] == y) {
     op_io();
     op_write(--r[SP], r[PC] >> 8);
@@ -636,8 +636,8 @@ template<uint x, bool y> auto LR35902::op_call_f_nn() {
 }
 
 auto LR35902::op_ret() {
-  uint8 lo = op_read(r[SP]++);
-  uint8 hi = op_read(r[SP]++);
+  buint8 lo = op_read(r[SP]++);
+  buint8 hi = op_read(r[SP]++);
   r[PC] = (hi << 8) | (lo << 0);
   op_io();
 }
@@ -645,16 +645,16 @@ auto LR35902::op_ret() {
 template<uint x, bool y> auto LR35902::op_ret_f() {
   op_io();
   if(r.f[x] == y) {
-    uint8 lo = op_read(r[SP]++);
-    uint8 hi = op_read(r[SP]++);
+    buint8 lo = op_read(r[SP]++);
+    buint8 hi = op_read(r[SP]++);
     r[PC] = (hi << 8) | (lo << 0);
     op_io();
   }
 }
 
 auto LR35902::op_reti() {
-  uint8 lo = op_read(r[SP]++);
-  uint8 hi = op_read(r[SP]++);
+  buint8 lo = op_read(r[SP]++);
+  buint8 hi = op_read(r[SP]++);
   r[PC] = (hi << 8) | (lo << 0);
   op_io();
   r.ime = 1;

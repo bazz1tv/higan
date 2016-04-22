@@ -24,7 +24,7 @@ auto CPU::keypadRead() -> uint4 {
   return data;
 }
 
-auto CPU::portRead(uint16 addr) -> uint8 {
+auto CPU::portRead(buint16 addr) -> buint8 {
   //DMA_SRC
   if(addr == 0x0040) return r.dmaSource.byte(0);
   if(addr == 0x0041) return r.dmaSource.byte(1);
@@ -89,7 +89,7 @@ auto CPU::portRead(uint16 addr) -> uint8 {
   return 0x00;
 }
 
-auto CPU::portWrite(uint16 addr, uint8 data) -> void {
+auto CPU::portWrite(buint16 addr, buint8 data) -> void {
   //DMA_SRC
   if(addr == 0x0040) r.dmaSource.byte(0) = data & ~1;
   if(addr == 0x0041) r.dmaSource.byte(1) = data;

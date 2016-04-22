@@ -69,9 +69,9 @@ typedef struct XAUDIO2_DEVICE_DETAILS
 
 typedef struct XAUDIO2_VOICE_DETAILS
 {
-    UINT32 CreationFlags;
-    UINT32 InputChannels;
-    UINT32 InputSampleRate;
+    bUINT32 CreationFlags;
+    bUINT32 InputChannels;
+    bUINT32 InputSampleRate;
 } XAUDIO2_VOICE_DETAILS;
 
 typedef enum XAUDIO2_WINDOWS_PROCESSOR_SPECIFIER
@@ -114,7 +114,7 @@ typedef enum XAUDIO2_WINDOWS_PROCESSOR_SPECIFIER
 
 typedef struct XAUDIO2_VOICE_SENDS
 {
-    UINT32 OutputCount;
+    bUINT32 OutputCount;
     IXAudio2Voice** pOutputVoices;
 } XAUDIO2_VOICE_SENDS;
 
@@ -122,12 +122,12 @@ typedef struct XAUDIO2_EFFECT_DESCRIPTOR
 {
     IUnknown* pEffect;
     BOOL InitialState;
-    UINT32 OutputChannels;
+    bUINT32 OutputChannels;
 } XAUDIO2_EFFECT_DESCRIPTOR;
 
 typedef struct XAUDIO2_EFFECT_CHAIN
 {
-    UINT32 EffectCount;
+    bUINT32 EffectCount;
     const XAUDIO2_EFFECT_DESCRIPTOR* pEffectDescriptors;
 } XAUDIO2_EFFECT_CHAIN;
 
@@ -148,51 +148,51 @@ typedef struct XAUDIO2_FILTER_PARAMETERS
 
 typedef struct XAUDIO2_BUFFER
 {
-    UINT32 Flags;
-    UINT32 AudioBytes;
+    bUINT32 Flags;
+    bUINT32 AudioBytes;
     const BYTE* pAudioData;
-    UINT32 PlayBegin;
-    UINT32 PlayLength;
-    UINT32 LoopBegin;
-    UINT32 LoopLength;
-    UINT32 LoopCount;
+    bUINT32 PlayBegin;
+    bUINT32 PlayLength;
+    bUINT32 LoopBegin;
+    bUINT32 LoopLength;
+    bUINT32 LoopCount;
     void* pContext;
 } XAUDIO2_BUFFER;
 
 typedef struct XAUDIO2_BUFFER_WMA
 {
-    const UINT32* pDecodedPacketCumulativeBytes;
-    UINT32 PacketCount;
+    const bUINT32* pDecodedPacketCumulativeBytes;
+    bUINT32 PacketCount;
 } XAUDIO2_BUFFER_WMA;
 
 typedef struct XAUDIO2_VOICE_STATE
 {
     void* pCurrentBufferContext;
-    UINT32 BuffersQueued;
-    UINT64 SamplesPlayed;
+    bUINT32 BuffersQueued;
+    bUINT64 SamplesPlayed;
 } XAUDIO2_VOICE_STATE;
 
 typedef struct XAUDIO2_PERFORMANCE_DATA
 {
-    UINT64 AudioCyclesSinceLastQuery;
-    UINT64 TotalCyclesSinceLastQuery;
-    UINT32 MinimumCyclesPerQuantum;
-    UINT32 MaximumCyclesPerQuantum;
-    UINT32 MemoryUsageInBytes;
-    UINT32 CurrentLatencyInSamples;
-    UINT32 GlitchesSinceEngineStarted;
-    UINT32 ActiveSourceVoiceCount;
-    UINT32 TotalSourceVoiceCount;
-    UINT32 ActiveSubmixVoiceCount;
-    UINT32 TotalSubmixVoiceCount;
-    UINT32 ActiveXmaSourceVoices;
-    UINT32 ActiveXmaStreams;
+    bUINT64 AudioCyclesSinceLastQuery;
+    bUINT64 TotalCyclesSinceLastQuery;
+    bUINT32 MinimumCyclesPerQuantum;
+    bUINT32 MaximumCyclesPerQuantum;
+    bUINT32 MemoryUsageInBytes;
+    bUINT32 CurrentLatencyInSamples;
+    bUINT32 GlitchesSinceEngineStarted;
+    bUINT32 ActiveSourceVoiceCount;
+    bUINT32 TotalSourceVoiceCount;
+    bUINT32 ActiveSubmixVoiceCount;
+    bUINT32 TotalSubmixVoiceCount;
+    bUINT32 ActiveXmaSourceVoices;
+    bUINT32 ActiveXmaStreams;
 } XAUDIO2_PERFORMANCE_DATA;
 
 typedef struct XAUDIO2_DEBUG_CONFIGURATION
 {
-    UINT32 TraceMask;
-    UINT32 BreakMask;
+    bUINT32 TraceMask;
+    bUINT32 BreakMask;
     BOOL LogThreadID;
     BOOL LogFileline;
     BOOL LogFunctionName;
@@ -208,7 +208,7 @@ DECLARE_INTERFACE(IXAudio2EngineCallback)
 
 DECLARE_INTERFACE(IXAudio2VoiceCallback)
 {
-    STDMETHOD_(void, OnVoiceProcessingPassStart) (THIS_ UINT32 BytesRequired) PURE;
+    STDMETHOD_(void, OnVoiceProcessingPassStart) (THIS_ bUINT32 BytesRequired) PURE;
     STDMETHOD_(void, OnVoiceProcessingPassEnd) (THIS) PURE;
     STDMETHOD_(void, OnStreamEnd) (THIS) PURE;
     STDMETHOD_(void, OnBufferStart) (THIS_ void* pBufferContext) PURE;
@@ -223,32 +223,32 @@ DECLARE_INTERFACE(IXAudio2Voice)
     STDMETHOD_(void, GetVoiceDetails) (THIS_ XAUDIO2_VOICE_DETAILS* pVoiceDetails) PURE; \
     STDMETHOD(SetOutputVoices) (THIS_ const XAUDIO2_VOICE_SENDS* pSendList) PURE; \
     STDMETHOD(SetEffectChain) (THIS_ const XAUDIO2_EFFECT_CHAIN* pEffectChain) PURE; \
-    STDMETHOD(EnableEffect) (THIS_ UINT32 EffectIndex, \
-                             UINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
-    STDMETHOD(DisableEffect) (THIS_ UINT32 EffectIndex, \
-                              UINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
-    STDMETHOD_(void, GetEffectState) (THIS_ UINT32 EffectIndex, BOOL* pEnabled) PURE; \
-    STDMETHOD(SetEffectParameters) (THIS_ UINT32 EffectIndex, \
+    STDMETHOD(EnableEffect) (THIS_ bUINT32 EffectIndex, \
+                             bUINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
+    STDMETHOD(DisableEffect) (THIS_ bUINT32 EffectIndex, \
+                              bUINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
+    STDMETHOD_(void, GetEffectState) (THIS_ bUINT32 EffectIndex, BOOL* pEnabled) PURE; \
+    STDMETHOD(SetEffectParameters) (THIS_ bUINT32 EffectIndex, \
                                     const void* pParameters, \
-                                    UINT32 ParametersByteSize, \
-                                    UINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
-    STDMETHOD(GetEffectParameters) (THIS_ UINT32 EffectIndex, void* pParameters, \
-                                    UINT32 ParametersByteSize) PURE; \
+                                    bUINT32 ParametersByteSize, \
+                                    bUINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
+    STDMETHOD(GetEffectParameters) (THIS_ bUINT32 EffectIndex, void* pParameters, \
+                                    bUINT32 ParametersByteSize) PURE; \
     STDMETHOD(SetFilterParameters) (THIS_ const XAUDIO2_FILTER_PARAMETERS* pParameters, \
-                                   UINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
+                                   bUINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
     STDMETHOD_(void, GetFilterParameters) (THIS_ XAUDIO2_FILTER_PARAMETERS* pParameters) PURE; \
     STDMETHOD(SetVolume) (THIS_ float Volume, \
-                          UINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
+                          bUINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
     STDMETHOD_(void, GetVolume) (THIS_ float* pVolume) PURE; \
-    STDMETHOD(SetChannelVolumes) (THIS_ UINT32 Channels, const float* pVolumes, \
-                                  UINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
-    STDMETHOD_(void, GetChannelVolumes) (THIS_ UINT32 Channels, float* pVolumes) PURE; \
+    STDMETHOD(SetChannelVolumes) (THIS_ bUINT32 Channels, const float* pVolumes, \
+                                  bUINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
+    STDMETHOD_(void, GetChannelVolumes) (THIS_ bUINT32 Channels, float* pVolumes) PURE; \
     STDMETHOD(SetOutputMatrix) (THIS_ IXAudio2Voice* pDestinationVoice, \
-                                UINT32 SourceChannels, UINT32 DestinationChannels, \
+                                bUINT32 SourceChannels, bUINT32 DestinationChannels, \
                                 const float* pLevelMatrix, \
-                                UINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
+                                bUINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE; \
     STDMETHOD_(void, GetOutputMatrix) (THIS_ IXAudio2Voice* pDestinationVoice, \
-                                       UINT32 SourceChannels, UINT32 DestinationChannels, \
+                                       bUINT32 SourceChannels, bUINT32 DestinationChannels, \
                                        float* pLevelMatrix) PURE; \
     STDMETHOD_(void, DestroyVoice) (THIS) PURE
 
@@ -269,15 +269,15 @@ DECLARE_INTERFACE_(IXAudio2SubmixVoice, IXAudio2Voice)
 DECLARE_INTERFACE_(IXAudio2SourceVoice, IXAudio2Voice)
 {
     Declare_IXAudio2Voice_Methods();
-    STDMETHOD(Start) (THIS_ UINT32 Flags, UINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE;
-    STDMETHOD(Stop) (THIS_ UINT32 Flags, UINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE;
+    STDMETHOD(Start) (THIS_ bUINT32 Flags, bUINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE;
+    STDMETHOD(Stop) (THIS_ bUINT32 Flags, bUINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE;
     STDMETHOD(SubmitSourceBuffer) (THIS_ const XAUDIO2_BUFFER* pBuffer, const XAUDIO2_BUFFER_WMA* pBufferWMA X2DEFAULT(NULL)) PURE;
     STDMETHOD(FlushSourceBuffers) (THIS) PURE;
     STDMETHOD(Discontinuity) (THIS) PURE;
-    STDMETHOD(ExitLoop) (THIS_ UINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE;
+    STDMETHOD(ExitLoop) (THIS_ bUINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE;
     STDMETHOD_(void, GetState) (THIS_ XAUDIO2_VOICE_STATE* pVoiceState) PURE;
     STDMETHOD(SetFrequencyRatio) (THIS_ float Ratio,
-                                  UINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE;
+                                  bUINT32 OperationSet X2DEFAULT(XAUDIO2_COMMIT_NOW)) PURE;
     STDMETHOD_(void, GetFrequencyRatio) (THIS_ float* pRatio) PURE;
 };
 
@@ -286,38 +286,38 @@ DECLARE_INTERFACE_(IXAudio2, IUnknown)
     STDMETHOD(QueryInterface) (THIS_ REFIID riid, void** ppvInterface) PURE;
     STDMETHOD_(ULONG, AddRef) (THIS) PURE;
     STDMETHOD_(ULONG, Release) (THIS) PURE;
-    STDMETHOD(GetDeviceCount) (THIS_ UINT32* pCount) PURE;
-    STDMETHOD(GetDeviceDetails) (THIS_ UINT32 Index, XAUDIO2_DEVICE_DETAILS* pDeviceDetails) PURE;
-    STDMETHOD(Initialize) (THIS_ UINT32 Flags X2DEFAULT(0),
+    STDMETHOD(GetDeviceCount) (THIS_ bUINT32* pCount) PURE;
+    STDMETHOD(GetDeviceDetails) (THIS_ bUINT32 Index, XAUDIO2_DEVICE_DETAILS* pDeviceDetails) PURE;
+    STDMETHOD(Initialize) (THIS_ bUINT32 Flags X2DEFAULT(0),
                            XAUDIO2_PROCESSOR XAudio2Processor X2DEFAULT(XAUDIO2_DEFAULT_PROCESSOR)) PURE;
     STDMETHOD(RegisterForCallbacks) (IXAudio2EngineCallback* pCallback) PURE;
     STDMETHOD_(void, UnregisterForCallbacks) (IXAudio2EngineCallback* pCallback) PURE;
     STDMETHOD(CreateSourceVoice) (THIS_ IXAudio2SourceVoice** ppSourceVoice,
                                   const WAVEFORMATEX* pSourceFormat,
-                                  UINT32 Flags X2DEFAULT(0),
+                                  bUINT32 Flags X2DEFAULT(0),
                                   float MaxFrequencyRatio X2DEFAULT(XAUDIO2_DEFAULT_FREQ_RATIO),
                                   IXAudio2VoiceCallback* pCallback X2DEFAULT(NULL),
                                   const XAUDIO2_VOICE_SENDS* pSendList X2DEFAULT(NULL),
                                   const XAUDIO2_EFFECT_CHAIN* pEffectChain X2DEFAULT(NULL)) PURE;
     STDMETHOD(CreateSubmixVoice) (THIS_ IXAudio2SubmixVoice** ppSubmixVoice,
-                                  UINT32 InputChannels, UINT32 InputSampleRate,
-                                  UINT32 Flags X2DEFAULT(0), UINT32 ProcessingStage X2DEFAULT(0),
+                                  bUINT32 InputChannels, bUINT32 InputSampleRate,
+                                  bUINT32 Flags X2DEFAULT(0), bUINT32 ProcessingStage X2DEFAULT(0),
                                   const XAUDIO2_VOICE_SENDS* pSendList X2DEFAULT(NULL),
                                   const XAUDIO2_EFFECT_CHAIN* pEffectChain X2DEFAULT(NULL)) PURE;
     STDMETHOD(CreateMasteringVoice) (THIS_ IXAudio2MasteringVoice** ppMasteringVoice,
-                                     UINT32 InputChannels X2DEFAULT(XAUDIO2_DEFAULT_CHANNELS),
-                                     UINT32 InputSampleRate X2DEFAULT(XAUDIO2_DEFAULT_SAMPLERATE),
-                                     UINT32 Flags X2DEFAULT(0), UINT32 DeviceIndex X2DEFAULT(0),
+                                     bUINT32 InputChannels X2DEFAULT(XAUDIO2_DEFAULT_CHANNELS),
+                                     bUINT32 InputSampleRate X2DEFAULT(XAUDIO2_DEFAULT_SAMPLERATE),
+                                     bUINT32 Flags X2DEFAULT(0), bUINT32 DeviceIndex X2DEFAULT(0),
                                      const XAUDIO2_EFFECT_CHAIN* pEffectChain X2DEFAULT(NULL)) PURE;
     STDMETHOD(StartEngine) (THIS) PURE;
     STDMETHOD_(void, StopEngine) (THIS) PURE;
-    STDMETHOD(CommitChanges) (THIS_ UINT32 OperationSet) PURE;
+    STDMETHOD(CommitChanges) (THIS_ bUINT32 OperationSet) PURE;
     STDMETHOD_(void, GetPerformanceData) (THIS_ XAUDIO2_PERFORMANCE_DATA* pPerfData) PURE;
     STDMETHOD_(void, SetDebugConfiguration) (THIS_ const XAUDIO2_DEBUG_CONFIGURATION* pDebugConfiguration,
                                              void* pReserved X2DEFAULT(NULL)) PURE;
 };
 
-__inline HRESULT XAudio2Create(IXAudio2** ppXAudio2, UINT32 Flags X2DEFAULT(0),
+__inline HRESULT XAudio2Create(IXAudio2** ppXAudio2, bUINT32 Flags X2DEFAULT(0),
                                XAUDIO2_PROCESSOR XAudio2Processor X2DEFAULT(XAUDIO2_DEFAULT_PROCESSOR))
 {
     IXAudio2* pXAudio2;

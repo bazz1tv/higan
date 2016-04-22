@@ -1,4 +1,4 @@
-inline auto PPU::get_palette(uint8 index) -> uint16 {
+inline auto PPU::get_palette(buint8 index) -> buint16 {
   const uint addr = index << 1;
   return cgram[addr] + (cgram[addr + 1] << 8);
 }
@@ -6,16 +6,16 @@ inline auto PPU::get_palette(uint8 index) -> uint16 {
 //p = 00000bgr <palette data>
 //t = BBGGGRRR <tilemap data>
 //r = 0BBb00GGGg0RRRr0 <return data>
-inline auto PPU::get_direct_color(uint8 p, uint8 t) -> uint16 {
+inline auto PPU::get_direct_color(buint8 p, buint8 t) -> buint16 {
   return ((t & 7) << 2) | ((p & 1) << 1) |
     (((t >> 3) & 7) << 7) | (((p >> 1) & 1) << 6) |
     ((t >> 6) << 13) | ((p >> 2) << 12);
 }
 
-inline auto PPU::get_pixel_normal(uint32 x) -> uint16 {
+inline auto PPU::get_pixel_normal(buint32 x) -> buint16 {
   pixel_t& p = pixel_cache[x];
-  uint16 src_main, src_sub;
-  uint8 bg_sub;
+  buint16 src_main, src_sub;
+  buint8 bg_sub;
 
   src_main = p.src_main;
 
@@ -48,10 +48,10 @@ inline auto PPU::get_pixel_normal(uint32 x) -> uint16 {
   return src_main;
 }
 
-inline auto PPU::get_pixel_swap(uint32 x) -> uint16 {
+inline auto PPU::get_pixel_swap(buint32 x) -> buint16 {
   pixel_t& p = pixel_cache[x];
-  uint16 src_main, src_sub;
-  uint8 bg_sub;
+  buint16 src_main, src_sub;
+  buint8 bg_sub;
 
   src_main = p.src_sub;
 
@@ -85,7 +85,7 @@ inline auto PPU::get_pixel_swap(uint32 x) -> uint16 {
 }
 
 inline auto PPU::render_line_output() -> void {
-  auto ptr = (uint32*)output + (line * 1024) + ((interlace() && field()) ? 512 : 0);
+  auto ptr = (buint32*)output + (line * 1024) + ((interlace() && field()) ? 512 : 0);
 
   if(!regs.pseudo_hires && regs.bg_mode != 5 && regs.bg_mode != 6) {
     for(uint x = 0; x < 256; x++) {
@@ -102,6 +102,6 @@ inline auto PPU::render_line_output() -> void {
 }
 
 inline auto PPU::render_line_clear() -> void {
-  auto ptr = (uint32*)output + (line * 1024) + ((interlace() && field()) ? 512 : 0);
-  memory::fill(ptr, 512 * sizeof(uint32));
+  auto ptr = (buint32*)output + (line * 1024) + ((interlace() && field()) ? 512 : 0);
+  memory::fill(ptr, 512 * sizeof(buint32));
 }

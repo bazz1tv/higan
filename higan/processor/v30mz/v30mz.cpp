@@ -53,7 +53,7 @@ auto V30MZ::exec() -> void {
   if(!state.prefix) prefixes.reset();
 }
 
-auto V30MZ::interrupt(uint8 vector) -> void {
+auto V30MZ::interrupt(buint8 vector) -> void {
   wait(32);
 
   state.halt = false;
@@ -293,10 +293,10 @@ auto V30MZ::instruction() -> void {
   case 0xcd: return opIntImm();
   case 0xce: return opInto();
   case 0xcf: return opReturnInt();
-  case 0xd0: return opGroup2MemImm(Byte, (uint8)1);
-  case 0xd1: return opGroup2MemImm(Word, (uint8)1);
-  case 0xd2: return opGroup2MemImm(Byte, (uint8)r.cl);
-  case 0xd3: return opGroup2MemImm(Word, (uint8)r.cl);
+  case 0xd0: return opGroup2MemImm(Byte, (buint8)1);
+  case 0xd1: return opGroup2MemImm(Word, (buint8)1);
+  case 0xd2: return opGroup2MemImm(Byte, (buint8)r.cl);
+  case 0xd3: return opGroup2MemImm(Word, (buint8)r.cl);
   case 0xd4: return opAdjustAfterMultiply();
   case 0xd5: return opAdjustAfterDivide();
   case 0xd6: return;

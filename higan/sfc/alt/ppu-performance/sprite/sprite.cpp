@@ -10,7 +10,7 @@ auto PPU::Sprite::frame() -> void {
   regs.range_over = false;
 }
 
-auto PPU::Sprite::update_list(uint addr, uint8 data) -> void {
+auto PPU::Sprite::update_list(uint addr, buint8 data) -> void {
   if(addr < 0x0200) {
     uint i = addr >> 2;
     switch(addr & 3) {
@@ -111,9 +111,9 @@ auto PPU::Sprite::render() -> void {
     x &= 511;
     y &= 255;
 
-    uint16 tdaddr = regs.tiledata_addr;
-    uint16 chrx = (s.character >> 0) & 15;
-    uint16 chry = (s.character >> 4) & 15;
+    buint16 tdaddr = regs.tiledata_addr;
+    buint16 chrx = (s.character >> 0) & 15;
+    buint16 chry = (s.character >> 4) & 15;
     if(s.use_nameselect) {
       tdaddr += (256 * 32) + (regs.nameselect << 13);
     }
@@ -148,7 +148,7 @@ auto PPU::Sprite::render() -> void {
     if(tilelist[i].tile == 0xffff) continue;
 
     auto& t = tilelist[i];
-    uint8* tiledata = self.cache.tile_4bpp(t.tile);
+    buint8* tiledata = self.cache.tile_4bpp(t.tile);
     tiledata += (t.y & 7) << 3;
     uint sx = t.x;
     for(uint x = 0; x < 8; x++) {
