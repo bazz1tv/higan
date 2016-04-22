@@ -41,9 +41,9 @@ auto pLabel::minimumSize() const -> Size {
 auto pLabel::setAlignment(Alignment alignment) -> void {
   @autoreleasepool {
     NSMutableParagraphStyle* paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    paragraphStyle.alignment = NSTextAlignmentCenter;
-    if(alignment.horizontal() < 0.333) paragraphStyle.alignment = NSTextAlignmentLeft;
-    if(alignment.horizontal() > 0.666) paragraphStyle.alignment = NSTextAlignmentRight;
+    paragraphStyle.alignment = NSCenterTextAlignment;
+    if(alignment.horizontal() < 0.333) paragraphStyle.alignment = NSLeftTextAlignment;
+    if(alignment.horizontal() > 0.666) paragraphStyle.alignment = NSRightTextAlignment;
     [cocoaView setDefaultParagraphStyle:paragraphStyle];
   }
 }

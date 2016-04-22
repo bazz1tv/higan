@@ -191,9 +191,9 @@
 
       if(listViewCell->state.text) {
         NSMutableParagraphStyle* paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-        paragraphStyle.alignment = NSTextAlignmentCenter;
-        if(listViewCell->state.alignment.horizontal() < 0.333) paragraphStyle.alignment = NSTextAlignmentLeft;
-        if(listViewCell->state.alignment.horizontal() > 0.666) paragraphStyle.alignment = NSTextAlignmentRight;
+        paragraphStyle.alignment = NSCenterTextAlignment;
+        if(listViewCell->state.alignment.horizontal() < 0.333) paragraphStyle.alignment = NSLeftTextAlignment;
+        if(listViewCell->state.alignment.horizontal() > 0.666) paragraphStyle.alignment = NSRightTextAlignment;
         NSColor* foregroundColor = nil;
         if([self isHighlighted]) foregroundColor = [NSColor alternateSelectedControlTextColor];
         else if(!listView->enabled(true)) foregroundColor = [NSColor disabledControlTextColor];
