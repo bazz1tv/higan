@@ -24,7 +24,7 @@ namespace Math {
 #include <assert.h>
 #include <errno.h>
 #include <limits.h>
-#include <math.h>
+#include <cmath>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
