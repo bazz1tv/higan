@@ -24,7 +24,7 @@ ifeq ($(platform),)
     delete = del $(subst /,\,$1)
   else ifneq ($(findstring Darwin,$(uname)),)
     platform := macosx
-    delete = rm -f $1
+    delete = rm -rf $1
   else ifneq ($(findstring Linux,$(uname)),)
     platform := linux
     delete = rm -f $1
