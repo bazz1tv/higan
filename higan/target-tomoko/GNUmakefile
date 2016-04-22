@@ -84,7 +84,8 @@ else ifeq ($(platform),windows)
 else ifeq ($(platform),macosx)
 	mkdir -p ~/Library/Application\ Support/$(name)/
 	mkdir -p ~/Emulation/System/
-	cp -R out/$(name).app /Applications/$(name).app
+	mkdir -p ~/Applications
+	cp -R out/$(name).app ~/Applications/$(name).app
 	cp data/cheats.bml ~/Library/Application\ Support/$(name)/
 	cp -R profile/* ~/Library/Application\ Support/$(name)/
 else ifneq ($(filter $(platform),linux bsd),)
